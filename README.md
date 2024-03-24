@@ -1,5 +1,9 @@
 # litestar-workflows
 
+[![Latest Release](https://github.com/JacobCoffee/litestar-workflows/actions/workflows/publish.yml/badge.svg)](https://github.com/JacobCoffee/litestar-workflows/actions/workflows/publish.yml)
+[![Tests And Linting](https://github.com/JacobCoffee/litestar-workflows/actions/workflows/ci.yml/badge.svg)](https://github.com/JacobCoffee/litestar-workflows/actions/workflows/ci.yml)
+
+
 A simple library for creating and managing workflows in Litestar.
 
 "Workflows" are a way to define a series of steps that need to be completed to achieve a goal.
@@ -33,9 +37,6 @@ from litestar_workflows import Workflow, Step
 ```
 
 ## Versioning
-
-[![Latest Release](https://github.com/JacobCoffee/litestar-workflows/actions/workflows/publish.yml/badge.svg?branch=main)](https://github.com/JacobCoffee/litestar-workflows/actions/workflows/publish.yml)
-[![Tests And Linting](https://github.com/JacobCoffee/litestar-workflows/actions/workflows/ci.yml/badge.svg)](https://github.com/JacobCoffee/litestar-workflows/actions/workflows/ci.yml)
 
 This project uses [Semantic Versioning](https://semver.org/).
 * Major versions introduce breaking changes.
