@@ -1,0 +1,24 @@
+## Python
+.venv
+venv
+__pycache__
+.pytest_cache
+.mypy_cache/
+.ruff_cache/
+.dmypy.json
+dmypy.json
+__pypackages__/
+.pdm.toml
+.pdm-python
+docs/_build/
+
+## Editors
+.idea/
+.vimspector.json
+.vscode/
+.*.sw?
+.sw?
+
+## Environment
+.env
+.env.*

@@ -1,0 +1,243 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[git]
+commit_parsers = [
+  {message = "^feat", group = "Features"},
+  {message = "^fix", group = "Bug Fixes"},
+  {message = "^doc", group = "Documentation"},
+  {message = "^perf", group = "Performance"},
+  {message = "^refactor", group = "Refactoring"},
+  {message = "^style", group = "Style"},
+  {message = "^revert", group = "Revert"},
+  {message = "^test", group = "Tests"},
+  {message = "^chore\\(version\\):", skip = true},
+  {message = "^chore", group = "Miscellaneous Chores"},
+  {body = ".*security", group = "Security"}
+]
+commit_preprocessors = [
+]
+conventional_commits = true
+filter_commits = false
+filter_unconventional = true
+ignore_tags = ""
+protect_breaking_commits = false
+skip_tags = "v0.1.0-beta.1"
+sort_commits = "oldest"
+split_commits = false
+tag_pattern = "v[0-9].*"
+topo_order = false
+
+[project]
+authors = [
+  {name = "Jacob Coffee", email = "jacob@z7x.org"}
+]
+dependencies = [
+  "litestar>=2",
+  "rich-click>=1.7.4"
+]
+description = "Workflow management in Litestar"
+keywords = [
+  "litestar",
+  "workflows",
+  "approvals"
+]
+license = {text = "MIT"}
+name = "litestar-workflows"
+readme = "README.md"
+requires-python = ">=3.9"
+version = "0.1.0"
+
+[project.optional-dependencies]
+db = ["litestar[sqlalchemy]"]
+dev-lint = [
+  "ruff>=0.3.4",
+  "codespell>=2.2.6",
+  "mypy>=1.9.0",
+  "pre-commit>=3.6.2",
+  "blacken-docs>=1.16.0",
+  "pyright>=1.1.355",
+  "sourcery>=1.16.0"
+]
+dev-test = [
+  "pytest>=8.1.1",
+  "pytest-cov>=4.1.0",
+  "pytest-asyncio>=0.23.6"
+]
+ui = ["litestar[jinja]"]
+
+[project.urls]
+Changelog = "https://github.com/JacobCoffee/litestar-workflows/releases/"
+Discord = "https://discord.gg/litestar-919193495116337154"
+Documentation = "https://jacobcoffee.github.io/litestar-workflows"
+"Issue Tracker" = "https://github.com/JacobCoffee/litestar-workflows/issues"
+Reddit = "https://www.reddit.com/r/LitestarAPI"
+Repository = "https://github.com/JacobCoffee/litestar-workflows"
+Twitter = "https://twitter.com/_scriptr"
+
+[tool.codespell]
+skip = 'pdm.lock'
+
+[tool.coverage.report]
+exclude_lines = []
+fail_under = 96
+
+[tool.coverage.run]
+concurrency = ["multiprocessing", "thread"]
+omit = ["*/tests/*", "*/litestar/plugins/sqlalchemy.py"]
+parallel = true
+plugins = ["covdefaults"]
+source = ["litestar"]
+
+[tool.git-cliff.changelog]
+body = """
+---
+{% if version %}\
+    {% if previous.version %}\
+        ## [{{ version | trim_start_matches(pat="v") }}]($REPO/compare/{{ previous.version }}..{{ version }}) - {{ timestamp | date(format="%Y-%m-%d") }}
+    {% else %}\
+        ## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+    {% endif %}\
+{% else %}\
+    ## [unreleased]
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+    ### {{ group | striptags | trim | upper_first }}
+    {% for commit in commits
+    | filter(attribute="scope")
+    | sort(attribute="scope") %}
+        - **({{commit.scope}})**{% if commit.breaking %} [**breaking**]{% endif %} \
+            {{ commit.message }} - ([{{ commit.id | truncate(length=7, end="") }}]($REPO/commit/{{ commit.id }})) - {{ commit.author.name }}
+    {%- endfor -%}
+    {% raw %}\n{% endraw %}\
+    {%- for commit in commits %}
+        {%- if commit.scope -%}
+        {% else -%}
+            - {% if commit.breaking %} [**breaking**]{% endif %}\
+                {{ commit.message }} - ([{{ commit.id | truncate(length=7, end="") }}]($REPO/commit/{{ commit.id }})) - {{ commit.author.name }}
+        {% endif -%}
+    {% endfor -%}
+{% endfor %}\n
+"""
+footer = """
+``litestar-workflows`` Changelog
+"""
+postprocessors = [
+  {pattern = '\$REPO', replace = "https://github.com/JacobCoffee/litestar-workflows"}
+]
+trim = true
+
+[tool.hatch.build.targets.sdist]
+include = [
+  'README.md',
+  '/src'
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.mypy]
+disallow_any_generics = false
+disallow_untyped_decorators = true
+implicit_reexport = false
+show_error_codes = true
+strict = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+disable_error_code = "attr-defined"
+disallow_untyped_decorators = false
+module = "tests.*"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+lint = [
+  "ruff>=0.3.4",
+  "codespell>=2.2.6",
+  "mypy>=1.9.0",
+  "pre-commit>=3.6.2",
+  "blacken-docs>=1.16.0",
+  "pyright>=1.1.355",
+  "sourcery>=1.16.0"
+]
+test = [
+  "pytest>=8.1.1",
+  "pytest-cov>=4.1.0",
+  "pytest-asyncio>=0.23.6"
+]
+
+[tool.pdm.scripts]
+ci = {composite = ["lint", "test"]}
+docs-serve = "sphinx-autobuild docs docs/_build/ -j auto --watch litestar-workflows --watch docs --watch tests --port 8001"
+lint = "pre-commit run --all-files"
+test = "pytest tests"
+
+[tool.pyright]
+disableBytesTypePromotions = true
+exclude = ["docs"]
+include = ["litestar", "tests"]
+pythonVersion = "3.8"
+reportUnnecessaryTypeIgnoreComments = true
+strict = true
+
+[tool.ruff]
+fix = true
+line-length = 120
+src = ["litestar_workflows", "tests"]
+target-version = "py39"
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 88
+indent-style = "space"
+quote-style = "double"
+
+[tool.ruff.lint]
+fixable = ["ALL"]
+ignore = []
+select = ["ALL"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["litestar_workflows", "tests"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 12
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.*" = [
+  "A",
+  "ARG",
+  "B",
+  "BLE",
+  "C901",
+  "D",
+  "DTZ",
+  "EM",
+  "FBT",
+  "G",
+  "N",
+  "PGH",
+  "PIE",
+  "PLR",
+  "PLW",
+  "PTH",
+  "RSE",
+  "S",
+  "S101",
+  "SIM",
+  "TCH",
+  "TRY",
+  "UP006",
+  "SLF001",
+  "ERA001"
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
