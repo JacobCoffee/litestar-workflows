@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "54333:5432"
+    environment:
+      POSTGRES_PASSWORD: workflow

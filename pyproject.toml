@@ -2,33 +2,6 @@
 build-backend = "hatchling.build"
 requires = ["hatchling"]
 
-[git]
-commit_parsers = [
-  {message = "^feat", group = "Features"},
-  {message = "^fix", group = "Bug Fixes"},
-  {message = "^doc", group = "Documentation"},
-  {message = "^perf", group = "Performance"},
-  {message = "^refactor", group = "Refactoring"},
-  {message = "^style", group = "Style"},
-  {message = "^revert", group = "Revert"},
-  {message = "^test", group = "Tests"},
-  {message = "^chore\\(version\\):", skip = true},
-  {message = "^chore", group = "Miscellaneous Chores"},
-  {body = ".*security", group = "Security"}
-]
-commit_preprocessors = [
-]
-conventional_commits = true
-filter_commits = false
-filter_unconventional = true
-ignore_tags = ""
-protect_breaking_commits = false
-skip_tags = "v0.1.0-beta.1"
-sort_commits = "oldest"
-split_commits = false
-tag_pattern = "v[0-9].*"
-topo_order = false
-
 [project]
 authors = [
   {name = "Jacob Coffee", email = "jacob@z7x.org"}
@@ -45,7 +18,7 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3 :: Only",
-  "Framework :: Litestar",
+#  "Framework :: Litestar",
   "Topic :: Software Development",
   "Topic :: Home Automation",
   "Topic :: Internet",
@@ -151,6 +124,32 @@ postprocessors = [
   {pattern = '\$REPO', replace = "https://github.com/JacobCoffee/litestar-workflows"}
 ]
 trim = true
+
+[tool.git-cliff.git]
+commit_parsers = [
+  {message = "^feat", group = "Features"},
+  {message = "^fix", group = "Bug Fixes"},
+  {message = "^doc", group = "Documentation"},
+  {message = "^perf", group = "Performance"},
+  {message = "^refactor", group = "Refactoring"},
+  {message = "^style", group = "Style"},
+  {message = "^revert", group = "Revert"},
+  {message = "^test", group = "Tests"},
+  {message = "^chore\\(version\\):", skip = true},
+  {message = "^chore", group = "Miscellaneous Chores"},
+  {body = ".*security", group = "Security"}
+]
+commit_preprocessors = []
+conventional_commits = true
+filter_commits = false
+filter_unconventional = true
+ignore_tags = ""
+protect_breaking_commits = false
+skip_tags = "v0.1.0-beta.1"
+sort_commits = "oldest"
+split_commits = false
+tag_pattern = "v[0-9].*"
+topo_order = false
 
 [tool.hatch.build.targets.sdist]
 include = [

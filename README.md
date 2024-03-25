@@ -17,6 +17,7 @@ Some examples of workflows that could be defined with `litestar-workflows` inclu
 - Approval workflows for various business processes like expense reports, vacation requests, etc.
 - A user requests a new virtual machine, and the request must be approved by a manager before the VM is created.
 - I need to run a command on a set of hosts, but I need approval from a manager -> directory -> VP -> ... before the command is executed.
+- Literally anything with some arbitrary series of steps.
 
 ...and many more!
 

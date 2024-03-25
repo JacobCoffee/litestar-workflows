@@ -22,3 +22,6 @@ docs/_build/
 ## Environment
 .env
 .env.*
+
+## Tooling
+.tool-versions
