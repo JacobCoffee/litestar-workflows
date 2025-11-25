@@ -1,13 +1,14 @@
 """Comprehensive tests for Phase 3 Web Plugin.
 
-This module tests the WorkflowWebPlugin REST API controllers, including:
-- Plugin registration and configuration
+This module tests the workflow REST API components, including:
+- WorkflowWebConfig configuration
 - Definition controller endpoints (list, get, graph)
 - Instance controller endpoints (start, list, get, cancel, retry)
 - Human task controller endpoints (list, get, complete, reassign)
 - Graph generation (MermaidJS)
 - Auth guard integration
 - Error handling and validation
+- End-to-end workflow lifecycle via REST API
 """
 
 from __future__ import annotations
@@ -34,86 +35,10 @@ from litestar_workflows.core.context import WorkflowContext
 from litestar_workflows.core.definition import WorkflowDefinition
 from litestar_workflows.engine.local import LocalExecutionEngine
 from litestar_workflows.engine.registry import WorkflowRegistry
+from litestar_workflows.web.config import WorkflowWebConfig
 
 if TYPE_CHECKING:
     pass
-
-# =============================================================================
-# Mock Web Plugin Components (to be implemented in Phase 3)
-# =============================================================================
-
-
-class WorkflowWebPlugin:
-    """Mock WorkflowWebPlugin for testing Phase 3 functionality.
-
-    This mock represents the planned Phase 3 web plugin that will provide
-    REST API endpoints for workflow management.
-    """
-
-    def __init__(
-        self,
-        *,
-        path_prefix: str = "/workflows",
-        enable_admin: bool = True,
-        enable_api: bool = True,
-        enable_ui: bool = False,
-        auth_guard: type | None = None,
-        admin_guard: type | None = None,
-        include_in_schema: bool = True,
-        tags: list[str] | None = None,
-    ):
-        self.path_prefix = path_prefix
-        self.enable_admin = enable_admin
-        self.enable_api = enable_api
-        self.enable_ui = enable_ui
-        self.auth_guard = auth_guard
-        self.admin_guard = admin_guard
-        self.include_in_schema = include_in_schema
-        self.tags = tags or ["Workflows"]
-
-
-# Mock DTOs (to be implemented in Phase 3)
-class StartWorkflowDTO:
-    """DTO for starting a workflow."""
-
-    workflow_name: str
-    initial_data: dict[str, Any] | None = None
-
-
-class WorkflowDefinitionDTO:
-    """DTO for workflow definition."""
-
-    name: str
-    version: str
-    description: str
-    steps: list[str]
-    initial_step: str
-    terminal_steps: list[str]
-
-
-class WorkflowInstanceDTO:
-    """DTO for workflow instance."""
-
-    id: UUID
-    workflow_name: str
-    workflow_version: str
-    status: str
-    current_step: str | None
-    started_at: datetime
-    completed_at: datetime | None
-
-
-class HumanTaskDTO:
-    """DTO for human task."""
-
-    id: UUID
-    instance_id: UUID
-    step_name: str
-    title: str
-    description: str | None
-    assignee_id: str | None
-    due_at: datetime | None
-    status: str
 
 
 # =============================================================================
@@ -491,55 +416,50 @@ class HumanTaskController(Controller):
 
 
 # =============================================================================
-# Plugin Tests
+# Config Tests
 # =============================================================================
 
 
 @pytest.mark.unit
-class TestWorkflowWebPlugin:
-    """Tests for WorkflowWebPlugin configuration."""
+class TestWorkflowWebConfig:
+    """Tests for WorkflowWebConfig configuration."""
 
-    def test_plugin_default_config(self) -> None:
-        """Plugin uses default configuration values."""
-        plugin = WorkflowWebPlugin()
+    def test_config_default_values(self) -> None:
+        """Config uses default configuration values."""
+        config = WorkflowWebConfig()
 
-        assert plugin.path_prefix == "/workflows"
-        assert plugin.enable_admin is True
-        assert plugin.enable_api is True
-        assert plugin.enable_ui is False
-        assert plugin.auth_guard is None
-        assert plugin.include_in_schema is True
-        assert plugin.tags == ["Workflows"]
+        assert config.path_prefix == "/workflows"
+        assert config.include_in_schema is True
+        assert config.enable_graph_endpoints is True
+        assert config.guards == []
+        assert config.tags == ["Workflows"]
 
-    def test_plugin_custom_config(self) -> None:
-        """Plugin accepts custom configuration."""
-        plugin = WorkflowWebPlugin(
+    def test_config_custom_values(self) -> None:
+        """Config accepts custom configuration."""
+        config = WorkflowWebConfig(
             path_prefix="/api/v1/workflows",
-            enable_admin=False,
-            enable_ui=True,
+            enable_graph_endpoints=False,
             include_in_schema=False,
             tags=["Custom", "Tags"],
         )
 
-        assert plugin.path_prefix == "/api/v1/workflows"
-        assert plugin.enable_admin is False
-        assert plugin.enable_ui is True
-        assert plugin.include_in_schema is False
-        assert plugin.tags == ["Custom", "Tags"]
+        assert config.path_prefix == "/api/v1/workflows"
+        assert config.enable_graph_endpoints is False
+        assert config.include_in_schema is False
+        assert config.tags == ["Custom", "Tags"]
 
-    def test_plugin_auth_guard_config(self) -> None:
-        """Plugin accepts auth guard configuration."""
+    def test_config_guards(self) -> None:
+        """Config accepts guard configuration."""
 
-        class CustomAuthGuard:
+        async def custom_guard() -> None:
             pass
 
-        plugin = WorkflowWebPlugin(
-            auth_guard=CustomAuthGuard,
-            admin_guard=CustomAuthGuard,
+        config = WorkflowWebConfig(
+            guards=[custom_guard],
         )
 
-        assert plugin.auth_guard is CustomAuthGuard
-        assert plugin.admin_guard is CustomAuthGuard
+        assert len(config.guards) == 1
+        assert config.guards[0] == custom_guard
 
 
 # =============================================================================

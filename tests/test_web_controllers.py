@@ -13,27 +13,21 @@ Coverage targets:
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Any
-from unittest.mock import AsyncMock, Mock, patch
-from uuid import uuid4
 
 import pytest
 from litestar import Litestar
-from litestar.di import Provide
 from litestar.status_codes import HTTP_200_OK, HTTP_201_CREATED, HTTP_404_NOT_FOUND
 from litestar.testing import AsyncTestClient
 
 from litestar_workflows import WorkflowPlugin, WorkflowPluginConfig
 from litestar_workflows.core.context import WorkflowContext
 from litestar_workflows.core.definition import Edge, WorkflowDefinition
-from litestar_workflows.core.types import StepStatus, WorkflowStatus
-from litestar_workflows.engine.local import LocalExecutionEngine
 from litestar_workflows.engine.registry import WorkflowRegistry
 from litestar_workflows.steps.base import BaseMachineStep
 
 if TYPE_CHECKING:
-    from uuid import UUID
+    pass
 
 
 # Test workflow steps and definitions

@@ -248,7 +248,6 @@ class TestParseGraphToDict:
     def test_parse_graph_to_dict_node_types(self) -> None:
         """Test that different step types are correctly identified."""
         from litestar_workflows.core.definition import Edge, WorkflowDefinition
-        from litestar_workflows.core.types import StepType
         from litestar_workflows.steps.base import BaseHumanStep, BaseMachineStep
         from litestar_workflows.steps.gateway import ExclusiveGateway
         from litestar_workflows.steps.timer import TimerStep
