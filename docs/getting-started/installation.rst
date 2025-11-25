@@ -38,9 +38,39 @@ For persistent workflow storage with SQLAlchemy:
 
 This adds:
 
-- SQLAlchemy models for workflow persistence
-- Repository implementations
-- Alembic migration support
+- **advanced-alchemy**: Async SQLAlchemy repository pattern for database operations
+- **alembic**: Database migration management for version-controlled schema changes
+
+With the ``[db]`` extra, you get:
+
+- ``PersistentExecutionEngine`` - Drop-in replacement for ``LocalExecutionEngine`` with database persistence
+- SQLAlchemy models for workflows, instances, step executions, and human tasks
+- Repository classes with powerful query capabilities
+- Multi-tenancy support with ``tenant_id`` filtering
+- Alembic migrations for production deployments
+
+Quick setup:
+
+.. code-block:: python
+
+   from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+   from litestar_workflows import WorkflowRegistry
+   from litestar_workflows.db import PersistentExecutionEngine
+
+   engine = create_async_engine("sqlite+aiosqlite:///workflows.db")
+   session_factory = async_sessionmaker(engine, expire_on_commit=False)
+
+   registry = WorkflowRegistry()
+   # ... register workflows ...
+
+   async with session_factory() as session:
+       persistent_engine = PersistentExecutionEngine(
+           registry=registry,
+           session=session,
+       )
+       instance = await persistent_engine.start_workflow(MyWorkflow)
+
+See :doc:`/guides/persistence` for a complete guide on database persistence
 
 
 Web UI (``[ui]``)
@@ -120,18 +150,24 @@ litestar-workflows requires:
 The following are optional dependencies installed with extras:
 
 .. list-table:: Optional Dependencies
-   :widths: 30 40 30
+   :widths: 20 50 30
    :header-rows: 1
 
    * - Extra
      - Dependencies
      - Purpose
    * - ``db``
-     - SQLAlchemy, Alembic
-     - Database persistence
+     - advanced-alchemy (>=0.20.0), alembic (>=1.13.0)
+     - Database persistence with SQLAlchemy
    * - ``ui``
-     - Jinja2
+     - litestar[jinja]
      - Web UI templates
+   * - ``web``
+     - litestar-workflows[db]
+     - REST API plugin (includes db)
+   * - ``all``
+     - All of the above
+     - Complete installation
 
 
 Next Steps

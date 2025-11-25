@@ -12,17 +12,19 @@ Execution Engines
 litestar-workflows provides multiple execution engine implementations:
 
 .. list-table::
-   :widths: 20 80
+   :widths: 25 75
    :header-rows: 1
 
    * - Engine
      - Description
    * - ``LocalExecutionEngine``
-     - In-process async execution (default)
+     - In-process async execution (default, in-memory)
+   * - ``PersistentExecutionEngine``
+     - SQLAlchemy-backed persistent execution (``[db]`` extra)
    * - ``CeleryExecutionEngine``
-     - Distributed via Celery (optional extra)
+     - Distributed via Celery (optional extra, planned)
    * - ``SAQExecutionEngine``
-     - Redis-backed async queues (optional extra)
+     - Redis-backed async queues (optional extra, planned)
 
 
 The Local Engine
@@ -272,24 +274,61 @@ Events include:
 Persistence
 -----------
 
-For durable workflows, configure a persistence layer:
+For durable workflows, use the ``PersistentExecutionEngine`` from the ``[db]`` extra:
+
+.. code-block:: bash
+
+   pip install litestar-workflows[db]
+
+The ``PersistentExecutionEngine`` is a drop-in replacement for ``LocalExecutionEngine``
+that stores all workflow state in a database:
 
 .. code-block:: python
 
-   from litestar_workflows.db import WorkflowInstanceRepository
+   from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+   from litestar_workflows import WorkflowRegistry
+   from litestar_workflows.db import PersistentExecutionEngine
 
-   # With SQLAlchemy persistence
-   engine = LocalExecutionEngine(
-       registry=registry,
-       persistence=WorkflowInstanceRepository(session),
-   )
+   # Create database engine and session
+   db_engine = create_async_engine("postgresql+asyncpg://localhost/workflows")
+   session_factory = async_sessionmaker(db_engine, expire_on_commit=False)
 
-With persistence:
+   # Create workflow registry
+   registry = WorkflowRegistry()
+   registry.register_definition(MyWorkflow.get_definition())
+   registry.register_workflow_class(MyWorkflow)
 
-- Workflow state survives restarts
-- Human tasks can be queried
-- Execution history is preserved
-- Workflows can be resumed after failures
+   # Use persistent engine
+   async with session_factory() as session:
+       engine = PersistentExecutionEngine(
+           registry=registry,
+           session=session,
+       )
+
+       # Start workflow - state is automatically persisted
+       instance = await engine.start_workflow(
+           MyWorkflow,
+           initial_data={"order_id": "12345"},
+           tenant_id="acme-corp",    # Multi-tenancy support
+           created_by="user@example.com",  # Audit trail
+       )
+
+With the persistent engine:
+
+- Workflow state survives application restarts
+- Human tasks can wait indefinitely for completion
+- Complete execution history is preserved for auditing
+- Workflows can be queried by status, user, tenant, etc.
+- Failed workflows can be analyzed and retried
+
+The persistence layer creates four database tables:
+
+- ``workflow_definitions`` - Stores workflow definition metadata with versioning
+- ``workflow_instances`` - Tracks running/completed workflow instances
+- ``workflow_step_executions`` - Records individual step executions
+- ``workflow_human_tasks`` - Manages pending human approval tasks
+
+See the :doc:`/guides/persistence` guide for complete setup instructions
 
 
 Distributed Execution

@@ -12,6 +12,7 @@ focus on achieving specific goals.
    human-tasks
    parallel-execution
    conditional-logic
+   persistence
 
 
 Guide Overview
@@ -31,6 +32,8 @@ Guide Overview
      - Run multiple steps simultaneously
    * - :doc:`conditional-logic`
      - Add branching and decision points with gateways
+   * - :doc:`persistence`
+     - Store workflow state in a database for durability
 
 
 Choosing a Pattern
