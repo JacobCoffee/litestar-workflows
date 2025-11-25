@@ -350,7 +350,7 @@ class LocalExecutionEngine:
         for i, step_name in enumerate(step_names):
             result = results[i]
 
-            if isinstance(result, Exception):
+            if isinstance(result, BaseException):
                 execution = StepExecution(
                     step_name=step_name,
                     status=StepStatus.FAILED,
