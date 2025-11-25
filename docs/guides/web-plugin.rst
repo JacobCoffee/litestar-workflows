@@ -2,24 +2,25 @@ Web Plugin (REST API)
 =====================
 
 This guide covers integrating the ``[web]`` extra to add a complete REST API
-for workflow management. The Web Plugin automatically registers routes for
-workflow definitions, instances, and human tasks with full OpenAPI support.
+for workflow management. The REST API is built into the main ``WorkflowPlugin``
+and enabled by default, automatically registering routes for workflow definitions,
+instances, and human tasks with full OpenAPI support.
 
 
-Why Use the Web Plugin?
------------------------
+Why Use the REST API?
+---------------------
 
 While you can build custom API routes for workflow management (as shown in
-:doc:`human-tasks`), the Web Plugin provides a production-ready solution:
+:doc:`human-tasks`), the built-in REST API provides a production-ready solution:
 
-**Without the Web Plugin:**
+**Without the built-in API:**
 
 - You must implement all CRUD endpoints manually
 - OpenAPI documentation requires manual configuration
 - Authentication and authorization are handled per-endpoint
 - Graph visualization needs custom implementation
 
-**With the Web Plugin:**
+**With the built-in API (enabled by default):**
 
 - Complete REST API for workflows out of the box
 - Automatic OpenAPI schema generation with detailed descriptions
@@ -45,21 +46,21 @@ This adds:
 Quick Start
 -----------
 
-Add the plugin to your Litestar application:
+The REST API is enabled by default when you add the ``WorkflowPlugin`` to your
+Litestar application:
 
 .. code-block:: python
 
    from litestar import Litestar
-   from litestar_workflows import WorkflowPlugin
-   from litestar_workflows.web import WorkflowWebPlugin, WorkflowWebConfig
+   from litestar_workflows import WorkflowPlugin, WorkflowPluginConfig
 
    app = Litestar(
        route_handlers=[...],
        plugins=[
-           WorkflowPlugin(),
-           WorkflowWebPlugin(
-               config=WorkflowWebConfig(
-                   path_prefix="/workflows",
+           WorkflowPlugin(
+               config=WorkflowPluginConfig(
+                   enable_api=True,  # Default - API auto-enabled
+                   api_path_prefix="/workflows",
                )
            ),
        ],
@@ -71,27 +72,27 @@ That's it! Your application now has workflow API routes at ``/workflows/*``.
 Configuration Options
 ---------------------
 
-The ``WorkflowWebConfig`` dataclass controls how the web plugin behaves:
+The ``WorkflowPluginConfig`` dataclass controls the REST API behavior:
 
 .. code-block:: python
 
-   from litestar_workflows.web import WorkflowWebConfig
+   from litestar_workflows import WorkflowPluginConfig
 
-   config = WorkflowWebConfig(
+   config = WorkflowPluginConfig(
+       # Enable/disable REST API endpoints (default: True)
+       enable_api=True,
+
        # URL path prefix for all workflow endpoints
-       path_prefix="/api/v1/workflows",
+       api_path_prefix="/api/v1/workflows",
 
-       # Include endpoints in OpenAPI schema
-       include_in_schema=True,
+       # Include endpoints in OpenAPI schema (default: True)
+       include_api_in_schema=True,
 
        # Apply guards to all workflow endpoints
-       guards=[require_auth_guard],
-
-       # Enable graph visualization endpoints
-       enable_graph_endpoints=True,
+       api_guards=[require_auth_guard],
 
        # OpenAPI tags for organization
-       tags=["Workflows"],
+       api_tags=["Workflows"],
    )
 
 .. list-table::
@@ -101,21 +102,39 @@ The ``WorkflowWebConfig`` dataclass controls how the web plugin behaves:
    * - Option
      - Default
      - Description
-   * - ``path_prefix``
+   * - ``enable_api``
+     - ``True``
+     - Enable REST API endpoints
+   * - ``api_path_prefix``
      - ``"/workflows"``
      - Base URL path for all workflow routes
-   * - ``include_in_schema``
+   * - ``include_api_in_schema``
      - ``True``
      - Include routes in OpenAPI documentation
-   * - ``guards``
+   * - ``api_guards``
      - ``[]``
      - List of Litestar guards applied to all routes
-   * - ``enable_graph_endpoints``
-     - ``True``
-     - Enable graph visualization endpoints
-   * - ``tags``
+   * - ``api_tags``
      - ``["Workflows"]``
      - OpenAPI tags for route grouping
+
+
+Disabling the API
+-----------------
+
+If you only need the core workflow functionality without REST endpoints:
+
+.. code-block:: python
+
+   from litestar_workflows import WorkflowPlugin, WorkflowPluginConfig
+
+   app = Litestar(
+       plugins=[
+           WorkflowPlugin(
+               config=WorkflowPluginConfig(enable_api=False)
+           ),
+       ],
+   )
 
 
 Full Setup with Persistence
@@ -131,7 +150,6 @@ For a complete setup with database persistence:
 
    from litestar_workflows import WorkflowPlugin, WorkflowPluginConfig, WorkflowRegistry
    from litestar_workflows.db import PersistentExecutionEngine
-   from litestar_workflows.web import WorkflowWebPlugin, WorkflowWebConfig
 
    # Database setup
    db_engine = create_async_engine(
@@ -168,12 +186,9 @@ For a complete setup with database persistence:
        plugins=[
            WorkflowPlugin(
                config=WorkflowPluginConfig(
-                   workflows=[ApprovalWorkflow],
-               )
-           ),
-           WorkflowWebPlugin(
-               config=WorkflowWebConfig(
-                   path_prefix="/api/workflows",
+                   auto_register_workflows=[ApprovalWorkflow],
+                   enable_api=True,
+                   api_path_prefix="/api/workflows",
                )
            ),
        ],
@@ -527,9 +542,9 @@ Basic Authentication Guard
            raise NotAuthorizedException("Authentication required")
 
 
-   config = WorkflowWebConfig(
-       path_prefix="/api/workflows",
-       guards=[auth_guard],
+   config = WorkflowPluginConfig(
+       api_path_prefix="/api/workflows",
+       api_guards=[auth_guard],
    )
 
 
@@ -561,7 +576,7 @@ JWT Authentication Example
 
    from litestar import Litestar
    from litestar.security.jwt import JWTAuth, Token
-   from litestar_workflows.web import WorkflowWebPlugin, WorkflowWebConfig
+   from litestar_workflows import WorkflowPlugin, WorkflowPluginConfig
 
    # Define your user model
    class User:
@@ -584,12 +599,12 @@ JWT Authentication Example
        if not connection.user:
            raise NotAuthorizedException("Please log in")
 
-   config = WorkflowWebConfig(
-       guards=[workflow_auth_guard],
+   config = WorkflowPluginConfig(
+       api_guards=[workflow_auth_guard],
    )
 
    app = Litestar(
-       plugins=[WorkflowWebPlugin(config=config)],
+       plugins=[WorkflowPlugin(config=config)],
        on_app_init=[jwt_auth.on_app_init],
    )
 
@@ -597,7 +612,7 @@ JWT Authentication Example
 OpenAPI Schema Customization
 ----------------------------
 
-The Web Plugin generates comprehensive OpenAPI documentation automatically.
+The plugin generates comprehensive OpenAPI documentation automatically.
 
 
 Default Tags
@@ -617,8 +632,8 @@ Override the default tags:
 
 .. code-block:: python
 
-   config = WorkflowWebConfig(
-       tags=["Business Processes", "Approvals"],
+   config = WorkflowPluginConfig(
+       api_tags=["Business Processes", "Approvals"],
    )
 
 
@@ -629,8 +644,8 @@ Hide workflow routes from public API documentation:
 
 .. code-block:: python
 
-   config = WorkflowWebConfig(
-       include_in_schema=False,  # Routes work but don't appear in docs
+   config = WorkflowPluginConfig(
+       include_api_in_schema=False,  # Routes work but don't appear in docs
    )
 
 
@@ -643,8 +658,8 @@ Show detailed endpoints only in development:
 
    import os
 
-   config = WorkflowWebConfig(
-       include_in_schema=os.getenv("ENV") == "development",
+   config = WorkflowPluginConfig(
+       include_api_in_schema=os.getenv("ENV") == "development",
    )
 
 
@@ -761,7 +776,7 @@ MermaidJS uses different shapes for different step types:
 Data Transfer Objects (DTOs)
 ----------------------------
 
-The web plugin uses dataclass DTOs for request/response serialization:
+The REST API uses dataclass DTOs for request/response serialization:
 
 
 Request DTOs
@@ -842,7 +857,7 @@ Response DTOs
 Example: Full Web API Integration
 ---------------------------------
 
-Here's a complete example integrating the Web Plugin with authentication and a
+Here's a complete example integrating the REST API with authentication and a
 frontend application.
 
 
@@ -870,7 +885,6 @@ Backend Setup
        WorkflowContext,
    )
    from litestar_workflows.db import PersistentExecutionEngine
-   from litestar_workflows.web import WorkflowWebPlugin, WorkflowWebConfig
 
    # Define workflow steps
    class SubmitRequest(BaseMachineStep):
@@ -959,15 +973,11 @@ Backend Setup
        plugins=[
            WorkflowPlugin(
                config=WorkflowPluginConfig(
-                   workflows=[ApprovalWorkflow],
-               )
-           ),
-           WorkflowWebPlugin(
-               config=WorkflowWebConfig(
-                   path_prefix="/api/workflows",
-                   guards=[require_auth],
-                   enable_graph_endpoints=True,
-                   tags=["Workflow API"],
+                   auto_register_workflows=[ApprovalWorkflow],
+                   enable_api=True,
+                   api_path_prefix="/api/workflows",
+                   api_guards=[require_auth],
+                   api_tags=["Workflow API"],
                )
            ),
        ],
@@ -1073,7 +1083,7 @@ Starting Workflows from UI
 Error Handling
 --------------
 
-The Web Plugin uses standard HTTP status codes and Litestar exceptions:
+The REST API uses standard HTTP status codes and Litestar exceptions:
 
 .. list-table::
    :widths: 15 30 55
@@ -1149,9 +1159,9 @@ Always configure authentication for production:
    import os
 
    if os.getenv("ENV") == "development":
-       config = WorkflowWebConfig()  # No auth for easier testing
+       config = WorkflowPluginConfig()  # No auth for easier testing
    else:
-       config = WorkflowWebConfig(guards=[require_auth])
+       config = WorkflowPluginConfig(api_guards=[require_auth])
 
 
 Scope Dependencies Properly

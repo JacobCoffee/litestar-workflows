@@ -9,10 +9,11 @@ Phase 3: Web Plugin Architecture
 Executive Summary
 -----------------
 
-This document defines the architecture for the ``litestar-workflows[web]`` plugin,
+This document defines the architecture for the ``litestar-workflows[web]`` extra,
 which provides REST API endpoints, DTOs, and Litestar integration for managing
-workflow definitions, instances, and human tasks. The web plugin builds on the
-Phase 2 persistence layer and follows Litestar best practices for controllers,
+workflow definitions, instances, and human tasks. The REST API is built into the
+main ``WorkflowPlugin`` and enabled by default via ``enable_api=True``. It builds
+on the Phase 2 persistence layer and follows Litestar best practices for controllers,
 dependency injection, and OpenAPI schema generation.
 
 

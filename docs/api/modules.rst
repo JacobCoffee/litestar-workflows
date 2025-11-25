@@ -98,16 +98,36 @@ Web Module
 
 .. note::
 
-   The web module will be available with the ``[web]`` extra in Phase 3.
+   The web module is available with the ``[web]`` extra. The REST API is built into
+   the main ``WorkflowPlugin`` and enabled by default.
 
 
-Planned Web API
-~~~~~~~~~~~~~~~
+Web API
+~~~~~~~
 
 .. code-block:: python
 
+   from litestar_workflows import WorkflowPlugin, WorkflowPluginConfig
+
+   # REST API is enabled by default
+   app = Litestar(
+       plugins=[
+           WorkflowPlugin(
+               config=WorkflowPluginConfig(
+                   enable_api=True,  # Default
+                   api_path_prefix="/workflows",
+               )
+           ),
+       ],
+   )
+
+   # For advanced usage, DTOs and utilities are available:
    from litestar_workflows.web import (
-       WorkflowWebPlugin,
+       WorkflowWebConfig,
+       WorkflowDefinitionController,
+       WorkflowInstanceController,
+       HumanTaskController,
+       generate_mermaid_graph,
    )
 
 

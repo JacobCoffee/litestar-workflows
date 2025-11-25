@@ -26,11 +26,10 @@ The following are exported from ``litestar_workflows.web``:
 .. code-block:: python
 
    from litestar_workflows.web import (
-       # Plugin
-       WorkflowWebPlugin,
+       # Configuration (for advanced use)
        WorkflowWebConfig,
 
-       # Controllers
+       # Controllers (auto-registered by plugin)
        WorkflowDefinitionController,
        WorkflowInstanceController,
        HumanTaskController,
@@ -56,106 +55,66 @@ The following are exported from ``litestar_workflows.web``:
 Plugin Configuration
 --------------------
 
+The REST API is configured through the main ``WorkflowPlugin`` using ``WorkflowPluginConfig``.
+The API is enabled by default when you add the plugin to your Litestar application.
 
-WorkflowWebConfig
-~~~~~~~~~~~~~~~~~
+WorkflowPluginConfig API Options
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. py:class:: WorkflowWebConfig
+.. py:class:: WorkflowPluginConfig
 
-   Configuration dataclass for the WorkflowWebPlugin.
+   Configuration dataclass for the WorkflowPlugin, including REST API options.
 
-   :param path_prefix: URL path prefix for all workflow endpoints
-   :type path_prefix: str
-   :param include_in_schema: Include routes in OpenAPI documentation
-   :type include_in_schema: bool
-   :param guards: List of Litestar guards to apply to all routes
-   :type guards: list[Guard]
-   :param enable_graph_endpoints: Enable graph visualization endpoints
-   :type enable_graph_endpoints: bool
-   :param tags: OpenAPI tags for route grouping
-   :type tags: list[str]
+   **API Configuration:**
+
+   :param enable_api: Enable REST API endpoints (default: True)
+   :type enable_api: bool
+   :param api_path_prefix: URL path prefix for all workflow endpoints
+   :type api_path_prefix: str
+   :param api_guards: List of Litestar guards to apply to all routes
+   :type api_guards: list[Guard]
+   :param api_tags: OpenAPI tags for route grouping
+   :type api_tags: list[str]
+   :param include_api_in_schema: Include routes in OpenAPI documentation
+   :type include_api_in_schema: bool
 
    **Defaults:**
 
    .. code-block:: python
 
-      WorkflowWebConfig(
-          path_prefix="/workflows",
-          include_in_schema=True,
-          guards=[],
-          enable_graph_endpoints=True,
-          tags=["Workflows"],
+      WorkflowPluginConfig(
+          enable_api=True,
+          api_path_prefix="/workflows",
+          api_guards=[],
+          api_tags=["Workflows"],
+          include_api_in_schema=True,
       )
-
-   **Example:**
-
-   .. code-block:: python
-
-      from litestar_workflows.web import WorkflowWebConfig
-
-      config = WorkflowWebConfig(
-          path_prefix="/api/v1/workflows",
-          guards=[require_auth],
-          enable_graph_endpoints=True,
-          tags=["Business Processes"],
-      )
-
-
-WorkflowWebPlugin
-~~~~~~~~~~~~~~~~~
-
-.. py:class:: WorkflowWebPlugin
-
-   Litestar plugin for workflow web routes.
-
-   Automatically registers REST API controllers for workflow management.
-   Should be used alongside the base WorkflowPlugin.
-
-   :param config: Plugin configuration
-   :type config: WorkflowWebConfig | None
 
    **Example:**
 
    .. code-block:: python
 
       from litestar import Litestar
-      from litestar_workflows import WorkflowPlugin
-      from litestar_workflows.web import WorkflowWebPlugin, WorkflowWebConfig
+      from litestar_workflows import WorkflowPlugin, WorkflowPluginConfig
 
       app = Litestar(
           plugins=[
-              WorkflowPlugin(),
-              WorkflowWebPlugin(
-                  config=WorkflowWebConfig(
-                      path_prefix="/api/workflows",
+              WorkflowPlugin(
+                  config=WorkflowPluginConfig(
+                      enable_api=True,  # Default - API auto-enabled
+                      api_path_prefix="/api/v1/workflows",
+                      api_guards=[require_auth],
+                      api_tags=["Business Processes"],
                   )
               ),
-          ]
+          ],
       )
-
-   .. py:attribute:: config
-      :type: WorkflowWebConfig
-
-      The plugin configuration instance.
-
-   .. py:method:: on_app_init(app_config: AppConfig) -> AppConfig
-
-      Hook called during Litestar application initialization.
-
-      Registers workflow routes under the configured path prefix:
-
-      - ``{path_prefix}/definitions/*`` - Workflow definition endpoints
-      - ``{path_prefix}/instances/*`` - Workflow instance endpoints
-      - ``{path_prefix}/tasks/*`` - Human task endpoints
-
-      :param app_config: The application configuration being built
-      :returns: Modified application configuration
 
 
 Controllers
 -----------
 
-The plugin registers three controller classes.
+The plugin registers three controller classes automatically when ``enable_api=True``.
 
 
 WorkflowDefinitionController
@@ -165,7 +124,7 @@ WorkflowDefinitionController
 
    REST API controller for workflow definitions.
 
-   **Path:** ``{path_prefix}/definitions``
+   **Path:** ``{api_path_prefix}/definitions``
 
    **Tags:** Workflow Definitions
 
@@ -254,7 +213,7 @@ WorkflowInstanceController
 
    REST API controller for workflow instances.
 
-   **Path:** ``{path_prefix}/instances``
+   **Path:** ``{api_path_prefix}/instances``
 
    **Tags:** Workflow Instances
 
@@ -386,7 +345,7 @@ HumanTaskController
 
    REST API controller for human tasks.
 
-   **Path:** ``{path_prefix}/tasks``
+   **Path:** ``{api_path_prefix}/tasks``
 
    **Tags:** Human Tasks
 
@@ -719,7 +678,7 @@ Graph Utilities
 Route Summary
 -------------
 
-Complete route listing for the Web Plugin:
+Complete route listing for the REST API (when ``enable_api=True``):
 
 .. list-table::
    :widths: 10 40 50
@@ -768,7 +727,7 @@ Complete route listing for the Web Plugin:
      - ``/tasks/{id}/reassign``
      - Reassign task
 
-All paths are relative to the configured ``path_prefix`` (default: ``/workflows``).
+All paths are relative to the configured ``api_path_prefix`` (default: ``/workflows``).
 
 
 See Also
