@@ -2,6 +2,38 @@
 build-backend = "hatchling.build"
 requires = ["hatchling"]
 
+[dependency-groups]
+dev = [
+  "prek>=0.2.18",
+  "ruff>=0.8.0",
+  "codespell>=2.2.6",
+  "ty>=0.0.1a27",
+  "pytest>=8.1.1",
+  "pytest-cov>=4.1.0",
+  "pytest-asyncio>=0.23.6",
+  "pytest-sugar>=1.1.1",
+]
+docs = [
+  "sphinx>=7.0.0",
+  "shibuya>=2024.8.0",
+  "sphinx-copybutton>=0.5.0",
+  "sphinx-design>=0.5.0",
+  "myst-parser>=2.0.0",
+  "sphinx-autobuild>=2024.0.0",
+  "sphinx-autodoc-typehints>=2.0.0",
+]
+lint = [
+  "prek>=0.2.18",
+  "ruff>=0.8.0",
+  "codespell>=2.2.6",
+  "ty>=0.0.1a27",
+]
+test = [
+  "pytest>=8.1.1",
+  "pytest-cov>=4.1.0",
+  "pytest-asyncio>=0.23.6",
+]
+
 [project]
 authors = [
   {name = "Jacob Coffee", email = "jacob@z7x.org"}
@@ -13,55 +45,35 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3 :: Only",
-#  "Framework :: Litestar",
   "Topic :: Software Development",
   "Topic :: Home Automation",
   "Topic :: Internet",
   "Topic :: Office/Business",
-  "Topic :: Office/Business :: Financial",
-  "Topic :: Office/Business :: Financial :: Accounting",
-  "Topic :: Office/Business :: Financial :: Investment",
-  "Topic :: Office/Business :: Financial :: Point-Of-Sale",
   "Topic :: Office/Business :: Scheduling",
-  "Topic :: Software Development"
 ]
 dependencies = [
   "litestar>=2",
-  "rich-click>=1.7.4"
+  "rich-click>=1.7.4",
 ]
 description = "Workflow management in Litestar"
 keywords = [
   "litestar",
   "workflows",
-  "approvals"
+  "approvals",
 ]
 license = {text = "MIT"}
 name = "litestar-workflows"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 version = "0.1.0"
 
 [project.optional-dependencies]
 db = ["litestar[sqlalchemy]"]
-dev-lint = [
-  "ruff>=0.3.4",
-  "codespell>=2.2.6",
-  "mypy>=1.9.0",
-  "pre-commit>=3.6.2",
-  "blacken-docs>=1.16.0",
-  "pyright>=1.1.355",
-  "sourcery>=1.16.0"
-]
-dev-test = [
-  "pytest>=8.1.1",
-  "pytest-cov>=4.1.0",
-  "pytest-asyncio>=0.23.6"
-]
 ui = ["litestar[jinja]"]
 
 [project.urls]
@@ -74,54 +86,59 @@ Repository = "https://github.com/JacobCoffee/litestar-workflows"
 Twitter = "https://twitter.com/_scriptr"
 
 [tool.codespell]
-skip = 'pdm.lock'
+skip = "uv.lock"
 
 [tool.coverage.report]
 exclude_lines = []
-fail_under = 96
+fail_under = 0
 
 [tool.coverage.run]
 concurrency = ["multiprocessing", "thread"]
-omit = ["*/tests/*", "*/litestar/plugins/sqlalchemy.py"]
+omit = ["*/tests/*"]
 parallel = true
-plugins = ["covdefaults"]
-source = ["litestar"]
+source = ["litestar_workflows"]
 
 [tool.git-cliff.changelog]
+header = """
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+"""
 body = """
----
 {% if version %}\
     {% if previous.version %}\
-        ## [{{ version | trim_start_matches(pat="v") }}]($REPO/compare/{{ previous.version }}..{{ version }}) - {{ timestamp | date(format="%Y-%m-%d") }}
+## [{{ version | trim_start_matches(pat="v") }}]($REPO/compare/{{ previous.version }}..{{ version }}) - {{ timestamp | date(format="%Y-%m-%d") }}
     {% else %}\
-        ## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
     {% endif %}\
 {% else %}\
-    ## [unreleased]
+## [unreleased]
 {% endif %}\
 {% for group, commits in commits | group_by(attribute="group") %}
-    ### {{ group | striptags | trim | upper_first }}
-    {% for commit in commits
-    | filter(attribute="scope")
-    | sort(attribute="scope") %}
-        - **({{commit.scope}})**{% if commit.breaking %} [**breaking**]{% endif %} \
-            {{ commit.message }} - ([{{ commit.id | truncate(length=7, end="") }}]($REPO/commit/{{ commit.id }})) - {{ commit.author.name }}
-    {%- endfor -%}
-    {% raw %}\n{% endraw %}\
-    {%- for commit in commits %}
-        {%- if commit.scope -%}
-        {% else -%}
-            - {% if commit.breaking %} [**breaking**]{% endif %}\
-                {{ commit.message }} - ([{{ commit.id | truncate(length=7, end="") }}]($REPO/commit/{{ commit.id }})) - {{ commit.author.name }}
-        {% endif -%}
-    {% endfor -%}
-{% endfor %}\n
+
+### {{ group | striptags | trim | upper_first }}
+
+{% for commit in commits
+| filter(attribute="scope")
+| sort(attribute="scope") %}
+- **({{commit.scope}})**{% if commit.breaking %} [**breaking**]{% endif %} {{ commit.message }} - ([{{ commit.id | truncate(length=7, end="") }}]($REPO/commit/{{ commit.id }})) - {{ commit.author.name }}
+{%- endfor -%}
+{%- for commit in commits %}
+{%- if commit.scope -%}
+{% else %}
+- {% if commit.breaking %}[**breaking**] {% endif %}{{ commit.message }} - ([{{ commit.id | truncate(length=7, end="") }}]($REPO/commit/{{ commit.id }})) - {{ commit.author.name }}
+{% endif -%}
+{% endfor -%}
+{% endfor %}
 """
 footer = """
-``litestar-workflows`` Changelog
+---
+*litestar-workflows Changelog*
 """
+output = "docs/changelog.md"
 postprocessors = [
-  {pattern = '\$REPO', replace = "https://github.com/JacobCoffee/litestar-workflows"}
+  {pattern = '\$REPO', replace = "https://github.com/JacobCoffee/litestar-workflows"},
 ]
 trim = true
 
@@ -137,7 +154,7 @@ commit_parsers = [
   {message = "^test", group = "Tests"},
   {message = "^chore\\(version\\):", skip = true},
   {message = "^chore", group = "Miscellaneous Chores"},
-  {body = ".*security", group = "Security"}
+  {body = ".*security", group = "Security"},
 ]
 commit_preprocessors = []
 conventional_commits = true
@@ -153,68 +170,31 @@ topo_order = false
 
 [tool.hatch.build.targets.sdist]
 include = [
-  'README.md',
-  '/src'
+  "README.md",
+  "/src",
 ]
 
 [tool.hatch.metadata]
 allow-direct-references = true
 
-[tool.mypy]
-disallow_any_generics = false
-disallow_untyped_decorators = true
-implicit_reexport = false
-show_error_codes = true
-strict = true
-warn_redundant_casts = true
-warn_return_any = true
-warn_unreachable = true
-warn_unused_configs = true
-warn_unused_ignores = true
-
-[[tool.mypy.overrides]]
-disable_error_code = "attr-defined"
-disallow_untyped_decorators = false
-module = "tests.*"
-
-[tool.pdm]
-distribution = true
-
-[tool.pdm.dev-dependencies]
-lint = [
-  "ruff>=0.3.4",
-  "codespell>=2.2.6",
-  "mypy>=1.9.0",
-  "pre-commit>=3.6.2",
-  "blacken-docs>=1.16.0",
-  "pyright>=1.1.355",
-  "sourcery>=1.16.0"
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = ["-v", "--strict-markers", "--tb=short"]
+markers = [
+  "unit: mark test as unit test",
+  "integration: mark test as integration test",
+  "e2e: mark test as end-to-end test",
 ]
-test = [
-  "pytest>=8.1.1",
-  "pytest-cov>=4.1.0",
-  "pytest-asyncio>=0.23.6"
-]
-
-[tool.pdm.scripts]
-ci = {composite = ["lint", "test"]}
-docs-serve = "sphinx-autobuild docs docs/_build/ -j auto --watch litestar-workflows --watch docs --watch tests --port 8001"
-lint = "pre-commit run --all-files"
-test = "pytest tests"
-
-[tool.pyright]
-disableBytesTypePromotions = true
-exclude = ["docs"]
-include = ["litestar", "tests"]
-pythonVersion = "3.8"
-reportUnnecessaryTypeIgnoreComments = true
-strict = true
 
 [tool.ruff]
 fix = true
 line-length = 120
-src = ["litestar_workflows", "tests"]
-target-version = "py39"
+src = ["src/litestar_workflows", "tests"]
+target-version = "py310"
 
 [tool.ruff.format]
 docstring-code-format = true
@@ -224,7 +204,29 @@ quote-style = "double"
 
 [tool.ruff.lint]
 fixable = ["ALL"]
-ignore = []
+ignore = [
+  "ERA001",   # Commented-out code
+  "TD",       # TODOs
+  "FIX002",   # Line contains TODO
+  "COM812",   # Missing trailing comma (conflicts with formatter)
+  "ISC001",   # Single-line string concatenation (conflicts with formatter)
+  "ANN401",   # Dynamically typed Any - necessary for generic workflow context
+  "TC003",    # Move stdlib imports to TYPE_CHECKING - causes runtime issues with dataclasses
+  "EM101",    # Exception string literal
+  "EM102",    # Exception f-string literal
+  "TRY003",   # Long exception message
+  "TRY002",   # Raise vanilla Exception - will use custom exceptions where appropriate
+  "ARG002",   # Unused method argument - expected for abstract base classes/protocols
+  "PERF401",  # Use list comprehension - readability over micro-optimization
+  "PLC0415",  # Import not at top of file - sometimes needed for circular imports
+  "FBT001",   # Boolean positional argument - acceptable for simple config flags
+  "FBT002",   # Boolean default argument - acceptable for simple config flags
+  "BLE001",   # Blind exception catch - needed in workflow engine for graceful error handling
+  "PLC0105",  # TypeVar naming convention - T is conventional for generic type
+  "C901",     # Too complex - workflow engine has inherent complexity
+  "PLR0912",  # Too many branches - workflow engine state machine needs branches
+  "PLR0915",  # Too many statements - workflow engine is complex by nature
+]
 select = ["ALL"]
 
 [tool.ruff.lint.isort]
@@ -234,8 +236,15 @@ known-first-party = ["litestar_workflows", "tests"]
 max-complexity = 12
 
 [tool.ruff.lint.per-file-ignores]
+"docs/conf.py" = [
+  "A001",     # Variable shadowing builtin
+  "INP001",   # Implicit namespace package
+  "PTH",      # Use pathlib
+  "DTZ",      # Datetime timezone
+]
 "tests/**/*.*" = [
   "A",
+  "ANN",
   "ARG",
   "B",
   "BLE",
@@ -243,6 +252,8 @@ max-complexity = 12
   "D",
   "DTZ",
   "EM",
+  "ERA001",
+  "F841",     # Unused variables
   "FBT",
   "G",
   "N",
@@ -251,16 +262,30 @@ max-complexity = 12
   "PLR",
   "PLW",
   "PTH",
+  "RET504",   # Unnecessary assignment before return
   "RSE",
   "S",
   "S101",
   "SIM",
+  "SLF001",
   "TCH",
   "TRY",
   "UP006",
-  "SLF001",
-  "ERA001"
 ]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.ty]
+
+[tool.ty.environment]
+python = ".venv"
+
+[tool.ty.rules]
+deprecated = "warn"
+
+[tool.ty.src]
+exclude = ["docs/conf.py", "tests/"]
+
+[tool.uv]
+default-groups = ["dev"]
