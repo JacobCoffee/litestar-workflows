@@ -10,18 +10,15 @@ This module defines the database models for persisting workflow state:
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Any
+from typing import Any
 from uuid import UUID
 
 from advanced_alchemy.base import UUIDAuditBase
-from sqlalchemy import DateTime, Enum, ForeignKey, Index, String, Text
+from sqlalchemy import JSON, DateTime, Enum, ForeignKey, Index, String, Text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from litestar_workflows.core.types import StepStatus, StepType, WorkflowStatus
-
-if TYPE_CHECKING:
-    pass
 
 __all__ = [
     "HumanTaskModel",
@@ -31,11 +28,8 @@ __all__ = [
 ]
 
 
-# Use JSONB for PostgreSQL, fallback to JSON for other databases
-try:
-    from sqlalchemy.dialects.postgresql import JSONB as JSONType
-except ImportError:
-    from sqlalchemy import JSON as JSONType  # type: ignore[assignment]
+# Cross-database JSON type: uses JSONB for PostgreSQL, JSON for others (SQLite, MySQL, etc.)
+JSONType = JSON().with_variant(JSONB, "postgresql")
 
 
 class WorkflowDefinitionModel(UUIDAuditBase):
@@ -104,9 +98,9 @@ class WorkflowInstanceModel(UUIDAuditBase):
     definition_id: Mapped[UUID] = mapped_column(
         ForeignKey("workflow_definitions.id", ondelete="CASCADE"),
     )
-    workflow_name: Mapped[str] = mapped_column(String(255), index=True)
+    workflow_name: Mapped[str] = mapped_column(String(255))
     workflow_version: Mapped[str] = mapped_column(String(50))
-    status: Mapped[str] = mapped_column(
+    status: Mapped[WorkflowStatus] = mapped_column(
         Enum(WorkflowStatus, native_enum=False, length=50),
         default=WorkflowStatus.PENDING,
     )
@@ -125,7 +119,7 @@ class WorkflowInstanceModel(UUIDAuditBase):
     )
 
     # Multi-tenancy support
-    tenant_id: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
+    tenant_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
     created_by: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
     # Relationships
@@ -175,10 +169,10 @@ class StepExecutionModel(UUIDAuditBase):
         ForeignKey("workflow_instances.id", ondelete="CASCADE"),
     )
     step_name: Mapped[str] = mapped_column(String(255))
-    step_type: Mapped[str] = mapped_column(
+    step_type: Mapped[StepType] = mapped_column(
         Enum(StepType, native_enum=False, length=50),
     )
-    status: Mapped[str] = mapped_column(
+    status: Mapped[StepStatus] = mapped_column(
         Enum(StepStatus, native_enum=False, length=50),
         default=StepStatus.PENDING,
     )
@@ -243,8 +237,8 @@ class HumanTaskModel(UUIDAuditBase):
     form_schema: Mapped[dict[str, Any] | None] = mapped_column(JSONType, nullable=True)
 
     # Assignment
-    assignee_id: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
-    assignee_group: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
+    assignee_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    assignee_group: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
     # Deadlines
     due_at: Mapped[datetime | None] = mapped_column(

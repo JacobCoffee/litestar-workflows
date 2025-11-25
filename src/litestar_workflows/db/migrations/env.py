@@ -11,19 +11,12 @@ import asyncio
 import os
 from logging.config import fileConfig
 
+from advanced_alchemy.base import UUIDAuditBase
 from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from advanced_alchemy.base import UUIDAuditBase
-
 # Import all models to ensure they're registered with SQLAlchemy
-from litestar_workflows.db.models import (
-    HumanTaskModel,
-    StepExecutionModel,
-    WorkflowDefinitionModel,
-    WorkflowInstanceModel,
-)
 
 # Alembic Config object
 config = context.config
