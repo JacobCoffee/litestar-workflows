@@ -244,6 +244,7 @@ class TestDependencyInjection:
         """Registry is correctly injected into route handlers."""
         config = WorkflowPluginConfig(
             auto_register_workflows=[SimpleWorkflow],
+            enable_api=False,  # Disable auto API since we're testing custom routes
         )
 
         app = Litestar(
@@ -263,6 +264,7 @@ class TestDependencyInjection:
         """Engine is correctly injected into route handlers."""
         config = WorkflowPluginConfig(
             auto_register_workflows=[SimpleWorkflow],
+            enable_api=False,  # Disable auto API since we're testing custom routes
         )
 
         app = Litestar(
@@ -329,6 +331,7 @@ class TestWorkflowExecution:
         """Start a workflow and verify it completes."""
         config = WorkflowPluginConfig(
             auto_register_workflows=[SimpleWorkflow],
+            enable_api=False,  # Disable auto API since we're testing custom routes
         )
 
         app = Litestar(
@@ -357,6 +360,7 @@ class TestWorkflowExecution:
         """Execute a multi-step workflow and verify all steps complete."""
         config = WorkflowPluginConfig(
             auto_register_workflows=[MultiStepWorkflow],
+            enable_api=False,  # Disable auto API since we're testing custom routes
         )
 
         app = Litestar(
@@ -385,6 +389,7 @@ class TestWorkflowExecution:
         """Workflow receives initial data from the start request."""
         config = WorkflowPluginConfig(
             auto_register_workflows=[SimpleWorkflow],
+            enable_api=False,  # Disable auto API since we're testing custom routes
         )
 
         app = Litestar(
@@ -421,6 +426,7 @@ class TestWorkflowAPI:
         """List endpoint returns all registered workflows."""
         config = WorkflowPluginConfig(
             auto_register_workflows=[SimpleWorkflow, MultiStepWorkflow],
+            enable_api=False,  # Disable auto API since we're testing custom routes
         )
 
         app = Litestar(
@@ -442,6 +448,7 @@ class TestWorkflowAPI:
         """Get endpoint returns workflow definition details."""
         config = WorkflowPluginConfig(
             auto_register_workflows=[MultiStepWorkflow],
+            enable_api=False,  # Disable auto API since we're testing custom routes
         )
 
         app = Litestar(
@@ -463,7 +470,7 @@ class TestWorkflowAPI:
         """Get endpoint returns error for nonexistent workflow."""
         app = Litestar(
             route_handlers=[WorkflowTestController],
-            plugins=[WorkflowPlugin()],
+            plugins=[WorkflowPlugin(config=WorkflowPluginConfig(enable_api=False))],
         )
 
         with TestClient(app, raise_server_exceptions=False) as client:
