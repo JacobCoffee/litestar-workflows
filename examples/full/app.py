@@ -21,7 +21,6 @@ from typing import Any
 from uuid import UUID
 
 from litestar import Controller, Litestar, get, post
-from litestar.status_codes import HTTP_200_OK, HTTP_201_CREATED
 
 from litestar_workflows import (
     BaseHumanStep,
@@ -35,7 +34,6 @@ from litestar_workflows import (
     WorkflowRegistry,
     WorkflowStatus,
 )
-
 
 # =============================================================================
 # Document Approval Workflow Steps

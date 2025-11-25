@@ -27,9 +27,7 @@ from litestar_workflows import (
     WorkflowPlugin,
     WorkflowPluginConfig,
     WorkflowRegistry,
-    WorkflowStatus,
 )
-
 
 # =============================================================================
 # Step Definitions

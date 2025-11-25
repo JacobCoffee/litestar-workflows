@@ -97,7 +97,7 @@ class WorkflowPlugin(InitPluginProtocol):
                 return {"instance_id": str(instance.id), "status": instance.status}
     """
 
-    __slots__ = ("_config", "_registry", "_engine")
+    __slots__ = ("_config", "_engine", "_registry")
 
     def __init__(self, config: WorkflowPluginConfig | None = None) -> None:
         """Initialize the plugin.
