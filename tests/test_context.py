@@ -189,3 +189,217 @@ class TestWorkflowContext:
         # Later contexts should have data from earlier steps
         assert step2_context.get("step1_data") == "value1"
         assert step2_context.get("step2_data") == "value2"
+
+    def test_get_last_execution_no_history(self, sample_context: WorkflowContext) -> None:
+        """Test get_last_execution with empty history."""
+        last_exec = sample_context.get_last_execution()
+        assert last_exec is None
+
+    def test_get_last_execution_without_step_name(self) -> None:
+        """Test get_last_execution returns most recent execution."""
+        from litestar_workflows.core.context import StepExecution, WorkflowContext
+        from litestar_workflows.core.types import StepStatus
+
+        now = datetime.now(timezone.utc)
+        context = WorkflowContext(
+            workflow_id=uuid4(),
+            instance_id=uuid4(),
+            data={},
+            metadata={},
+            current_step="step3",
+            step_history=[
+                StepExecution(
+                    step_name="step1",
+                    status=str(StepStatus.SUCCEEDED),
+                    started_at=now,
+                    completed_at=now,
+                ),
+                StepExecution(
+                    step_name="step2",
+                    status=str(StepStatus.SUCCEEDED),
+                    started_at=now,
+                    completed_at=now,
+                ),
+            ],
+            started_at=now,
+        )
+
+        last_exec = context.get_last_execution()
+        assert last_exec is not None
+        assert last_exec.step_name == "step2"
+
+    def test_get_last_execution_with_step_name(self) -> None:
+        """Test get_last_execution filters by step name."""
+        from litestar_workflows.core.context import StepExecution, WorkflowContext
+        from litestar_workflows.core.types import StepStatus
+
+        now = datetime.now(timezone.utc)
+        context = WorkflowContext(
+            workflow_id=uuid4(),
+            instance_id=uuid4(),
+            data={},
+            metadata={},
+            current_step="step3",
+            step_history=[
+                StepExecution(
+                    step_name="step1",
+                    status=str(StepStatus.SUCCEEDED),
+                    started_at=now,
+                    completed_at=now,
+                ),
+                StepExecution(
+                    step_name="step2",
+                    status=str(StepStatus.SUCCEEDED),
+                    started_at=now,
+                    completed_at=now,
+                ),
+                StepExecution(
+                    step_name="step1",  # step1 executed again
+                    status=str(StepStatus.SUCCEEDED),
+                    started_at=now,
+                    completed_at=now,
+                    result={"iteration": 2},
+                ),
+            ],
+            started_at=now,
+        )
+
+        # Get last execution of step1 (should be the second one)
+        last_step1 = context.get_last_execution("step1")
+        assert last_step1 is not None
+        assert last_step1.step_name == "step1"
+        assert last_step1.result == {"iteration": 2}
+
+        # Get last execution of step2
+        last_step2 = context.get_last_execution("step2")
+        assert last_step2 is not None
+        assert last_step2.step_name == "step2"
+
+    def test_get_last_execution_nonexistent_step(self, sample_context: WorkflowContext) -> None:
+        """Test get_last_execution returns None for nonexistent step."""
+        last_exec = sample_context.get_last_execution("nonexistent_step")
+        assert last_exec is None
+
+    def test_has_step_executed_true(self) -> None:
+        """Test has_step_executed returns True for executed steps."""
+        from litestar_workflows.core.context import StepExecution, WorkflowContext
+        from litestar_workflows.core.types import StepStatus
+
+        now = datetime.now(timezone.utc)
+        context = WorkflowContext(
+            workflow_id=uuid4(),
+            instance_id=uuid4(),
+            data={},
+            metadata={},
+            current_step="step2",
+            step_history=[
+                StepExecution(
+                    step_name="step1",
+                    status=str(StepStatus.SUCCEEDED),
+                    started_at=now,
+                    completed_at=now,
+                ),
+            ],
+            started_at=now,
+        )
+
+        assert context.has_step_executed("step1") is True
+
+    def test_has_step_executed_false(self, sample_context: WorkflowContext) -> None:
+        """Test has_step_executed returns False for non-executed steps."""
+        assert sample_context.has_step_executed("never_executed") is False
+
+    def test_has_step_executed_multiple_times(self) -> None:
+        """Test has_step_executed with step executed multiple times."""
+        from litestar_workflows.core.context import StepExecution, WorkflowContext
+        from litestar_workflows.core.types import StepStatus
+
+        now = datetime.now(timezone.utc)
+        context = WorkflowContext(
+            workflow_id=uuid4(),
+            instance_id=uuid4(),
+            data={},
+            metadata={},
+            current_step="step1",
+            step_history=[
+                StepExecution(
+                    step_name="step1",
+                    status=str(StepStatus.SUCCEEDED),
+                    started_at=now,
+                    completed_at=now,
+                ),
+                StepExecution(
+                    step_name="step1",
+                    status=str(StepStatus.SUCCEEDED),
+                    started_at=now,
+                    completed_at=now,
+                ),
+            ],
+            started_at=now,
+        )
+
+        # Should return True even if executed multiple times
+        assert context.has_step_executed("step1") is True
+
+
+@pytest.mark.unit
+class TestStepExecution:
+    """Tests for StepExecution dataclass."""
+
+    def test_step_execution_creation(self) -> None:
+        """Test creating StepExecution instances."""
+        from litestar_workflows.core.context import StepExecution
+        from litestar_workflows.core.types import StepStatus
+
+        now = datetime.now(timezone.utc)
+        execution = StepExecution(
+            step_name="test_step",
+            status=str(StepStatus.SUCCEEDED),
+            started_at=now,
+            completed_at=now,
+            result={"success": True},
+        )
+
+        assert execution.step_name == "test_step"
+        assert execution.status == str(StepStatus.SUCCEEDED)
+        assert execution.started_at == now
+        assert execution.completed_at == now
+        assert execution.result == {"success": True}
+        assert execution.error is None
+
+    def test_step_execution_with_error(self) -> None:
+        """Test StepExecution with error information."""
+        from litestar_workflows.core.context import StepExecution
+        from litestar_workflows.core.types import StepStatus
+
+        now = datetime.now(timezone.utc)
+        execution = StepExecution(
+            step_name="failing_step",
+            status=str(StepStatus.FAILED),
+            started_at=now,
+            error="ValueError: Invalid input",
+        )
+
+        assert execution.step_name == "failing_step"
+        assert execution.status == str(StepStatus.FAILED)
+        assert execution.error == "ValueError: Invalid input"
+        assert execution.completed_at is None
+        assert execution.result is None
+
+    def test_step_execution_with_input_output_data(self) -> None:
+        """Test StepExecution with input and output data."""
+        from litestar_workflows.core.context import StepExecution
+        from litestar_workflows.core.types import StepStatus
+
+        now = datetime.now(timezone.utc)
+        execution = StepExecution(
+            step_name="data_step",
+            status=str(StepStatus.SUCCEEDED),
+            started_at=now,
+            completed_at=now,
+            input_data={"param1": "value1", "param2": 42},
+            output_data={"result": "processed", "count": 1},
+        )
+
+        assert execution.input_data == {"param1": "value1", "param2": 42}
+        assert execution.output_data == {"result": "processed", "count": 1}
