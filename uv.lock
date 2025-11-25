@@ -509,9 +509,6 @@ wheels = [
 jinja = [
     { name = "jinja2" },
 ]
-sqlalchemy = [
-    { name = "advanced-alchemy" },
-]
 
 [[package]]
 name = "litestar-htmx"
@@ -532,11 +529,21 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+all = [
+    { name = "advanced-alchemy" },
+    { name = "alembic" },
+    { name = "litestar", extra = ["jinja"] },
+]
 db = [
-    { name = "litestar", extra = ["sqlalchemy"] },
+    { name = "advanced-alchemy" },
+    { name = "alembic" },
 ]
 ui = [
     { name = "litestar", extra = ["jinja"] },
+]
+web = [
+    { name = "advanced-alchemy" },
+    { name = "alembic" },
 ]
 
 [package.dev-dependencies]
@@ -576,12 +583,15 @@ test = [
 
 [package.metadata]
 requires-dist = [
+    { name = "advanced-alchemy", marker = "extra == 'db'", specifier = ">=0.20.0" },
+    { name = "alembic", marker = "extra == 'db'", specifier = ">=1.13.0" },
     { name = "litestar", specifier = ">=2" },
     { name = "litestar", extras = ["jinja"], marker = "extra == 'ui'" },
-    { name = "litestar", extras = ["sqlalchemy"], marker = "extra == 'db'" },
+    { name = "litestar-workflows", extras = ["db"], marker = "extra == 'web'" },
+    { name = "litestar-workflows", extras = ["db", "ui", "web"], marker = "extra == 'all'" },
     { name = "rich-click", specifier = ">=1.7.4" },
 ]
-provides-extras = ["db", "ui"]
+provides-extras = ["db", "ui", "web", "all"]
 
 [package.metadata.requires-dev]
 dev = [

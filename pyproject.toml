@@ -73,8 +73,17 @@ requires-python = ">=3.10"
 version = "0.1.0"
 
 [project.optional-dependencies]
-db = ["litestar[sqlalchemy]"]
+db = [
+  "advanced-alchemy>=0.20.0",
+  "alembic>=1.13.0",
+]
 ui = ["litestar[jinja]"]
+web = [
+  "litestar-workflows[db]",
+]
+all = [
+  "litestar-workflows[db,ui,web]",
+]
 
 [project.urls]
 Changelog = "https://github.com/JacobCoffee/litestar-workflows/releases/"
