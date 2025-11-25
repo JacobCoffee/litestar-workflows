@@ -12,7 +12,6 @@ from typing import Any, ClassVar
 from uuid import UUID
 
 from litestar import Controller, get, post
-from litestar.di import Provide
 from litestar.exceptions import NotFoundException
 from litestar.params import Parameter
 

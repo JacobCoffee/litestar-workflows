@@ -13,8 +13,8 @@ This module tests the WorkflowWebPlugin REST API controllers, including:
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import TYPE_CHECKING, Any
-from unittest.mock import AsyncMock, MagicMock, Mock, patch
+from typing import TYPE_CHECKING, Any, ClassVar
+from unittest.mock import AsyncMock, Mock
 from uuid import UUID, uuid4
 
 import pytest
@@ -25,11 +25,10 @@ from litestar.exceptions import NotFoundException
 from litestar.status_codes import (
     HTTP_200_OK,
     HTTP_201_CREATED,
-    HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
-from litestar.testing import AsyncTestClient, TestClient
+from litestar.testing import AsyncTestClient
 
 from litestar_workflows.core.context import WorkflowContext
 from litestar_workflows.core.definition import WorkflowDefinition
@@ -37,10 +36,7 @@ from litestar_workflows.engine.local import LocalExecutionEngine
 from litestar_workflows.engine.registry import WorkflowRegistry
 
 if TYPE_CHECKING:
-    from litestar_workflows.db.repositories import (
-        HumanTaskRepository,
-        WorkflowInstanceRepository,
-    )
+    pass
 
 # =============================================================================
 # Mock Web Plugin Components (to be implemented in Phase 3)
@@ -250,7 +246,7 @@ class WorkflowDefinitionController(Controller):
     """REST API for workflow definitions."""
 
     path = "/workflows/definitions"
-    tags = ["Workflow Definitions"]
+    tags: ClassVar[list[str]] = ["Workflow Definitions"]
 
     @get("/")
     async def list_definitions(
@@ -313,15 +309,14 @@ class WorkflowDefinitionController(Controller):
             for edge in definition.edges:
                 graph += f"    {edge.source} --> {edge.target}\n"
             return {"graph": graph, "format": "mermaid"}
-        else:
-            raise ValueError(f"Unknown format: {format}")
+        raise ValueError(f"Unknown format: {format}")
 
 
 class WorkflowInstanceController(Controller):
     """REST API for workflow instances."""
 
     path = "/workflows/instances"
-    tags = ["Workflow Instances"]
+    tags: ClassVar[list[str]] = ["Workflow Instances"]
 
     @post("/")
     async def start_workflow(
@@ -427,7 +422,7 @@ class HumanTaskController(Controller):
     """REST API for human tasks."""
 
     path = "/workflows/tasks"
-    tags = ["Human Tasks"]
+    tags: ClassVar[list[str]] = ["Human Tasks"]
 
     @get("/")
     async def list_tasks(

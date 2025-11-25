@@ -20,7 +20,6 @@ from litestar.testing import AsyncTestClient
 from litestar_workflows import WorkflowPlugin, WorkflowPluginConfig
 from litestar_workflows.core.context import WorkflowContext
 from litestar_workflows.core.definition import Edge, WorkflowDefinition
-from litestar_workflows.engine.registry import WorkflowRegistry
 from litestar_workflows.steps.base import BaseMachineStep
 
 if TYPE_CHECKING:

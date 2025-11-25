@@ -86,18 +86,18 @@ async def provide_workflow_instance_repository() -> Any:
     Raises:
         DatabaseRequiredError: If database components are not installed.
     """
-    try:
-        from litestar_workflows.db.repositories import WorkflowInstanceRepository
+    import importlib.util
 
-        # This will be replaced by actual repository instance in real setup
-        # For now, raise error as we need proper session management
+    if importlib.util.find_spec("litestar_workflows.db") is None:
         raise DatabaseRequiredError(
             "This endpoint requires database persistence.\nInstall with: pip install litestar-workflows[db]"
         )
-    except ImportError as e:
-        raise DatabaseRequiredError(
-            "This endpoint requires database persistence.\nInstall with: pip install litestar-workflows[db]"
-        ) from e
+
+    # DB module is available - raise error as we need proper session management
+    # This will be replaced by actual repository instance in real setup
+    raise DatabaseRequiredError(
+        "This endpoint requires database persistence.\nInstall with: pip install litestar-workflows[db]"
+    )
 
 
 async def provide_human_task_repository() -> Any:
@@ -112,18 +112,18 @@ async def provide_human_task_repository() -> Any:
     Raises:
         DatabaseRequiredError: If database components are not installed.
     """
-    try:
-        from litestar_workflows.db.repositories import HumanTaskRepository
+    import importlib.util
 
-        # This will be replaced by actual repository instance in real setup
-        # For now, raise error as we need proper session management
+    if importlib.util.find_spec("litestar_workflows.db") is None:
         raise DatabaseRequiredError(
             "This endpoint requires database persistence.\nInstall with: pip install litestar-workflows[db]"
         )
-    except ImportError as e:
-        raise DatabaseRequiredError(
-            "This endpoint requires database persistence.\nInstall with: pip install litestar-workflows[db]"
-        ) from e
+
+    # DB module is available - raise error as we need proper session management
+    # This will be replaced by actual repository instance in real setup
+    raise DatabaseRequiredError(
+        "This endpoint requires database persistence.\nInstall with: pip install litestar-workflows[db]"
+    )
 
 
 def database_required_handler(
