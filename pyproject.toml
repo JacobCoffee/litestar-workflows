@@ -12,6 +12,7 @@ dev = [
   "pytest-cov>=4.1.0",
   "pytest-asyncio>=0.23.6",
   "pytest-sugar>=1.1.1",
+  "aiosqlite>=0.19.0",
 ]
 docs = [
   "sphinx>=7.0.0",
@@ -32,6 +33,7 @@ test = [
   "pytest>=8.1.1",
   "pytest-cov>=4.1.0",
   "pytest-asyncio>=0.23.6",
+  "aiosqlite>=0.19.0",
 ]
 
 [project]
@@ -250,6 +252,19 @@ max-complexity = 12
   "INP001",   # Implicit namespace package
   "PTH",      # Use pathlib
   "DTZ",      # Datetime timezone
+]
+"examples/**/*.*" = [
+  "ANN",      # Type annotations
+  "D",        # Docstrings
+  "FBT003",   # Boolean positional value in function call
+  "INP001",   # Implicit namespace package
+  "RUF012",   # Mutable class attributes
+  "S104",     # Possible binding to all interfaces
+]
+"**/migrations/**/*.*" = [
+  "ANN",      # Type annotations
+  "D",        # Docstrings
+  "INP001",   # Implicit namespace package
 ]
 "tests/**/*.*" = [
   "A",
