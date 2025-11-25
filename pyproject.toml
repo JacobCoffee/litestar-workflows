@@ -83,12 +83,12 @@ db = [
   "advanced-alchemy>=0.20.0",
   "alembic>=1.13.0",
 ]
-ui = ["litestar[jinja]"]
-web = [
+ui = [
+  "litestar[jinja]",
   "litestar-workflows[db]",
 ]
 all = [
-  "litestar-workflows[db,ui,web]",
+  "litestar-workflows[db,ui]",
 ]
 
 [project.urls]

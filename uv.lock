@@ -563,11 +563,9 @@ db = [
     { name = "alembic" },
 ]
 ui = [
-    { name = "litestar", extra = ["jinja"] },
-]
-web = [
     { name = "advanced-alchemy" },
     { name = "alembic" },
+    { name = "litestar", extra = ["jinja"] },
 ]
 
 [package.dev-dependencies]
@@ -617,11 +615,11 @@ requires-dist = [
     { name = "alembic", marker = "extra == 'db'", specifier = ">=1.13.0" },
     { name = "litestar", specifier = ">=2" },
     { name = "litestar", extras = ["jinja"], marker = "extra == 'ui'" },
-    { name = "litestar-workflows", extras = ["db"], marker = "extra == 'web'" },
-    { name = "litestar-workflows", extras = ["db", "ui", "web"], marker = "extra == 'all'" },
+    { name = "litestar-workflows", extras = ["db"], marker = "extra == 'ui'" },
+    { name = "litestar-workflows", extras = ["db", "ui"], marker = "extra == 'all'" },
     { name = "rich-click", specifier = ">=1.7.4" },
 ]
-provides-extras = ["db", "ui", "web", "all"]
+provides-extras = ["db", "ui", "all"]
 
 [package.metadata.requires-dev]
 dev = [
