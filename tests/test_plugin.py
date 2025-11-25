@@ -6,7 +6,6 @@ applications and provides dependency injection for workflow components.
 
 from __future__ import annotations
 
-import asyncio
 from typing import Any
 from uuid import UUID
 
@@ -25,7 +24,6 @@ from litestar_workflows import (
     WorkflowPluginConfig,
     WorkflowRegistry,
 )
-
 
 # =============================================================================
 # Test Fixtures - Workflow Components
