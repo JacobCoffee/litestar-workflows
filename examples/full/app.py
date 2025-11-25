@@ -454,6 +454,7 @@ async def health_check() -> dict[str, str]:
 # Configure the plugin
 plugin_config = WorkflowPluginConfig(
     auto_register_workflows=[DocumentApprovalWorkflow, SimpleWorkflow],
+    enable_api=False,  # Disable auto API since we have custom controllers
 )
 
 # Create the Litestar application
