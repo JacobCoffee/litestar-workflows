@@ -6,7 +6,7 @@ models using advanced-alchemy's repository pattern.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 from uuid import UUID
 
 from advanced_alchemy.filters import LimitOffset, OrderBy
@@ -176,11 +176,7 @@ class WorkflowInstanceRepository(SQLAlchemyAsyncRepository[WorkflowInstanceModel
         if status:
             conditions.append(WorkflowInstanceModel.status == status)
 
-        stmt = (
-            select(WorkflowInstanceModel)
-            .where(and_(*conditions))
-            .order_by(WorkflowInstanceModel.created_at.desc())
-        )
+        stmt = select(WorkflowInstanceModel).where(and_(*conditions)).order_by(WorkflowInstanceModel.created_at.desc())
         result = await self.session.execute(stmt)
         return result.scalars().all()
 
@@ -222,10 +218,12 @@ class WorkflowInstanceRepository(SQLAlchemyAsyncRepository[WorkflowInstanceModel
         stmt = (
             select(WorkflowInstanceModel)
             .where(
-                WorkflowInstanceModel.status.in_([
-                    WorkflowStatus.RUNNING,
-                    WorkflowStatus.WAITING,
-                ])
+                WorkflowInstanceModel.status.in_(
+                    [
+                        WorkflowStatus.RUNNING,
+                        WorkflowStatus.WAITING,
+                    ]
+                )
             )
             .order_by(WorkflowInstanceModel.started_at)
         )
@@ -332,11 +330,7 @@ class StepExecutionRepository(SQLAlchemyAsyncRepository[StepExecutionModel]):
         if instance_id:
             conditions.append(StepExecutionModel.instance_id == instance_id)
 
-        stmt = (
-            select(StepExecutionModel)
-            .where(and_(*conditions))
-            .order_by(StepExecutionModel.completed_at.desc())
-        )
+        stmt = select(StepExecutionModel).where(and_(*conditions)).order_by(StepExecutionModel.completed_at.desc())
         result = await self.session.execute(stmt)
         return result.scalars().all()
 
@@ -404,9 +398,7 @@ class HumanTaskRepository(SQLAlchemyAsyncRepository[HumanTaskModel]):
             List of human tasks.
         """
         stmt = (
-            select(HumanTaskModel)
-            .where(HumanTaskModel.instance_id == instance_id)
-            .order_by(HumanTaskModel.created_at)
+            select(HumanTaskModel).where(HumanTaskModel.instance_id == instance_id).order_by(HumanTaskModel.created_at)
         )
         result = await self.session.execute(stmt)
         return result.scalars().all()

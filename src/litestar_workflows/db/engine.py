@@ -7,7 +7,7 @@ workflow state in a database using SQLAlchemy.
 from __future__ import annotations
 
 import asyncio
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Any
 from uuid import UUID, uuid4
 
@@ -216,9 +216,7 @@ class PersistentExecutionEngine:
         )
 
         # Start execution in background
-        self._running[instance_id] = asyncio.create_task(
-            self._run_workflow(instance_id, definition)
-        )
+        self._running[instance_id] = asyncio.create_task(self._run_workflow(instance_id, definition))
 
         return instance_data
 
@@ -485,9 +483,7 @@ class PersistentExecutionEngine:
 
         # Resume execution
         if instance_id not in self._running:
-            self._running[instance_id] = asyncio.create_task(
-                self._run_workflow(instance_id, definition)
-            )
+            self._running[instance_id] = asyncio.create_task(self._run_workflow(instance_id, definition))
 
     async def cancel_workflow(self, instance_id: UUID, reason: str) -> None:
         """Cancel a running workflow.
