@@ -50,6 +50,7 @@ Key Features
 - **Type-Safe**: Full typing with Protocol-based interfaces for IDE support
 - **Litestar Integration**: Deep integration with Litestar's DI, guards, and plugin system
 - **Flexible Execution**: Local execution engine with optional distributed backends
+- **Database Persistence**: SQLAlchemy-backed storage with multi-tenancy support (``[db]`` extra)
 
 
 Quick Example
