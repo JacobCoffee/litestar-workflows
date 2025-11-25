@@ -6,12 +6,13 @@
 
 ## Current Status
 
-**Version**: 0.1.0 (Alpha)
-**Phase**: 1 - Core Foundation (In Progress)
-**Last Updated**: 2024-11-24
+**Version**: 0.4.0 (Alpha)
+**Phase**: 3 - Web Plugin (Complete)
+**Last Updated**: 2025-11-25
 
 ### Completed
 
+#### Phase 1: Core Foundation
 - [x] Project scaffolding and tooling
 - [x] CI/CD pipelines (ci.yml, docs.yml, cd.yml)
 - [x] Documentation infrastructure (Sphinx + Shibuya)
@@ -30,15 +31,30 @@
 - [x] Domain events (workflow lifecycle)
 - [x] Exception hierarchy
 
-### In Progress
+#### Phase 2: Persistence Layer
+- [x] SQLAlchemy models (WorkflowDefinition, WorkflowInstance, StepExecution, HumanTask)
+- [x] Repository pattern (WorkflowDefinitionRepository, WorkflowInstanceRepository, etc.)
+- [x] `PersistentExecutionEngine` with database backing
+- [x] Alembic migrations support
+- [x] Multi-tenancy support (tenant_id filtering)
+- [x] 40 database integration tests
 
-- [ ] Test suite alignment with API (90 tests need updates)
-- [ ] Test coverage target: 96%
+#### Phase 3: Web Plugin
+- [x] REST API controllers (definitions, instances, tasks)
+- [x] DTOs with validation (StartWorkflowDTO, WorkflowInstanceDTO, etc.)
+- [x] MermaidJS graph generation
+- [x] OpenAPI schema integration
+- [x] Guard integration for auth
+- [x] **Merged into core** - REST API auto-enabled with `WorkflowPlugin`
+- [x] Graceful degradation without `[db]` extra (501 with helpful message)
+- [x] zizmor security scanner in CI
+- [x] 50 web API tests
 
 ### Next Up
 
-- [ ] Phase 2: Persistence Layer (SQLAlchemy models, repositories)
-- [ ] Phase 3: Web Plugin (REST API, controllers)
+- [ ] Phase 4: Advanced Features (signals, retries, timeouts)
+- [ ] Phase 5: UI Extra (Tailwind drag-and-drop workflow management)
+- [ ] Phase 6: Distributed Execution (Celery, SAQ, ARQ integrations)
 
 ### CI/CD Infrastructure
 
@@ -1403,58 +1419,65 @@ all = [
 - [ ] Unit tests (target: 96% coverage) - *90 tests need API alignment*
 - [x] Basic documentation
 
-### Phase 2: Persistence Layer (v0.3.0)
+### Phase 2: Persistence Layer (v0.3.0) ✅
 
 **Goal**: Add database persistence with SQLAlchemy
 
 **Deliverables**:
-- [ ] SQLAlchemy models (`WorkflowDefinition`, `WorkflowInstance`, `StepExecution`, `HumanTask`)
-- [ ] Repository implementations
-- [ ] Alembic migration support
-- [ ] `PersistentExecutionEngine` (wraps local engine with DB)
-- [ ] Event bus for workflow events
-- [ ] Query capabilities (find by status, user, etc.)
-- [ ] Integration tests with test database
-- [ ] Migration documentation
+- [x] SQLAlchemy models (`WorkflowDefinition`, `WorkflowInstance`, `StepExecution`, `HumanTask`)
+- [x] Repository implementations
+- [x] Alembic migration support
+- [x] `PersistentExecutionEngine` (wraps local engine with DB)
+- [x] Event bus for workflow events
+- [x] Query capabilities (find by status, user, etc.)
+- [x] Integration tests with test database
+- [x] Migration documentation
 
-### Phase 3: Web Plugin (v0.4.0)
+### Phase 3: Web Plugin (v0.4.0) ✅
 
 **Goal**: REST API and plugin auto-registration
 
 **Deliverables**:
-- [ ] `WorkflowWebPlugin` implementation
-- [ ] REST controllers for definitions, instances, tasks
-- [ ] DTO layer with validation
-- [ ] OpenAPI schema generation
-- [ ] Guard integration for auth
-- [ ] MermaidJS graph endpoints
-- [ ] API documentation
-- [ ] Integration tests for all endpoints
+- [x] REST controllers for definitions, instances, tasks (merged into core)
+- [x] DTO layer with validation
+- [x] OpenAPI schema generation
+- [x] Guard integration for auth
+- [x] MermaidJS graph endpoints
+- [x] API documentation
+- [x] Integration tests for all endpoints
+- [x] Graceful degradation without `[db]` (helpful 501 errors)
+- [x] zizmor security scanner in CI
 
-### Phase 4: Decorator API (v0.5.0)
+**Architecture Decision**: REST API merged into core `WorkflowPlugin`:
+- Auto-enabled by default (`enable_api=True`)
+- Core endpoints work without `[db]`: GET /definitions, POST /instances
+- DB-dependent endpoints require `[db]`: GET /instances, GET /tasks, etc.
 
-**Goal**: Pythonic workflow definition
+### Phase 4: Advanced Features (v0.5.0)
+
+**Goal**: Production-ready workflow features
 
 **Deliverables**:
-- [ ] `@workflow` class decorator
-- [ ] `@step` method decorator
-- [ ] `@human_task` decorator with form schema
-- [ ] Automatic edge inference from return values
-- [ ] Definition extraction from decorated classes
-- [ ] Migration guide from class-based to decorator-based
-- [ ] Examples and tutorials
+- [ ] Workflow signals (pause, resume, escalate)
+- [ ] Retry policies with backoff
+- [ ] Step timeouts and deadlines
+- [ ] Workflow versioning and migration
+- [ ] Bulk operations (cancel all, retry failed)
+- [ ] Audit logging
 
 ### Phase 5: UI Extra (v0.6.0)
 
-**Goal**: Web UI for workflow management
+**Goal**: Modern web UI for workflow management (`[ui]` extra)
 
 **Deliverables**:
-- [ ] Jinja2 templates for workflow management
+- [ ] Tailwind CSS styling
+- [ ] Drag-and-drop workflow builder
+- [ ] Composable UI components
 - [ ] Workflow list/detail views
 - [ ] Human task forms (JSON Schema rendering)
-- [ ] Instance graph visualization (MermaidJS)
-- [ ] Admin dashboard
-- [ ] HTMX integration for interactivity (optional)
+- [ ] Instance graph visualization (MermaidJS live)
+- [ ] Admin dashboard with metrics
+- [ ] Real-time updates (WebSocket/SSE)
 
 ### Phase 6: Distributed Execution (v0.7.0)
 
