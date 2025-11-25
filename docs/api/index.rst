@@ -830,6 +830,7 @@ Full Module Reference
    :maxdepth: 2
 
    modules
+   web
 
 
 See Also

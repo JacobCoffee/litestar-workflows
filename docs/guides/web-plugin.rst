@@ -392,7 +392,7 @@ execution state highlighted:
 
 Response shows completed steps in green, current in yellow, failed in red:
 
-.. code-block:: json
+.. code-block:: text
 
    {
      "mermaid_source": "graph TD\n    submit[Submit]\n    ...\n    style submit fill:#90EE90,stroke:#006400",
