@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import pytest
 
 if TYPE_CHECKING:
+    from litestar_workflows.core.context import WorkflowContext
     from litestar_workflows.core.definition import WorkflowDefinition
     from litestar_workflows.steps.base import BaseHumanStep, BaseMachineStep
 
@@ -57,6 +58,81 @@ class TestEdge:
 
         assert edge1 == edge2
         assert edge1 != edge3
+
+    def test_evaluate_condition_no_condition(self, sample_context: WorkflowContext) -> None:
+        """Test edge condition evaluation when no condition exists."""
+        from litestar_workflows.core.definition import Edge
+
+        edge = Edge(source="a", target="b")
+        result = edge.evaluate_condition(sample_context)
+
+        assert result is True
+
+    def test_evaluate_condition_callable(self, sample_context: WorkflowContext) -> None:
+        """Test edge condition evaluation with callable condition."""
+        from litestar_workflows.core.definition import Edge
+
+        # Test condition that returns True
+        edge_true = Edge(source="a", target="b", condition=lambda ctx: ctx.get("count") == 0)
+        assert edge_true.evaluate_condition(sample_context) is True
+
+        # Test condition that returns False
+        edge_false = Edge(source="a", target="b", condition=lambda ctx: ctx.get("count") > 10)
+        assert edge_false.evaluate_condition(sample_context) is False
+
+    def test_evaluate_condition_string(self, sample_context: WorkflowContext) -> None:
+        """Test edge condition evaluation with string expression."""
+        from litestar_workflows.core.definition import Edge
+
+        # String conditions currently default to True (future enhancement)
+        edge = Edge(source="a", target="b", condition="ctx.get('approved') == True")
+        result = edge.evaluate_condition(sample_context)
+
+        assert result is True
+
+    def test_get_source_name_with_string(self) -> None:
+        """Test getting source name when source is a string."""
+        from litestar_workflows.core.definition import Edge
+
+        edge = Edge(source="step_a", target="step_b")
+        assert edge.get_source_name() == "step_a"
+
+    def test_get_source_name_with_step_class(self) -> None:
+        """Test getting source name when source is a step class with name attribute."""
+        from litestar_workflows.core.definition import Edge
+        from litestar_workflows.steps.base import BaseMachineStep
+
+        # Create a step class with a name class attribute
+        class TestStep(BaseMachineStep):
+            name = "test_step"
+
+            async def execute(self, context: WorkflowContext) -> dict[str, Any]:
+                return {}
+
+        edge = Edge(source=TestStep, target="step_b")
+        assert edge.get_source_name() == "test_step"
+
+    def test_get_target_name_with_string(self) -> None:
+        """Test getting target name when target is a string."""
+        from litestar_workflows.core.definition import Edge
+
+        edge = Edge(source="step_a", target="step_b")
+        assert edge.get_target_name() == "step_b"
+
+    def test_get_target_name_with_step_class(self) -> None:
+        """Test getting target name when target is a step class with name attribute."""
+        from litestar_workflows.core.definition import Edge
+        from litestar_workflows.steps.base import BaseHumanStep
+
+        # Create a step class with a name class attribute
+        class TestStep(BaseHumanStep):
+            name = "test_step"
+
+            async def execute(self, context: WorkflowContext) -> dict[str, Any]:
+                return {}
+
+        edge = Edge(source="step_a", target=TestStep)
+        assert edge.get_target_name() == "test_step"
 
 
 @pytest.mark.unit
@@ -216,3 +292,341 @@ class TestWorkflowDefinition:
         assert definition.name == "minimal"
         assert len(definition.steps) == 1
         assert len(definition.edges) == 0
+
+
+@pytest.mark.unit
+class TestWorkflowDefinitionValidation:
+    """Tests for WorkflowDefinition validation."""
+
+    def test_validate_valid_workflow(self, sample_workflow_definition: WorkflowDefinition) -> None:
+        """Test validation of a valid workflow."""
+        errors = sample_workflow_definition.validate()
+        assert errors == []
+
+    def test_validate_missing_initial_step(self, sample_machine_step: BaseMachineStep) -> None:
+        """Test validation fails when initial step is not in steps dict."""
+        from litestar_workflows.core.definition import WorkflowDefinition
+
+        definition = WorkflowDefinition(
+            name="invalid_workflow",
+            version="1.0.0",
+            description="Invalid workflow",
+            steps={"step1": sample_machine_step},
+            edges=[],
+            initial_step="nonexistent",
+            terminal_steps=set(),
+        )
+
+        errors = definition.validate()
+        assert len(errors) > 0
+        assert any("Initial step 'nonexistent' not found" in error for error in errors)
+
+    def test_validate_missing_terminal_step(self, sample_machine_step: BaseMachineStep) -> None:
+        """Test validation fails when terminal step is not in steps dict."""
+        from litestar_workflows.core.definition import WorkflowDefinition
+
+        definition = WorkflowDefinition(
+            name="invalid_workflow",
+            version="1.0.0",
+            description="Invalid workflow",
+            steps={"step1": sample_machine_step},
+            edges=[],
+            initial_step="step1",
+            terminal_steps={"nonexistent"},
+        )
+
+        errors = definition.validate()
+        assert len(errors) > 0
+        assert any("Terminal step 'nonexistent' not found" in error for error in errors)
+
+    def test_validate_edge_source_not_found(
+        self, sample_machine_step: BaseMachineStep, sample_human_step: BaseHumanStep
+    ) -> None:
+        """Test validation fails when edge source is not in steps dict."""
+        from litestar_workflows.core.definition import Edge, WorkflowDefinition
+
+        definition = WorkflowDefinition(
+            name="invalid_workflow",
+            version="1.0.0",
+            description="Invalid workflow",
+            steps={"step1": sample_machine_step, "step2": sample_human_step},
+            edges=[Edge(source="nonexistent", target="step2")],
+            initial_step="step1",
+            terminal_steps={"step2"},
+        )
+
+        errors = definition.validate()
+        assert len(errors) > 0
+        assert any("source step 'nonexistent' not found" in error for error in errors)
+
+    def test_validate_edge_target_not_found(
+        self, sample_machine_step: BaseMachineStep, sample_human_step: BaseHumanStep
+    ) -> None:
+        """Test validation fails when edge target is not in steps dict."""
+        from litestar_workflows.core.definition import Edge, WorkflowDefinition
+
+        definition = WorkflowDefinition(
+            name="invalid_workflow",
+            version="1.0.0",
+            description="Invalid workflow",
+            steps={"step1": sample_machine_step, "step2": sample_human_step},
+            edges=[Edge(source="step1", target="nonexistent")],
+            initial_step="step1",
+            terminal_steps={"step2"},
+        )
+
+        errors = definition.validate()
+        assert len(errors) > 0
+        assert any("target step 'nonexistent' not found" in error for error in errors)
+
+    def test_validate_unreachable_step(
+        self, sample_machine_step: BaseMachineStep, sample_human_step: BaseHumanStep
+    ) -> None:
+        """Test validation detects unreachable steps."""
+        from litestar_workflows.core.definition import Edge, WorkflowDefinition
+        from litestar_workflows.steps.base import BaseMachineStep
+
+        class ThirdStep(BaseMachineStep):
+            async def execute(self, context: WorkflowContext) -> dict[str, Any]:
+                return {}
+
+        third_step = ThirdStep(name="third_step", description="Third step")
+
+        definition = WorkflowDefinition(
+            name="unreachable_workflow",
+            version="1.0.0",
+            description="Workflow with unreachable step",
+            steps={"step1": sample_machine_step, "step2": sample_human_step, "step3": third_step},
+            edges=[Edge(source="step1", target="step2")],
+            initial_step="step1",
+            terminal_steps={"step2"},
+        )
+
+        errors = definition.validate()
+        assert len(errors) > 0
+        assert any("Step 'step3' is unreachable" in error for error in errors)
+
+    def test_validate_terminal_step_not_flagged_as_unreachable(
+        self, sample_machine_step: BaseMachineStep, sample_human_step: BaseHumanStep
+    ) -> None:
+        """Test that unreachable terminal steps are not flagged as errors."""
+        from litestar_workflows.core.definition import Edge, WorkflowDefinition
+        from litestar_workflows.steps.base import BaseMachineStep
+
+        class TerminalStep(BaseMachineStep):
+            async def execute(self, context: WorkflowContext) -> dict[str, Any]:
+                return {}
+
+        terminal_step = TerminalStep(name="terminal_step", description="Terminal step")
+
+        definition = WorkflowDefinition(
+            name="terminal_workflow",
+            version="1.0.0",
+            description="Workflow with isolated terminal step",
+            steps={"step1": sample_machine_step, "step2": sample_human_step, "terminal": terminal_step},
+            edges=[Edge(source="step1", target="step2")],
+            initial_step="step1",
+            terminal_steps={"step2", "terminal"},
+        )
+
+        errors = definition.validate()
+        # Terminal steps should not be reported as unreachable
+        assert not any("terminal" in error and "unreachable" in error for error in errors)
+
+
+@pytest.mark.unit
+class TestWorkflowDefinitionMethods:
+    """Tests for WorkflowDefinition methods."""
+
+    def test_get_next_steps_no_edges(
+        self, sample_workflow_definition: WorkflowDefinition, sample_context: WorkflowContext
+    ) -> None:
+        """Test get_next_steps when no edges exist from current step."""
+        # Terminal step has no outgoing edges
+        next_steps = sample_workflow_definition.get_next_steps("approval", sample_context)
+        assert next_steps == []
+
+    def test_get_next_steps_with_edges(
+        self, sample_workflow_definition: WorkflowDefinition, sample_context: WorkflowContext
+    ) -> None:
+        """Test get_next_steps when edges exist from current step."""
+        next_steps = sample_workflow_definition.get_next_steps("start", sample_context)
+        assert "approval" in next_steps
+
+    def test_get_next_steps_with_conditions(
+        self, complex_workflow_definition: WorkflowDefinition, sample_context: WorkflowContext
+    ) -> None:
+        """Test get_next_steps with conditional edges."""
+        # Both edges from 'approval' have conditions, so both should be included (string conditions default to True)
+        next_steps = complex_workflow_definition.get_next_steps("approval", sample_context)
+        assert len(next_steps) >= 1
+
+    def test_get_next_steps_conditional_evaluation(self, sample_context: WorkflowContext) -> None:
+        """Test get_next_steps evaluates conditions correctly."""
+        from litestar_workflows.core.definition import Edge, WorkflowDefinition
+        from litestar_workflows.steps.base import BaseMachineStep
+
+        class StepA(BaseMachineStep):
+            async def execute(self, context: WorkflowContext) -> dict[str, Any]:
+                return {}
+
+        class StepB(BaseMachineStep):
+            async def execute(self, context: WorkflowContext) -> dict[str, Any]:
+                return {}
+
+        class StepC(BaseMachineStep):
+            async def execute(self, context: WorkflowContext) -> dict[str, Any]:
+                return {}
+
+        step_a = StepA(name="step_a", description="Step A")
+        step_b = StepB(name="step_b", description="Step B")
+        step_c = StepC(name="step_c", description="Step C")
+
+        definition = WorkflowDefinition(
+            name="conditional_workflow",
+            version="1.0.0",
+            description="Workflow with conditional edges",
+            steps={"a": step_a, "b": step_b, "c": step_c},
+            edges=[
+                Edge(source="a", target="b", condition=lambda ctx: ctx.get("count") == 0),
+                Edge(source="a", target="c", condition=lambda ctx: ctx.get("count") > 0),
+            ],
+            initial_step="a",
+            terminal_steps={"b", "c"},
+        )
+
+        # count == 0, should go to b
+        next_steps = definition.get_next_steps("a", sample_context)
+        assert "b" in next_steps
+        assert "c" not in next_steps
+
+        # Change count, should go to c
+        sample_context.set("count", 5)
+        next_steps = definition.get_next_steps("a", sample_context)
+        assert "b" not in next_steps
+        assert "c" in next_steps
+
+
+@pytest.mark.unit
+class TestMermaidGeneration:
+    """Tests for Mermaid diagram generation."""
+
+    def test_to_mermaid_with_step_types(self) -> None:
+        """Test Mermaid generation with different step types."""
+        from datetime import timedelta
+
+        from litestar_workflows.core.definition import Edge, WorkflowDefinition
+        from litestar_workflows.steps.base import BaseHumanStep, BaseMachineStep
+        from litestar_workflows.steps.gateway import ExclusiveGateway
+        from litestar_workflows.steps.timer import TimerStep
+
+        class MachineStepA(BaseMachineStep):
+            async def execute(self, context: WorkflowContext) -> dict[str, Any]:
+                return {}
+
+        step_a = MachineStepA(name="machine", description="Machine step")
+        step_b = ExclusiveGateway(
+            name="gateway",
+            condition=lambda ctx: "path_a",
+            description="Gateway step",
+        )
+        step_c = TimerStep(name="timer", description="Timer step", duration=timedelta(seconds=60))
+
+        # Add a human step to test that shape too
+        step_d = BaseHumanStep(name="human", title="Human Task", description="Human step")
+
+        definition = WorkflowDefinition(
+            name="typed_workflow",
+            version="1.0.0",
+            description="Workflow with typed steps",
+            steps={"machine": step_a, "gateway": step_b, "timer": step_c, "human": step_d},
+            edges=[
+                Edge(source="machine", target="gateway"),
+                Edge(source="gateway", target="timer"),
+                Edge(source="timer", target="human"),
+            ],
+            initial_step="machine",
+            terminal_steps={"human"},
+        )
+
+        mermaid = definition.to_mermaid()
+
+        # Should contain different shapes for different step types
+        assert "graph TD" in mermaid
+        assert "machine" in mermaid
+        assert "gateway" in mermaid
+        assert "timer" in mermaid
+        assert "human" in mermaid
+        # Gateway uses curly braces
+        assert "{" in mermaid
+        # Timer uses doubled brackets ([[...]])
+        assert "[[" in mermaid
+        # Human uses double curly braces {{...}}
+        assert "{{" in mermaid
+
+    def test_to_mermaid_with_state(self, sample_workflow_definition: WorkflowDefinition) -> None:
+        """Test Mermaid generation with execution state."""
+        mermaid = sample_workflow_definition.to_mermaid_with_state(
+            current_step="approval", completed_steps=["start"], failed_steps=[]
+        )
+
+        # Should include state styling
+        assert "graph TD" in mermaid
+        assert "style" in mermaid
+        assert "start" in mermaid
+        assert "approval" in mermaid
+
+    def test_to_mermaid_with_state_completed_steps(self, sample_workflow_definition: WorkflowDefinition) -> None:
+        """Test Mermaid with completed steps styling."""
+        mermaid = sample_workflow_definition.to_mermaid_with_state(
+            current_step=None, completed_steps=["start", "approval"], failed_steps=[]
+        )
+
+        # Should style completed steps in green
+        assert "style start fill:#90EE90" in mermaid
+        assert "style approval fill:#90EE90" in mermaid
+
+    def test_to_mermaid_with_state_failed_steps(self, sample_workflow_definition: WorkflowDefinition) -> None:
+        """Test Mermaid with failed steps styling."""
+        mermaid = sample_workflow_definition.to_mermaid_with_state(
+            current_step=None, completed_steps=[], failed_steps=["start"]
+        )
+
+        # Should style failed steps in red
+        assert "style start fill:#FFB6C1" in mermaid
+
+    def test_to_mermaid_with_state_current_step(self, sample_workflow_definition: WorkflowDefinition) -> None:
+        """Test Mermaid with current step styling."""
+        mermaid = sample_workflow_definition.to_mermaid_with_state(
+            current_step="start", completed_steps=[], failed_steps=[]
+        )
+
+        # Should style current step in yellow/gold
+        assert "style start fill:#FFD700" in mermaid
+
+    def test_to_mermaid_with_state_no_parameters(self, sample_workflow_definition: WorkflowDefinition) -> None:
+        """Test Mermaid with state but no parameters."""
+        mermaid = sample_workflow_definition.to_mermaid_with_state()
+
+        # Should just return base graph with no styling
+        assert "graph TD" in mermaid
+        assert "start" in mermaid
+        assert "approval" in mermaid
+
+    def test_to_mermaid_initial_and_terminal_markers(self, sample_workflow_definition: WorkflowDefinition) -> None:
+        """Test Mermaid marks initial and terminal steps."""
+        mermaid = sample_workflow_definition.to_mermaid()
+
+        # Should mark initial step
+        assert "START:" in mermaid
+        # Should mark terminal step
+        assert "END:" in mermaid
+
+    def test_to_mermaid_with_conditional_edges(self, complex_workflow_definition: WorkflowDefinition) -> None:
+        """Test Mermaid generation includes conditional edge labels."""
+        mermaid = complex_workflow_definition.to_mermaid()
+
+        # Conditional edges should have labels
+        assert "graph TD" in mermaid
+        # String conditions should show in label
+        assert "|" in mermaid  # Edge label notation

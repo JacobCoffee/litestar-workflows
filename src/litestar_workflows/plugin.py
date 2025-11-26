@@ -36,6 +36,13 @@ class WorkflowPluginConfig:
             the WorkflowRegistry. Defaults to "workflow_registry".
         dependency_key_engine: The key used for dependency injection of
             the ExecutionEngine. Defaults to "workflow_engine".
+        enable_api: Whether to enable the REST API endpoints. Defaults to True.
+        api_path_prefix: URL path prefix for all workflow API endpoints.
+            Defaults to "/workflows".
+        api_guards: List of Litestar guards to apply to all workflow API endpoints.
+        api_tags: OpenAPI tags to apply to workflow API endpoints.
+        include_api_in_schema: Whether to include API endpoints in OpenAPI schema.
+            Defaults to True.
     """
 
     registry: WorkflowRegistry | None = None
@@ -43,6 +50,11 @@ class WorkflowPluginConfig:
     auto_register_workflows: list[type[Any]] = field(default_factory=list)
     dependency_key_registry: str = "workflow_registry"
     dependency_key_engine: str = "workflow_engine"
+    enable_api: bool = True
+    api_path_prefix: str = "/workflows"
+    api_guards: list[Any] = field(default_factory=list)
+    api_tags: list[str] = field(default_factory=lambda: ["Workflows"])
+    include_api_in_schema: bool = True
 
 
 class WorkflowPlugin(InitPluginProtocol):
@@ -147,6 +159,7 @@ class WorkflowPlugin(InitPluginProtocol):
         2. Creates or uses the provided ExecutionEngine
         3. Registers any auto_register_workflows
         4. Adds dependency providers to the app config
+        5. Optionally registers REST API controllers if enable_api=True
 
         Args:
             app_config: The Litestar application configuration.
@@ -180,5 +193,51 @@ class WorkflowPlugin(InitPluginProtocol):
             provide_engine,
             sync_to_thread=False,
         )
+
+        # Register REST API controllers if enabled
+        if self._config.enable_api:
+            from litestar import Router
+
+            from litestar_workflows.web.controllers import (
+                HumanTaskController,
+                WorkflowDefinitionController,
+                WorkflowInstanceController,
+            )
+            from litestar_workflows.web.exceptions import (
+                DatabaseRequiredError,
+                database_required_handler,
+                provide_human_task_repository,
+                provide_workflow_instance_repository,
+            )
+
+            # Add repository providers (these will raise errors if DB not installed)
+            app_config.dependencies["workflow_instance_repo"] = Provide(
+                provide_workflow_instance_repository,
+            )
+            app_config.dependencies["human_task_repo"] = Provide(
+                provide_human_task_repository,
+            )
+
+            # Create controllers with path prefix
+            controllers = [
+                WorkflowDefinitionController,
+                WorkflowInstanceController,
+                HumanTaskController,
+            ]
+
+            # Create main router with configured options
+            workflow_router = Router(
+                path=self._config.api_path_prefix,
+                route_handlers=controllers,
+                guards=self._config.api_guards,
+                tags=self._config.api_tags,
+                include_in_schema=self._config.include_api_in_schema,
+            )
+
+            # Register router with app
+            app_config.route_handlers.append(workflow_router)
+
+            # Register exception handler
+            app_config.exception_handlers[DatabaseRequiredError] = database_required_handler
 
         return app_config

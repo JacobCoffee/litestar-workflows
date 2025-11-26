@@ -11,6 +11,7 @@ import pytest
 if TYPE_CHECKING:
     from litestar_workflows.core.context import WorkflowContext
     from litestar_workflows.core.definition import WorkflowDefinition
+    from litestar_workflows.core.models import WorkflowInstanceData
     from litestar_workflows.engine.local import LocalExecutionEngine
     from litestar_workflows.engine.registry import WorkflowRegistry
     from litestar_workflows.steps.base import BaseHumanStep, BaseMachineStep
@@ -200,6 +201,116 @@ def local_engine(workflow_registry: WorkflowRegistry) -> LocalExecutionEngine:
     from litestar_workflows.engine.local import LocalExecutionEngine
 
     return LocalExecutionEngine(registry=workflow_registry)
+
+
+class MockPersistence:
+    """Mock persistence layer for testing."""
+
+    def __init__(self) -> None:
+        """Initialize mock persistence."""
+
+        self.instances: dict[UUID, WorkflowInstanceData] = {}
+        self.save_count = 0
+        self.load_count = 0
+
+    async def save_instance(self, instance: WorkflowInstanceData) -> None:
+        """Save instance to mock storage."""
+        self.instances[instance.id] = instance
+        self.save_count += 1
+
+    async def load_instance(self, instance_id: UUID) -> WorkflowInstanceData | None:
+        """Load instance from mock storage."""
+        self.load_count += 1
+        return self.instances.get(instance_id)
+
+
+class MockEventBus:
+    """Mock event bus for testing."""
+
+    def __init__(self) -> None:
+        """Initialize mock event bus."""
+        self.events: list[tuple[str, dict[str, Any]]] = []
+
+    async def emit(self, event_type: str, **kwargs: Any) -> None:
+        """Emit an event."""
+        self.events.append((event_type, kwargs))
+
+
+@pytest.fixture
+def mock_persistence() -> MockPersistence:
+    """Create mock persistence layer.
+
+    Returns:
+        MockPersistence instance
+    """
+    return MockPersistence()
+
+
+@pytest.fixture
+def mock_event_bus() -> MockEventBus:
+    """Create mock event bus.
+
+    Returns:
+        MockEventBus instance
+    """
+    return MockEventBus()
+
+
+@pytest.fixture
+def local_engine_with_persistence(
+    workflow_registry: WorkflowRegistry, mock_persistence: MockPersistence
+) -> LocalExecutionEngine:
+    """Create a local execution engine with persistence.
+
+    Args:
+        workflow_registry: Workflow registry fixture
+        mock_persistence: Mock persistence fixture
+
+    Returns:
+        LocalExecutionEngine instance with persistence
+    """
+    from litestar_workflows.engine.local import LocalExecutionEngine
+
+    return LocalExecutionEngine(registry=workflow_registry, persistence=mock_persistence)
+
+
+@pytest.fixture
+def local_engine_with_event_bus(
+    workflow_registry: WorkflowRegistry, mock_event_bus: MockEventBus
+) -> LocalExecutionEngine:
+    """Create a local execution engine with event bus.
+
+    Args:
+        workflow_registry: Workflow registry fixture
+        mock_event_bus: Mock event bus fixture
+
+    Returns:
+        LocalExecutionEngine instance with event bus
+    """
+    from litestar_workflows.engine.local import LocalExecutionEngine
+
+    return LocalExecutionEngine(registry=workflow_registry, event_bus=mock_event_bus)
+
+
+@pytest.fixture
+def local_engine_full(
+    workflow_registry: WorkflowRegistry,
+    mock_persistence: MockPersistence,
+    mock_event_bus: MockEventBus,
+) -> LocalExecutionEngine:
+    """Create a local execution engine with all features.
+
+    Args:
+        workflow_registry: Workflow registry fixture
+        mock_persistence: Mock persistence fixture
+        mock_event_bus: Mock event bus fixture
+
+    Returns:
+        LocalExecutionEngine instance with persistence and event bus
+    """
+    from litestar_workflows.engine.local import LocalExecutionEngine
+
+    return LocalExecutionEngine(registry=workflow_registry, persistence=mock_persistence, event_bus=mock_event_bus)
 
 
 @pytest.fixture

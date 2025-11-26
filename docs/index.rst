@@ -51,6 +51,7 @@ Key Features
 - **Litestar Integration**: Deep integration with Litestar's DI, guards, and plugin system
 - **Flexible Execution**: Local execution engine with optional distributed backends
 - **Database Persistence**: SQLAlchemy-backed storage with multi-tenancy support (``[db]`` extra)
+- **REST API Plugin**: Production-ready web API with OpenAPI docs and MermaidJS visualization (``[web]`` extra)
 
 
 Quick Example
@@ -119,6 +120,7 @@ Installation
    :caption: Reference
 
    api/index
+   architecture/index
    changelog
 
 .. toctree::

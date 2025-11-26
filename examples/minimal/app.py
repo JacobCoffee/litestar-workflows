@@ -226,6 +226,7 @@ class WorkflowController(Controller):
 # Configure the plugin
 plugin_config = WorkflowPluginConfig(
     auto_register_workflows=[OrderWorkflow],
+    enable_api=False,  # Disable auto API since we have custom WorkflowController
 )
 
 # Create the Litestar application

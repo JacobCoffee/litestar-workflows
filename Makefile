@@ -11,7 +11,7 @@ UV     ?= uv $(UV_OPTS)
 .EXPORT_ALL_VARIABLES:
 
 .PHONY: help install dev clean lint fmt test docs
-.PHONY: fmt-fix fmt-check type-check ruff ruff-check
+.PHONY: fmt-fix fmt-check type-check ruff ruff-check security
 .PHONY: docs-serve docs-clean
 .PHONY: install-uv install-prek upgrade
 .PHONY: worktree worktree-list worktree-prune
@@ -84,6 +84,16 @@ ruff-check: ## Runs Ruff without changing files
 
 type-check: ## Run ty type checker
 	@$(UV) run --no-sync ty check
+
+# =============================================================================
+# Security
+# =============================================================================
+
+##@ Security
+
+security: ## Run zizmor GitHub Actions security scanner
+	@echo "=> Running zizmor security scan on GitHub Actions workflows"
+	@uvx zizmor .github/workflows/
 
 # =============================================================================
 # Testing

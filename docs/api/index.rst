@@ -793,34 +793,29 @@ Repository Classes
 Web Plugin (Optional)
 ---------------------
 
-Available with the ``[web]`` extra.
+Available with the ``[web]`` extra. The REST API is built into the main ``WorkflowPlugin``
+and enabled by default via ``enable_api=True``.
 
-.. py:class:: WorkflowWebPlugin
+**Example:**
 
-   Litestar plugin for workflow web routes.
+.. code-block:: python
 
-   :param path_prefix: URL prefix for workflow routes (default: "/workflows")
-   :param enable_admin: Enable admin API routes
-   :param enable_api: Enable REST API routes
-   :param enable_ui: Enable web UI routes
-   :param auth_guard: Guard class for authentication
-   :param admin_guard: Guard class for admin routes
+   from litestar import Litestar
+   from litestar_workflows import WorkflowPlugin, WorkflowPluginConfig
 
-   **Example:**
+   app = Litestar(
+       plugins=[
+           WorkflowPlugin(
+               config=WorkflowPluginConfig(
+                   enable_api=True,  # Default - API auto-enabled
+                   api_path_prefix="/workflows",
+                   api_guards=[],
+               )
+           ),
+       ],
+   )
 
-   .. code-block:: python
-
-      from litestar import Litestar
-      from litestar_workflows.web import WorkflowWebPlugin
-
-      app = Litestar(
-          plugins=[
-              WorkflowWebPlugin(
-                  path_prefix="/api/workflows",
-                  enable_admin=True,
-              )
-          ]
-      )
+See :doc:`web` for complete API reference.
 
 
 Full Module Reference
@@ -830,6 +825,7 @@ Full Module Reference
    :maxdepth: 2
 
    modules
+   web
 
 
 See Also

@@ -83,12 +83,12 @@ db = [
   "advanced-alchemy>=0.20.0",
   "alembic>=1.13.0",
 ]
-ui = ["litestar[jinja]"]
-web = [
+ui = [
+  "litestar[jinja]",
   "litestar-workflows[db]",
 ]
 all = [
-  "litestar-workflows[db,ui,web]",
+  "litestar-workflows[db,ui]",
 ]
 
 [project.urls]
@@ -262,8 +262,11 @@ max-complexity = 12
   "D",        # Docstrings
   "FBT003",   # Boolean positional value in function call
   "INP001",   # Implicit namespace package
+  "RET504",   # Unnecessary assignment before return
   "RUF012",   # Mutable class attributes
   "S104",     # Possible binding to all interfaces
+  "T201",     # Print statements - acceptable in example apps
+  "TC001",    # Move import into TYPE_CHECKING block
 ]
 "**/migrations/**/*.*" = [
   "ANN",      # Type annotations
