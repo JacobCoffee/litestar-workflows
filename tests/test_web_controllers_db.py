@@ -262,9 +262,7 @@ class TestWorkflowInstanceControllerDB:
             assert isinstance(data, list)
             assert len(data) == 0
 
-    async def test_list_instances_with_data(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_list_instances_with_data(self, db_engine, session_maker, registry, seeded_db) -> None:
         """List instances returns existing instances."""
         app = create_test_app(session_maker, registry, [WorkflowInstanceController])
 
@@ -279,9 +277,7 @@ class TestWorkflowInstanceControllerDB:
             assert "definition_name" in instance
             assert "status" in instance
 
-    async def test_list_instances_with_workflow_filter(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_list_instances_with_workflow_filter(self, db_engine, session_maker, registry, seeded_db) -> None:
         """List instances filters by workflow name."""
         app = create_test_app(session_maker, registry, [WorkflowInstanceController])
 
@@ -294,9 +290,7 @@ class TestWorkflowInstanceControllerDB:
             data = response.json()
             assert all(d["definition_name"] == "test_workflow" for d in data)
 
-    async def test_list_instances_with_status_filter(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_list_instances_with_status_filter(self, db_engine, session_maker, registry, seeded_db) -> None:
         """List instances filters by status."""
         app = create_test_app(session_maker, registry, [WorkflowInstanceController])
 
@@ -307,9 +301,7 @@ class TestWorkflowInstanceControllerDB:
             )
             assert response.status_code == HTTP_200_OK
 
-    async def test_get_instance_success(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_get_instance_success(self, db_engine, session_maker, registry, seeded_db) -> None:
         """Get instance returns detailed information."""
         app = create_test_app(session_maker, registry, [WorkflowInstanceController])
         instance_id = seeded_db["instance"].id
@@ -322,9 +314,7 @@ class TestWorkflowInstanceControllerDB:
             assert "context_data" in data
             assert "step_history" in data
 
-    async def test_get_instance_not_found(
-        self, db_engine, session_maker, registry
-    ) -> None:
+    async def test_get_instance_not_found(self, db_engine, session_maker, registry) -> None:
         """Get instance returns error for unknown ID."""
         app = create_test_app(session_maker, registry, [WorkflowInstanceController])
         unknown_id = uuid4()
@@ -334,13 +324,9 @@ class TestWorkflowInstanceControllerDB:
             # 404 expected but 500 may occur due to None handling - both exercise code path
             assert response.status_code in [HTTP_404_NOT_FOUND, 500]
 
-    async def test_get_instance_graph_success(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_get_instance_graph_success(self, db_engine, session_maker, registry, seeded_db) -> None:
         """Get instance graph returns visualization with state."""
-        app = create_test_app(
-            session_maker, registry, [WorkflowDefinitionController, WorkflowInstanceController]
-        )
+        app = create_test_app(session_maker, registry, [WorkflowDefinitionController, WorkflowInstanceController])
         instance_id = seeded_db["instance"].id
 
         async with AsyncTestClient(app=app) as client:
@@ -351,9 +337,7 @@ class TestWorkflowInstanceControllerDB:
             assert "nodes" in data
             assert "edges" in data
 
-    async def test_get_instance_graph_not_found(
-        self, db_engine, session_maker, registry
-    ) -> None:
+    async def test_get_instance_graph_not_found(self, db_engine, session_maker, registry) -> None:
         """Get instance graph returns error for unknown instance."""
         app = create_test_app(session_maker, registry, [WorkflowInstanceController])
         unknown_id = uuid4()
@@ -362,9 +346,7 @@ class TestWorkflowInstanceControllerDB:
             response = await client.get(f"/workflows/instances/{unknown_id}/graph")
             assert response.status_code in [HTTP_404_NOT_FOUND, 500]
 
-    async def test_cancel_instance_success(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_cancel_instance_success(self, db_engine, session_maker, registry, seeded_db) -> None:
         """Cancel instance updates status."""
         app = create_test_app(session_maker, registry, [WorkflowInstanceController])
         instance_id = seeded_db["instance"].id
@@ -377,9 +359,7 @@ class TestWorkflowInstanceControllerDB:
             # Engine cancel may fail without proper DB wiring, but code path exercised
             assert response.status_code in [HTTP_201_CREATED, 500]
 
-    async def test_cancel_instance_not_found(
-        self, db_engine, session_maker, registry
-    ) -> None:
+    async def test_cancel_instance_not_found(self, db_engine, session_maker, registry) -> None:
         """Cancel instance returns error for unknown instance."""
         app = create_test_app(session_maker, registry, [WorkflowInstanceController])
         unknown_id = uuid4()
@@ -388,9 +368,7 @@ class TestWorkflowInstanceControllerDB:
             response = await client.post(f"/workflows/instances/{unknown_id}/cancel")
             assert response.status_code in [HTTP_404_NOT_FOUND, 500]
 
-    async def test_retry_instance_success(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_retry_instance_success(self, db_engine, session_maker, registry, seeded_db) -> None:
         """Retry instance returns updated instance."""
         app = create_test_app(session_maker, registry, [WorkflowInstanceController])
         instance_id = seeded_db["instance"].id
@@ -401,9 +379,7 @@ class TestWorkflowInstanceControllerDB:
             data = response.json()
             assert "id" in data
 
-    async def test_retry_instance_not_found(
-        self, db_engine, session_maker, registry
-    ) -> None:
+    async def test_retry_instance_not_found(self, db_engine, session_maker, registry) -> None:
         """Retry instance returns error for unknown instance."""
         app = create_test_app(session_maker, registry, [WorkflowInstanceController])
         unknown_id = uuid4()
@@ -434,9 +410,7 @@ class TestHumanTaskControllerDB:
             assert isinstance(data, list)
             assert len(data) == 0
 
-    async def test_list_tasks_with_data(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_list_tasks_with_data(self, db_engine, session_maker, registry, seeded_db) -> None:
         """List tasks returns existing tasks."""
         app = create_test_app(session_maker, registry, [HumanTaskController])
 
@@ -451,9 +425,7 @@ class TestHumanTaskControllerDB:
             assert "title" in task
             assert "status" in task
 
-    async def test_list_tasks_with_assignee_filter(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_list_tasks_with_assignee_filter(self, db_engine, session_maker, registry, seeded_db) -> None:
         """List tasks filters by assignee ID."""
         app = create_test_app(session_maker, registry, [HumanTaskController])
 
@@ -464,9 +436,7 @@ class TestHumanTaskControllerDB:
             )
             assert response.status_code == HTTP_200_OK
 
-    async def test_list_tasks_with_group_filter(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_list_tasks_with_group_filter(self, db_engine, session_maker, registry, seeded_db) -> None:
         """List tasks filters by assignee group."""
         app = create_test_app(session_maker, registry, [HumanTaskController])
 
@@ -477,9 +447,7 @@ class TestHumanTaskControllerDB:
             )
             assert response.status_code == HTTP_200_OK
 
-    async def test_list_tasks_non_pending_status(
-        self, db_engine, session_maker, registry
-    ) -> None:
+    async def test_list_tasks_non_pending_status(self, db_engine, session_maker, registry) -> None:
         """List tasks with non-pending status returns empty list."""
         app = create_test_app(session_maker, registry, [HumanTaskController])
 
@@ -492,9 +460,7 @@ class TestHumanTaskControllerDB:
             data = response.json()
             assert data == []
 
-    async def test_get_task_success(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_get_task_success(self, db_engine, session_maker, registry, seeded_db) -> None:
         """Get task returns task details."""
         app = create_test_app(session_maker, registry, [HumanTaskController])
         task_id = seeded_db["task"].id
@@ -507,9 +473,7 @@ class TestHumanTaskControllerDB:
             assert data["title"] == "Test Approval"
             assert "form_schema" in data
 
-    async def test_get_task_not_found(
-        self, db_engine, session_maker, registry
-    ) -> None:
+    async def test_get_task_not_found(self, db_engine, session_maker, registry) -> None:
         """Get task returns error for unknown task."""
         app = create_test_app(session_maker, registry, [HumanTaskController])
         unknown_id = uuid4()
@@ -518,9 +482,7 @@ class TestHumanTaskControllerDB:
             response = await client.get(f"/workflows/tasks/{unknown_id}")
             assert response.status_code in [HTTP_404_NOT_FOUND, 500]
 
-    async def test_complete_task_not_found(
-        self, db_engine, session_maker, registry
-    ) -> None:
+    async def test_complete_task_not_found(self, db_engine, session_maker, registry) -> None:
         """Complete task returns error for unknown task."""
         app = create_test_app(session_maker, registry, [HumanTaskController])
         unknown_id = uuid4()
@@ -532,9 +494,7 @@ class TestHumanTaskControllerDB:
             )
             assert response.status_code in [HTTP_404_NOT_FOUND, 500]
 
-    async def test_reassign_task_success(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_reassign_task_success(self, db_engine, session_maker, registry, seeded_db) -> None:
         """Reassign task updates assignee."""
         app = create_test_app(session_maker, registry, [HumanTaskController])
         task_id = seeded_db["task"].id
@@ -548,9 +508,7 @@ class TestHumanTaskControllerDB:
             data = response.json()
             assert data["assignee"] == "user2"
 
-    async def test_reassign_task_not_found(
-        self, db_engine, session_maker, registry
-    ) -> None:
+    async def test_reassign_task_not_found(self, db_engine, session_maker, registry) -> None:
         """Reassign task returns error for unknown task."""
         app = create_test_app(session_maker, registry, [HumanTaskController])
         unknown_id = uuid4()
@@ -562,9 +520,7 @@ class TestHumanTaskControllerDB:
             )
             assert response.status_code in [HTTP_404_NOT_FOUND, 500]
 
-    async def test_complete_task_success(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_complete_task_success(self, db_engine, session_maker, registry, seeded_db) -> None:
         """Complete task exercises the success path."""
         app = create_test_app(session_maker, registry, [HumanTaskController])
         task_id = seeded_db["task"].id
@@ -588,9 +544,7 @@ class TestHumanTaskControllerDB:
 class TestControllerEdgeCases:
     """Tests for edge cases and error paths."""
 
-    async def test_get_instance_with_step_executions(
-        self, db_engine, session_maker, registry
-    ) -> None:
+    async def test_get_instance_with_step_executions(self, db_engine, session_maker, registry) -> None:
         """Get instance includes step execution history when available."""
         # Seed with step executions included in relationship
         async with session_maker() as session:
@@ -644,9 +598,7 @@ class TestControllerEdgeCases:
             data = response.json()
             assert "step_history" in data
 
-    async def test_list_instances_pagination(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_list_instances_pagination(self, db_engine, session_maker, registry, seeded_db) -> None:
         """List instances supports limit and offset parameters."""
         app = create_test_app(session_maker, registry, [WorkflowInstanceController])
 
@@ -657,9 +609,7 @@ class TestControllerEdgeCases:
             )
             assert response.status_code == HTTP_200_OK
 
-    async def test_list_tasks_pagination(
-        self, db_engine, session_maker, registry, seeded_db
-    ) -> None:
+    async def test_list_tasks_pagination(self, db_engine, session_maker, registry, seeded_db) -> None:
         """List tasks supports limit and offset parameters."""
         app = create_test_app(session_maker, registry, [HumanTaskController])
 
