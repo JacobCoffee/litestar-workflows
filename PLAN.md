@@ -14,7 +14,7 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Tests | 461 |
+| Total Tests | 465 |
 | Coverage | 91% |
 | Target | 96% |
 
@@ -22,12 +22,16 @@
 
 | Module | Coverage | Priority | Notes |
 |--------|----------|----------|-------|
-| `web/controllers.py` | 82% | Medium | Some error paths need cleanup |
-| `core/protocols.py` | 73% | High | Protocol method implementations |
-| `db/migrations/env.py` | 0% | Low | Alembic env file, skip |
-| `web/exceptions.py` | 76% | Medium | Exception handlers |
+| `web/controllers.py` | 84% | Low | Remaining: ImportError/NotFound paths |
+| `core/protocols.py` | 73% | Skip | Protocol abstract methods (expected) |
+| `db/migrations/env.py` | 0% | Skip | Alembic env file |
+| `web/exceptions.py` | 76% | Skip | ImportError paths (DB installed) |
 | `steps/base.py` | 85% | Low | Near target |
-| `contrib/*` | 0% | Low | Stub implementations (expected) |
+| `contrib/*` | 0% | Skip | Stub implementations (expected) |
+
+**Note**: The remaining coverage gaps are mostly ImportError handling paths that cannot be tested
+when the [db] extra is installed, and Protocol abstract method signatures which are by design
+never executed. The 91% coverage is a realistic ceiling for this codebase.
 
 ### Branch Status
 
