@@ -88,11 +88,13 @@ jobs:
         with:
           enable-cache: true
 
-      - name: Install dependencies
+      - name: Create virtual environment
         run: uv sync --all-extras --dev
 
       - name: Run ty type checker
-        run: uv run ty check src
+        uses: JacobCoffee/ty-action@v0.0.1
+        with:
+          args: check src
 
   # ==================================================================================== #
   # TESTS

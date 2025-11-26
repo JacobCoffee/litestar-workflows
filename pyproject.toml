@@ -309,6 +309,9 @@ convention = "google"
 
 [tool.ty]
 
+[tool.ty.environment]
+python = ".venv"
+
 [tool.ty.rules]
 deprecated = "warn"
 
