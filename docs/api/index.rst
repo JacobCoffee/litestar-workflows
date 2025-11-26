@@ -818,6 +818,35 @@ and enabled by default via ``enable_api=True``.
 See :doc:`web` for complete API reference.
 
 
+Contrib Modules (Planned)
+-------------------------
+
+Optional execution engines for distributed workflow execution.
+
+.. note::
+
+   These are stub implementations for Phase 6 (v0.7.0). Installing the extras
+   provides the stub classes which raise ``NotImplementedError``.
+
+.. py:class:: CeleryExecutionEngine
+
+   Celery-based distributed execution engine (stub).
+
+   Install with: ``pip install litestar-workflows[celery]``
+
+.. py:class:: SAQExecutionEngine
+
+   SAQ (Simple Async Queue) execution engine (stub).
+
+   Install with: ``pip install litestar-workflows[saq]``
+
+.. py:class:: ARQExecutionEngine
+
+   ARQ (Async Redis Queue) execution engine (stub).
+
+   Install with: ``pip install litestar-workflows[arq]``
+
+
 Full Module Reference
 ---------------------
 
