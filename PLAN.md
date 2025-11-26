@@ -15,23 +15,20 @@
 | Metric | Value |
 |--------|-------|
 | Total Tests | 465 |
-| Coverage | 91% |
+| Coverage | 94% |
 | Target | 96% |
 
 ### Coverage Gaps
 
 | Module | Coverage | Priority | Notes |
 |--------|----------|----------|-------|
-| `web/controllers.py` | 84% | Low | Remaining: ImportError/NotFound paths |
-| `core/protocols.py` | 73% | Skip | Protocol abstract methods (expected) |
-| `db/migrations/env.py` | 0% | Skip | Alembic env file |
-| `web/exceptions.py` | 76% | Skip | ImportError paths (DB installed) |
-| `steps/base.py` | 85% | Low | Near target |
-| `contrib/*` | 0% | Skip | Stub implementations (expected) |
+| `web/controllers.py` | 86% | Low | Remaining: some error handlers |
+| `engine/graph.py` | 95% | Low | Edge case error paths |
+| `engine/local.py` | 97% | Low | Near target |
+| `steps/base.py` | 89% | Low | Near target |
 
-**Note**: The remaining coverage gaps are mostly ImportError handling paths that cannot be tested
-when the [db] extra is installed, and Protocol abstract method signatures which are by design
-never executed. The 91% coverage is a realistic ceiling for this codebase.
+**Note**: Coverage exclusion patterns configured in `pyproject.toml` exclude untestable paths
+(Protocol methods, TYPE_CHECKING blocks, NotImplementedError stubs).
 
 ### Branch Status
 
