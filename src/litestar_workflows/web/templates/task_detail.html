@@ -99,9 +99,9 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
                                 {% if prop_name in task.form_schema.get('required', []) %}required{% endif %}>
                             <option value="">Select an option</option>
-                            {% for i, option in enumerate(prop_config.get('enum', [])) %}
+                            {% for option in prop_config.get('enum', []) %}
                             <option value="{{ option }}">
-                                {{ prop_config.get('enumNames', [])[i] if prop_config.get('enumNames') and i < prop_config.get('enumNames')|length else option }}
+                                {{ prop_config.get('enumNames', [])[loop.index0] if prop_config.get('enumNames') and loop.index0 < prop_config.get('enumNames')|length else option }}
                             </option>
                             {% endfor %}
                         </select>

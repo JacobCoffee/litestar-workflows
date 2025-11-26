@@ -127,7 +127,7 @@
         </div>
         <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
             <div class="mermaid bg-gray-50 p-4 rounded-lg overflow-auto">
-{{ graph.mermaid_source }}
+{{ graph.mermaid_source | safe }}
             </div>
             <div class="mt-4 flex space-x-4 text-sm">
                 <div class="flex items-center">
@@ -230,6 +230,12 @@
                 <div>
                     <h3 class="text-lg leading-6 font-medium text-gray-900">Context Data</h3>
                     <p class="mt-1 max-w-2xl text-sm text-gray-500">Workflow execution context</p>
+                    <p class="mt-1 text-xs text-amber-600">
+                        <svg class="inline h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        May contain sensitive information - do not share publicly
+                    </p>
                 </div>
                 <svg class="h-5 w-5 text-gray-400 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />

@@ -42,12 +42,13 @@ def get_template_config() -> TemplateConfig:
         TemplateConfig configured for the workflow templates directory.
     """
     import importlib.resources
+    from pathlib import Path
 
     # Get the templates directory path
     templates_path = importlib.resources.files("litestar_workflows.web") / "templates"
 
     return TemplateConfig(
-        directory=templates_path,
+        directory=Path(str(templates_path)),
         engine=JinjaTemplateEngine,
     )
 
@@ -205,7 +206,7 @@ class WorkflowUIController(Controller):
         workflow_name: str,
         workflow_engine: LocalExecutionEngine,
         workflow_registry: WorkflowRegistry,
-    ) -> Redirect:
+    ) -> Redirect | Template:
         """Start a new workflow instance from form submission."""
         try:
             workflow_class = workflow_registry.get_workflow_class(workflow_name)
@@ -221,7 +222,28 @@ class WorkflowUIController(Controller):
         try:
             input_data = json.loads(input_data_str) if input_data_str else {}
         except json.JSONDecodeError:
-            input_data = {}
+            # Return to form with error message
+            try:
+                definition = workflow_registry.get_definition(workflow_name)
+            except KeyError as e:
+                raise NotFoundException(detail=f"Workflow '{workflow_name}' not found") from e
+
+            return Template(
+                template_name="start_workflow.html",
+                context={
+                    "request": request,
+                    "workflow": {
+                        "name": definition.name,
+                        "version": definition.version,
+                        "description": definition.description,
+                        "steps": list(definition.steps.keys()),
+                        "initial_step": definition.initial_step,
+                    },
+                    "current_user": None,
+                    "api_base_url": str(request.base_url).rstrip("/"),
+                    "error": "Invalid JSON in input data. Please check your JSON syntax.",
+                },
+            )
 
         # Start the workflow
         instance = await workflow_engine.start_workflow(
