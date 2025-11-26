@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="violet" data-content_root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Quickstart - litestar-workflows</title><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Core Concepts" href="../concepts/index.html" /><link rel="prev" title="Installation" href="installation.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=14737038" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=8975404a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    <meta property="og:type" content="website"/><meta property="og:title" content="Quickstart"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../index.html">
+      
+      
+      <strong>litestar-workflows</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"><ul><li class="link">
+          <a href="https://litestar.dev/">
+            <span>Litestar</span></a>
+        </li><li class="link">
+          <a href="https://pypi.org/project/litestar-workflows/">
+            <span>PyPI</span></a>
+        </li></ul></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Learn</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Quickstart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Core Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/workflows.html">Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/steps.html">Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/context.html">Workflow Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/execution.html">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/index.html">How-To Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../guides/simple-workflow.html">Building a Simple Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/human-tasks.html">Working with Human Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/parallel-execution.html">Parallel Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/conditional-logic.html">Conditional Logic and Gateways</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/persistence.html">Database Persistence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/web-plugin.html">Web Plugin (REST API)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/index.html">Cookbook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/expense-approval.html">Expense Approval Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/document-review.html">Document Review Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/onboarding.html">Employee Onboarding Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/integration-patterns.html">Integration Patterns</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/modules.html">Module Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/web.html">Web Plugin API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architecture Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../architecture/phase3-web.html">Phase 3: Web Plugin Architecture</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/litestar-919193495116337154">Discord</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#what-we-re-building">What We&#8217;re Building</a></li>
+<li><a class="reference internal" href="#step-1-define-your-steps">Step 1: Define Your Steps</a><ul>
+<li><a class="reference internal" href="#machine-steps">Machine Steps</a></li>
+<li><a class="reference internal" href="#human-steps">Human Steps</a></li>
+<li><a class="reference internal" href="#processing-step">Processing Step</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#step-2-create-the-workflow-definition">Step 2: Create the Workflow Definition</a></li>
+<li><a class="reference internal" href="#step-3-register-and-run">Step 3: Register and Run</a></li>
+<li><a class="reference internal" href="#step-4-complete-human-tasks">Step 4: Complete Human Tasks</a></li>
+<li><a class="reference internal" href="#complete-example">Complete Example</a></li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">litestar-workflows</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="index.html"><span itemprop="name">Getting Started</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">Quickstart</strong>
+        <meta itemprop="position" content="3" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+        <article class="yue" role="main">
+          <section id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h1>
+<p>This tutorial walks you through creating your first workflow with litestar-workflows.
+In about 10 minutes, you’ll build a complete approval workflow that combines automated
+processing with human decision points.</p>
+<section id="what-we-re-building">
+<h2>What We’re Building<a class="headerlink" href="#what-we-re-building" title="Link to this heading">¶</a></h2>
+<p>We’ll create a simple expense approval workflow with three steps:</p>
+<ol class="arabic simple">
+<li><p><strong>Submit Request</strong> (Machine Step): Automatically validates and records the submission</p></li>
+<li><p><strong>Manager Approval</strong> (Human Step): Waits for a manager to approve or reject</p></li>
+<li><p><strong>Process Result</strong> (Machine Step): Handles the approved/rejected request</p></li>
+</ol>
+<p>Here’s what the workflow looks like visually:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><span data-line="1">[Submit Request] --&gt; [Manager Approval] --&gt; [Process Result]
+</span><span data-line="2">     (auto)              (human)              (auto)
+</span></pre></div>
+</div>
+</section>
+<section id="step-1-define-your-steps">
+<h2>Step 1: Define Your Steps<a class="headerlink" href="#step-1-define-your-steps" title="Link to this heading">¶</a></h2>
+<p>First, let’s create the steps that make up our workflow.</p>
+<section id="machine-steps">
+<h3>Machine Steps<a class="headerlink" href="#machine-steps" title="Link to this heading">¶</a></h3>
+<p>Machine steps run automatically without human intervention. They inherit from
+<code class="docutils literal notranslate"><span class="pre">BaseMachineStep</span></code> and implement an <code class="docutils literal notranslate"><span class="pre">execute</span></code> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMachineStep</span><span class="p">,</span> <span class="n">WorkflowContext</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="k">class</span><span class="w"> </span><span class="nc">SubmitRequest</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="4"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Automatically process the initial submission.&quot;&quot;&quot;</span>
+</span><span data-line="5">
+</span><span data-line="6">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;submit_request&quot;</span>
+</span><span data-line="7">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Validate and record the expense submission&quot;</span>
+</span><span data-line="8">
+</span><span data-line="9">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="10">        <span class="c1"># Access workflow data</span>
+</span><span data-line="11">        <span class="n">amount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="12">        <span class="n">description</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span data-line="13">
+</span><span data-line="14">        <span class="c1"># Validate the request</span>
+</span><span data-line="15">        <span class="k">if</span> <span class="n">amount</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+</span><span data-line="16">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Amount must be positive&quot;</span><span class="p">)</span>
+</span><span data-line="17">
+</span><span data-line="18">        <span class="c1"># Store computed values in context</span>
+</span><span data-line="19">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;submitted&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</span><span data-line="20">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;submitted_at&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="21">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;requires_vp_approval&quot;</span><span class="p">,</span> <span class="n">amount</span> <span class="o">&gt;</span> <span class="mi">5000</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">WorkflowContext</span></code> provides access to workflow data:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">context.get(key,</span> <span class="pre">default)</span></code> - Retrieve a value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">context.set(key,</span> <span class="pre">value)</span></code> - Store a value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">context.data</span></code> - Access the full data dictionary</p></li>
+</ul>
+</section>
+<section id="human-steps">
+<h3>Human Steps<a class="headerlink" href="#human-steps" title="Link to this heading">¶</a></h3>
+<p>Human steps pause the workflow until a person takes action. They inherit from
+<code class="docutils literal notranslate"><span class="pre">BaseHumanStep</span></code> and define a form schema:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseHumanStep</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="k">class</span><span class="w"> </span><span class="nc">ManagerApproval</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="4"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Wait for manager to approve or reject the request.&quot;&quot;&quot;</span>
+</span><span data-line="5">
+</span><span data-line="6">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;manager_approval&quot;</span>
+</span><span data-line="7">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Approve Expense Request&quot;</span>
+</span><span data-line="8">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Review and approve or reject this expense request&quot;</span>
+</span><span data-line="9">
+</span><span data-line="10">    <span class="c1"># JSON Schema for the approval form</span>
+</span><span data-line="11">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="12">        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="13">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="14">            <span class="s2">&quot;approved&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="15">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="16">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Approve this request?&quot;</span><span class="p">,</span>
+</span><span data-line="17">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="18">            <span class="p">},</span>
+</span><span data-line="19">            <span class="s2">&quot;comments&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="20">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="21">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Comments&quot;</span><span class="p">,</span>
+</span><span data-line="22">                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Optional comments for the requester&quot;</span><span class="p">,</span>
+</span><span data-line="23">            <span class="p">},</span>
+</span><span data-line="24">        <span class="p">},</span>
+</span><span data-line="25">        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;approved&quot;</span><span class="p">],</span>
+</span><span data-line="26">    <span class="p">}</span>
+</span></pre></div>
+</div>
+<p>When this step is reached, the workflow pauses and creates a task for the assigned
+person. Once they submit the form, the data is added to the context and execution
+continues.</p>
+</section>
+<section id="processing-step">
+<h3>Processing Step<a class="headerlink" href="#processing-step" title="Link to this heading">¶</a></h3>
+<p>Let’s add the final step that handles the result:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">ProcessResult</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="2"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Process the approved or rejected request.&quot;&quot;&quot;</span>
+</span><span data-line="3">
+</span><span data-line="4">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;process_result&quot;</span>
+</span><span data-line="5">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Handle the final outcome&quot;</span>
+</span><span data-line="6">
+</span><span data-line="7">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="8">        <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;approved&quot;</span><span class="p">):</span>
+</span><span data-line="9">            <span class="c1"># Request was approved - process it</span>
+</span><span data-line="10">            <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;approved&quot;</span><span class="p">)</span>
+</span><span data-line="11">            <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;processed_at&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="12">            <span class="c1"># Trigger payment, notification, etc.</span>
+</span><span data-line="13">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="14">            <span class="c1"># Request was rejected</span>
+</span><span data-line="15">            <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;rejected&quot;</span><span class="p">)</span>
+</span><span data-line="16">            <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;rejection_reason&quot;</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comments&quot;</span><span class="p">,</span> <span class="s2">&quot;No reason provided&quot;</span><span class="p">))</span>
+</span></pre></div>
+</div>
+</section>
+</section>
+<section id="step-2-create-the-workflow-definition">
+<h2>Step 2: Create the Workflow Definition<a class="headerlink" href="#step-2-create-the-workflow-definition" title="Link to this heading">¶</a></h2>
+<p>Now we connect our steps with edges to form a workflow:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkflowDefinition</span><span class="p">,</span> <span class="n">Edge</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="c1"># Create step instances</span>
+</span><span data-line="4"><span class="n">submit_step</span> <span class="o">=</span> <span class="n">SubmitRequest</span><span class="p">()</span>
+</span><span data-line="5"><span class="n">approval_step</span> <span class="o">=</span> <span class="n">ManagerApproval</span><span class="p">()</span>
+</span><span data-line="6"><span class="n">process_step</span> <span class="o">=</span> <span class="n">ProcessResult</span><span class="p">()</span>
+</span><span data-line="7">
+</span><span data-line="8"><span class="c1"># Define the workflow</span>
+</span><span data-line="9"><span class="n">expense_workflow</span> <span class="o">=</span> <span class="n">WorkflowDefinition</span><span class="p">(</span>
+</span><span data-line="10">    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;expense_approval&quot;</span><span class="p">,</span>
+</span><span data-line="11">    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+</span><span data-line="12">    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Expense request approval workflow&quot;</span><span class="p">,</span>
+</span><span data-line="13">    <span class="n">steps</span><span class="o">=</span><span class="p">{</span>
+</span><span data-line="14">        <span class="s2">&quot;submit_request&quot;</span><span class="p">:</span> <span class="n">submit_step</span><span class="p">,</span>
+</span><span data-line="15">        <span class="s2">&quot;manager_approval&quot;</span><span class="p">:</span> <span class="n">approval_step</span><span class="p">,</span>
+</span><span data-line="16">        <span class="s2">&quot;process_result&quot;</span><span class="p">:</span> <span class="n">process_step</span><span class="p">,</span>
+</span><span data-line="17">    <span class="p">},</span>
+</span><span data-line="18">    <span class="n">edges</span><span class="o">=</span><span class="p">[</span>
+</span><span data-line="19">        <span class="n">Edge</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s2">&quot;submit_request&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;manager_approval&quot;</span><span class="p">),</span>
+</span><span data-line="20">        <span class="n">Edge</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s2">&quot;manager_approval&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;process_result&quot;</span><span class="p">),</span>
+</span><span data-line="21">    <span class="p">],</span>
+</span><span data-line="22">    <span class="n">initial_step</span><span class="o">=</span><span class="s2">&quot;submit_request&quot;</span><span class="p">,</span>
+</span><span data-line="23">    <span class="n">terminal_steps</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;process_result&quot;</span><span class="p">},</span>
+</span><span data-line="24"><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>Key concepts:</p>
+<ul class="simple">
+<li><p><strong>steps</strong>: Dictionary mapping step names to step instances</p></li>
+<li><p><strong>edges</strong>: List of transitions between steps</p></li>
+<li><p><strong>initial_step</strong>: Where execution begins</p></li>
+<li><p><strong>terminal_steps</strong>: Steps that mark workflow completion</p></li>
+</ul>
+</section>
+<section id="step-3-register-and-run">
+<h2>Step 3: Register and Run<a class="headerlink" href="#step-3-register-and-run" title="Link to this heading">¶</a></h2>
+<p>With our workflow defined, we can register it and start instances:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkflowRegistry</span><span class="p">,</span> <span class="n">LocalExecutionEngine</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="c1"># Create registry and register our workflow</span>
+</span><span data-line="4"><span class="n">registry</span> <span class="o">=</span> <span class="n">WorkflowRegistry</span><span class="p">()</span>
+</span><span data-line="5"><span class="n">registry</span><span class="o">.</span><span class="n">register_definition</span><span class="p">(</span><span class="n">expense_workflow</span><span class="p">)</span>
+</span><span data-line="6">
+</span><span data-line="7"><span class="c1"># Create execution engine</span>
+</span><span data-line="8"><span class="n">engine</span> <span class="o">=</span> <span class="n">LocalExecutionEngine</span><span class="p">(</span><span class="n">registry</span><span class="p">)</span>
+</span><span data-line="9">
+</span><span data-line="10"><span class="c1"># Start a new workflow instance</span>
+</span><span data-line="11"><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">submit_expense</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">amount</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span data-line="12">    <span class="n">instance</span> <span class="o">=</span> <span class="k">await</span> <span class="n">engine</span><span class="o">.</span><span class="n">start_workflow</span><span class="p">(</span>
+</span><span data-line="13">        <span class="n">workflow_name</span><span class="o">=</span><span class="s2">&quot;expense_approval&quot;</span><span class="p">,</span>
+</span><span data-line="14">        <span class="n">initial_data</span><span class="o">=</span><span class="p">{</span>
+</span><span data-line="15">            <span class="s2">&quot;requester_id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
+</span><span data-line="16">            <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="n">amount</span><span class="p">,</span>
+</span><span data-line="17">            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+</span><span data-line="18">        <span class="p">},</span>
+</span><span data-line="19">    <span class="p">)</span>
+</span><span data-line="20">    <span class="k">return</span> <span class="n">instance</span>
+</span></pre></div>
+</div>
+<p>The workflow will:</p>
+<ol class="arabic simple">
+<li><p>Execute <code class="docutils literal notranslate"><span class="pre">submit_request</span></code> automatically</p></li>
+<li><p>Pause at <code class="docutils literal notranslate"><span class="pre">manager_approval</span></code>, waiting for human input</p></li>
+<li><p>Create a pending task for the manager</p></li>
+</ol>
+</section>
+<section id="step-4-complete-human-tasks">
+<h2>Step 4: Complete Human Tasks<a class="headerlink" href="#step-4-complete-human-tasks" title="Link to this heading">¶</a></h2>
+<p>When a manager is ready to approve or reject, complete the human task:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">approve_expense</span><span class="p">(</span><span class="n">instance_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">manager_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">approved</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">comments</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+</span><span data-line="2">    <span class="k">await</span> <span class="n">engine</span><span class="o">.</span><span class="n">complete_human_task</span><span class="p">(</span>
+</span><span data-line="3">        <span class="n">instance_id</span><span class="o">=</span><span class="n">instance_id</span><span class="p">,</span>
+</span><span data-line="4">        <span class="n">step_name</span><span class="o">=</span><span class="s2">&quot;manager_approval&quot;</span><span class="p">,</span>
+</span><span data-line="5">        <span class="n">user_id</span><span class="o">=</span><span class="n">manager_id</span><span class="p">,</span>
+</span><span data-line="6">        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+</span><span data-line="7">            <span class="s2">&quot;approved&quot;</span><span class="p">:</span> <span class="n">approved</span><span class="p">,</span>
+</span><span data-line="8">            <span class="s2">&quot;comments&quot;</span><span class="p">:</span> <span class="n">comments</span><span class="p">,</span>
+</span><span data-line="9">        <span class="p">},</span>
+</span><span data-line="10">    <span class="p">)</span>
+</span></pre></div>
+</div>
+<p>After the task is completed:</p>
+<ol class="arabic simple">
+<li><p>The form data is added to the workflow context</p></li>
+<li><p>Execution continues to <code class="docutils literal notranslate"><span class="pre">process_result</span></code></p></li>
+<li><p>The workflow completes</p></li>
+</ol>
+</section>
+<section id="complete-example">
+<h2>Complete Example<a class="headerlink" href="#complete-example" title="Link to this heading">¶</a></h2>
+<p>Here’s everything together:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="sd">&quot;&quot;&quot;Complete expense approval workflow example.&quot;&quot;&quot;</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+</span><span data-line="4"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span data-line="5">    <span class="n">WorkflowDefinition</span><span class="p">,</span>
+</span><span data-line="6">    <span class="n">Edge</span><span class="p">,</span>
+</span><span data-line="7">    <span class="n">BaseMachineStep</span><span class="p">,</span>
+</span><span data-line="8">    <span class="n">BaseHumanStep</span><span class="p">,</span>
+</span><span data-line="9">    <span class="n">LocalExecutionEngine</span><span class="p">,</span>
+</span><span data-line="10">    <span class="n">WorkflowRegistry</span><span class="p">,</span>
+</span><span data-line="11">    <span class="n">WorkflowContext</span><span class="p">,</span>
+</span><span data-line="12"><span class="p">)</span>
+</span><span data-line="13">
+</span><span data-line="14">
+</span><span data-line="15"><span class="c1"># Step 1: Define Steps</span>
+</span><span data-line="16"><span class="k">class</span><span class="w"> </span><span class="nc">SubmitRequest</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="17">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;submit_request&quot;</span>
+</span><span data-line="18">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Validate and record the expense submission&quot;</span>
+</span><span data-line="19">
+</span><span data-line="20">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="21">        <span class="n">amount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="22">        <span class="k">if</span> <span class="n">amount</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+</span><span data-line="23">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Amount must be positive&quot;</span><span class="p">)</span>
+</span><span data-line="24">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;submitted&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</span><span data-line="25">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;submitted_at&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="26">
+</span><span data-line="27">
+</span><span data-line="28"><span class="k">class</span><span class="w"> </span><span class="nc">ManagerApproval</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="29">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;manager_approval&quot;</span>
+</span><span data-line="30">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Approve Expense Request&quot;</span>
+</span><span data-line="31">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="32">        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="33">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="34">            <span class="s2">&quot;approved&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Approve?&quot;</span><span class="p">},</span>
+</span><span data-line="35">            <span class="s2">&quot;comments&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Comments&quot;</span><span class="p">},</span>
+</span><span data-line="36">        <span class="p">},</span>
+</span><span data-line="37">        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;approved&quot;</span><span class="p">],</span>
+</span><span data-line="38">    <span class="p">}</span>
+</span><span data-line="39">
+</span><span data-line="40">
+</span><span data-line="41"><span class="k">class</span><span class="w"> </span><span class="nc">ProcessResult</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="42">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;process_result&quot;</span>
+</span><span data-line="43">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Handle the final outcome&quot;</span>
+</span><span data-line="44">
+</span><span data-line="45">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="46">        <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;approved&quot;</span> <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;approved&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;rejected&quot;</span>
+</span><span data-line="47">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
+</span><span data-line="48">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;completed_at&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="49">
+</span><span data-line="50">
+</span><span data-line="51"><span class="c1"># Step 2: Create Workflow Definition</span>
+</span><span data-line="52"><span class="n">expense_workflow</span> <span class="o">=</span> <span class="n">WorkflowDefinition</span><span class="p">(</span>
+</span><span data-line="53">    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;expense_approval&quot;</span><span class="p">,</span>
+</span><span data-line="54">    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+</span><span data-line="55">    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Expense request approval workflow&quot;</span><span class="p">,</span>
+</span><span data-line="56">    <span class="n">steps</span><span class="o">=</span><span class="p">{</span>
+</span><span data-line="57">        <span class="s2">&quot;submit_request&quot;</span><span class="p">:</span> <span class="n">SubmitRequest</span><span class="p">(),</span>
+</span><span data-line="58">        <span class="s2">&quot;manager_approval&quot;</span><span class="p">:</span> <span class="n">ManagerApproval</span><span class="p">(),</span>
+</span><span data-line="59">        <span class="s2">&quot;process_result&quot;</span><span class="p">:</span> <span class="n">ProcessResult</span><span class="p">(),</span>
+</span><span data-line="60">    <span class="p">},</span>
+</span><span data-line="61">    <span class="n">edges</span><span class="o">=</span><span class="p">[</span>
+</span><span data-line="62">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;submit_request&quot;</span><span class="p">,</span> <span class="s2">&quot;manager_approval&quot;</span><span class="p">),</span>
+</span><span data-line="63">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;manager_approval&quot;</span><span class="p">,</span> <span class="s2">&quot;process_result&quot;</span><span class="p">),</span>
+</span><span data-line="64">    <span class="p">],</span>
+</span><span data-line="65">    <span class="n">initial_step</span><span class="o">=</span><span class="s2">&quot;submit_request&quot;</span><span class="p">,</span>
+</span><span data-line="66">    <span class="n">terminal_steps</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;process_result&quot;</span><span class="p">},</span>
+</span><span data-line="67"><span class="p">)</span>
+</span><span data-line="68">
+</span><span data-line="69">
+</span><span data-line="70"><span class="c1"># Step 3: Register and Run</span>
+</span><span data-line="71"><span class="n">registry</span> <span class="o">=</span> <span class="n">WorkflowRegistry</span><span class="p">()</span>
+</span><span data-line="72"><span class="n">registry</span><span class="o">.</span><span class="n">register_definition</span><span class="p">(</span><span class="n">expense_workflow</span><span class="p">)</span>
+</span><span data-line="73"><span class="n">engine</span> <span class="o">=</span> <span class="n">LocalExecutionEngine</span><span class="p">(</span><span class="n">registry</span><span class="p">)</span>
+</span><span data-line="74">
+</span><span data-line="75">
+</span><span data-line="76"><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+</span><span data-line="77">    <span class="c1"># Start a new expense request</span>
+</span><span data-line="78">    <span class="n">instance</span> <span class="o">=</span> <span class="k">await</span> <span class="n">engine</span><span class="o">.</span><span class="n">start_workflow</span><span class="p">(</span>
+</span><span data-line="79">        <span class="s2">&quot;expense_approval&quot;</span><span class="p">,</span>
+</span><span data-line="80">        <span class="n">initial_data</span><span class="o">=</span><span class="p">{</span>
+</span><span data-line="81">            <span class="s2">&quot;requester_id&quot;</span><span class="p">:</span> <span class="s2">&quot;alice@example.com&quot;</span><span class="p">,</span>
+</span><span data-line="82">            <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="mf">250.00</span><span class="p">,</span>
+</span><span data-line="83">            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Conference registration fee&quot;</span><span class="p">,</span>
+</span><span data-line="84">        <span class="p">},</span>
+</span><span data-line="85">    <span class="p">)</span>
+</span><span data-line="86">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Workflow started: </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="87">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Current step: </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">current_step</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># manager_approval</span>
+</span><span data-line="88">
+</span><span data-line="89">    <span class="c1"># Manager approves the request</span>
+</span><span data-line="90">    <span class="k">await</span> <span class="n">engine</span><span class="o">.</span><span class="n">complete_human_task</span><span class="p">(</span>
+</span><span data-line="91">        <span class="n">instance_id</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span data-line="92">        <span class="n">step_name</span><span class="o">=</span><span class="s2">&quot;manager_approval&quot;</span><span class="p">,</span>
+</span><span data-line="93">        <span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;bob@example.com&quot;</span><span class="p">,</span>
+</span><span data-line="94">        <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;approved&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;comments&quot;</span><span class="p">:</span> <span class="s2">&quot;Approved for Q4 budget&quot;</span><span class="p">},</span>
+</span><span data-line="95">    <span class="p">)</span>
+</span><span data-line="96">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Workflow completed with status: </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="97">
+</span><span data-line="98">
+</span><span data-line="99"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span data-line="100">    <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+</span><span data-line="101">    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</span></pre></div>
+</div>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">¶</a></h2>
+<p>Congratulations! You’ve built your first workflow. Here’s where to go next:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../concepts/index.html"><span class="doc">Core Concepts</span></a> - Understand the core concepts in depth</p></li>
+<li><p><a class="reference internal" href="../guides/human-tasks.html"><span class="doc">Working with Human Tasks</span></a> - Learn more about human task patterns</p></li>
+<li><p><a class="reference internal" href="../guides/conditional-logic.html"><span class="doc">Conditional Logic and Gateways</span></a> - Add conditional branching with gateways</p></li>
+<li><p><a class="reference internal" href="../guides/parallel-execution.html"><span class="doc">Parallel Execution</span></a> - Execute steps in parallel</p></li>
+</ul>
+</section>
+</section>
+
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-prev">
+    <a href="installation.html">
+      <i class="i-lucide chevron-left"></i>
+      <div class="page-info">
+        <span>Previous</span><div class="title">Installation</div></div>
+    </a>
+  </div><div class="navigation-next">
+    <a href="../concepts/index.html">
+      <div class="page-info">
+        <span>Next</span>
+        <div class="title">Core Concepts</div>
+      </div>
+      <i class="i-lucide chevron-right"></i>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2025, Jacob Coffee</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+<a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+  <iconify-icon icon="simple-icons:github"></iconify-icon>
+</a></div>
+    </div>
+  </div>
+</footer>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=30646c52"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/shibuya.js?v=c1cf1a6b"></script></body>
+</html>

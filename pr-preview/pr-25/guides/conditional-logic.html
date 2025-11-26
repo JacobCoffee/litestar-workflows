@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="violet" data-content_root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Conditional Logic and Gateways - litestar-workflows</title><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Database Persistence" href="persistence.html" /><link rel="prev" title="Parallel Execution" href="parallel-execution.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=14737038" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=8975404a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    <meta property="og:type" content="website"/><meta property="og:title" content="Conditional Logic and Gateways"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../index.html">
+      
+      
+      <strong>litestar-workflows</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"><ul><li class="link">
+          <a href="https://litestar.dev/">
+            <span>Litestar</span></a>
+        </li><li class="link">
+          <a href="https://pypi.org/project/litestar-workflows/">
+            <span>PyPI</span></a>
+        </li></ul></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Learn</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/quickstart.html">Quickstart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Core Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/workflows.html">Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/steps.html">Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/context.html">Workflow Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/execution.html">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">How-To Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="simple-workflow.html">Building a Simple Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="human-tasks.html">Working with Human Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parallel-execution.html">Parallel Execution</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Conditional Logic and Gateways</a></li>
+<li class="toctree-l2"><a class="reference internal" href="persistence.html">Database Persistence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="web-plugin.html">Web Plugin (REST API)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/index.html">Cookbook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/expense-approval.html">Expense Approval Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/document-review.html">Document Review Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/onboarding.html">Employee Onboarding Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/integration-patterns.html">Integration Patterns</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/modules.html">Module Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/web.html">Web Plugin API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architecture Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../architecture/phase3-web.html">Phase 3: Web Plugin Architecture</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/litestar-919193495116337154">Discord</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#goal">Goal</a></li>
+<li><a class="reference internal" href="#understanding-gateways">Understanding Gateways</a></li>
+<li><a class="reference internal" href="#basic-gateway">Basic Gateway</a></li>
+<li><a class="reference internal" href="#using-the-gateway-in-a-workflow">Using the Gateway in a Workflow</a></li>
+<li><a class="reference internal" href="#conditional-edges">Conditional Edges</a></li>
+<li><a class="reference internal" href="#complex-conditions">Complex Conditions</a></li>
+<li><a class="reference internal" href="#multiple-conditions-inclusive-gateway">Multiple Conditions (Inclusive Gateway)</a></li>
+<li><a class="reference internal" href="#conditional-approval-chains">Conditional Approval Chains</a></li>
+<li><a class="reference internal" href="#state-machine-pattern">State Machine Pattern</a></li>
+<li><a class="reference internal" href="#retry-logic-with-gateways">Retry Logic with Gateways</a></li>
+<li><a class="reference internal" href="#complete-example-multi-level-approval">Complete Example: Multi-Level Approval</a></li>
+<li><a class="reference internal" href="#best-practices">Best Practices</a><ul>
+<li><a class="reference internal" href="#keep-gateway-logic-simple">Keep Gateway Logic Simple</a></li>
+<li><a class="reference internal" href="#document-decision-criteria">Document Decision Criteria</a></li>
+<li><a class="reference internal" href="#test-all-branches">Test All Branches</a></li>
+<li><a class="reference internal" href="#handle-edge-cases">Handle Edge Cases</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">litestar-workflows</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="index.html"><span itemprop="name">How-To Guides</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">Conditional Logic and Gateways</strong>
+        <meta itemprop="position" content="3" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+        <article class="yue" role="main">
+          <section id="conditional-logic-and-gateways">
+<h1>Conditional Logic and Gateways<a class="headerlink" href="#conditional-logic-and-gateways" title="Link to this heading">¶</a></h1>
+<p>This guide covers adding decision points and conditional branching to your
+workflows. You’ll learn how to use gateways, conditional edges, and dynamic
+routing.</p>
+<section id="goal">
+<h2>Goal<a class="headerlink" href="#goal" title="Link to this heading">¶</a></h2>
+<p>Create workflows that take different paths based on data, user decisions,
+or business rules.</p>
+</section>
+<section id="understanding-gateways">
+<h2>Understanding Gateways<a class="headerlink" href="#understanding-gateways" title="Link to this heading">¶</a></h2>
+<p>Gateways are decision points that evaluate conditions and route execution:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><span data-line="1">[Submit] --&gt; [Gateway] ---(amount &lt; 1000)---&gt; [Auto Approve]
+</span><span data-line="2">                 |
+</span><span data-line="3">                 +---(amount &gt;= 1000)---&gt; [Manager Approval]
+</span></pre></div>
+</div>
+<p>There are several types of gateways:</p>
+<ul class="simple">
+<li><p><strong>Exclusive (XOR)</strong>: One path is taken based on condition</p></li>
+<li><p><strong>Inclusive (OR)</strong>: One or more paths may be taken</p></li>
+<li><p><strong>Parallel (AND)</strong>: All paths are taken (covered in parallel guide)</p></li>
+</ul>
+</section>
+<section id="basic-gateway">
+<h2>Basic Gateway<a class="headerlink" href="#basic-gateway" title="Link to this heading">¶</a></h2>
+<p>Create a simple decision gateway:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseGateway</span><span class="p">,</span> <span class="n">WorkflowContext</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="k">class</span><span class="w"> </span><span class="nc">AmountGateway</span><span class="p">(</span><span class="n">BaseGateway</span><span class="p">):</span>
+</span><span data-line="4"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Route based on request amount.&quot;&quot;&quot;</span>
+</span><span data-line="5">
+</span><span data-line="6">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;amount_gateway&quot;</span>
+</span><span data-line="7">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Determine approval path&quot;</span>
+</span><span data-line="8">
+</span><span data-line="9">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="10"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the name of the next step.&quot;&quot;&quot;</span>
+</span><span data-line="11">        <span class="n">amount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="12">
+</span><span data-line="13">        <span class="k">if</span> <span class="n">amount</span> <span class="o">&gt;=</span> <span class="mi">10000</span><span class="p">:</span>
+</span><span data-line="14">            <span class="k">return</span> <span class="s2">&quot;executive_approval&quot;</span>
+</span><span data-line="15">        <span class="k">elif</span> <span class="n">amount</span> <span class="o">&gt;=</span> <span class="mi">1000</span><span class="p">:</span>
+</span><span data-line="16">            <span class="k">return</span> <span class="s2">&quot;manager_approval&quot;</span>
+</span><span data-line="17">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="18">            <span class="k">return</span> <span class="s2">&quot;auto_approve&quot;</span>
+</span></pre></div>
+</div>
+</section>
+<section id="using-the-gateway-in-a-workflow">
+<h2>Using the Gateway in a Workflow<a class="headerlink" href="#using-the-gateway-in-a-workflow" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkflowDefinition</span><span class="p">,</span> <span class="n">Edge</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="n">expense_workflow</span> <span class="o">=</span> <span class="n">WorkflowDefinition</span><span class="p">(</span>
+</span><span data-line="4">    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;expense_approval&quot;</span><span class="p">,</span>
+</span><span data-line="5">    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+</span><span data-line="6">    <span class="n">steps</span><span class="o">=</span><span class="p">{</span>
+</span><span data-line="7">        <span class="s2">&quot;submit&quot;</span><span class="p">:</span> <span class="n">SubmitRequest</span><span class="p">(),</span>
+</span><span data-line="8">        <span class="s2">&quot;route&quot;</span><span class="p">:</span> <span class="n">AmountGateway</span><span class="p">(),</span>
+</span><span data-line="9">        <span class="s2">&quot;auto_approve&quot;</span><span class="p">:</span> <span class="n">AutoApprove</span><span class="p">(),</span>
+</span><span data-line="10">        <span class="s2">&quot;manager_approval&quot;</span><span class="p">:</span> <span class="n">ManagerApproval</span><span class="p">(),</span>
+</span><span data-line="11">        <span class="s2">&quot;executive_approval&quot;</span><span class="p">:</span> <span class="n">ExecutiveApproval</span><span class="p">(),</span>
+</span><span data-line="12">        <span class="s2">&quot;process&quot;</span><span class="p">:</span> <span class="n">ProcessResult</span><span class="p">(),</span>
+</span><span data-line="13">    <span class="p">},</span>
+</span><span data-line="14">    <span class="n">edges</span><span class="o">=</span><span class="p">[</span>
+</span><span data-line="15">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;submit&quot;</span><span class="p">,</span> <span class="s2">&quot;route&quot;</span><span class="p">),</span>
+</span><span data-line="16">        <span class="c1"># Gateway edges - one will be taken</span>
+</span><span data-line="17">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;route&quot;</span><span class="p">,</span> <span class="s2">&quot;auto_approve&quot;</span><span class="p">),</span>
+</span><span data-line="18">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;route&quot;</span><span class="p">,</span> <span class="s2">&quot;manager_approval&quot;</span><span class="p">),</span>
+</span><span data-line="19">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;route&quot;</span><span class="p">,</span> <span class="s2">&quot;executive_approval&quot;</span><span class="p">),</span>
+</span><span data-line="20">        <span class="c1"># All paths converge</span>
+</span><span data-line="21">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;auto_approve&quot;</span><span class="p">,</span> <span class="s2">&quot;process&quot;</span><span class="p">),</span>
+</span><span data-line="22">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;manager_approval&quot;</span><span class="p">,</span> <span class="s2">&quot;process&quot;</span><span class="p">),</span>
+</span><span data-line="23">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;executive_approval&quot;</span><span class="p">,</span> <span class="s2">&quot;process&quot;</span><span class="p">),</span>
+</span><span data-line="24">    <span class="p">],</span>
+</span><span data-line="25">    <span class="n">initial_step</span><span class="o">=</span><span class="s2">&quot;submit&quot;</span><span class="p">,</span>
+</span><span data-line="26">    <span class="n">terminal_steps</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;process&quot;</span><span class="p">},</span>
+</span><span data-line="27"><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="conditional-edges">
+<h2>Conditional Edges<a class="headerlink" href="#conditional-edges" title="Link to this heading">¶</a></h2>
+<p>Instead of gateways, use conditional edges for simpler logic:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">edges</span> <span class="o">=</span> <span class="p">[</span>
+</span><span data-line="2">    <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;submit&quot;</span><span class="p">,</span> <span class="s2">&quot;review&quot;</span><span class="p">),</span>
+</span><span data-line="3">    <span class="c1"># Conditional edges - condition is a Python expression</span>
+</span><span data-line="4">    <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="5">        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;review&quot;</span><span class="p">,</span>
+</span><span data-line="6">        <span class="n">target</span><span class="o">=</span><span class="s2">&quot;approve&quot;</span><span class="p">,</span>
+</span><span data-line="7">        <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;approved&#39;) == True&quot;</span>
+</span><span data-line="8">    <span class="p">),</span>
+</span><span data-line="9">    <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="10">        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;review&quot;</span><span class="p">,</span>
+</span><span data-line="11">        <span class="n">target</span><span class="o">=</span><span class="s2">&quot;reject&quot;</span><span class="p">,</span>
+</span><span data-line="12">        <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;approved&#39;) == False&quot;</span>
+</span><span data-line="13">    <span class="p">),</span>
+</span><span data-line="14"><span class="p">]</span>
+</span></pre></div>
+</div>
+<p>The condition is evaluated with access to <code class="docutils literal notranslate"><span class="pre">context</span></code>.</p>
+</section>
+<section id="complex-conditions">
+<h2>Complex Conditions<a class="headerlink" href="#complex-conditions" title="Link to this heading">¶</a></h2>
+<p>For complex logic, use gateway steps:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">ComplexRoutingGateway</span><span class="p">(</span><span class="n">BaseGateway</span><span class="p">):</span>
+</span><span data-line="2">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;complex_router&quot;</span>
+</span><span data-line="3">
+</span><span data-line="4">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="5">        <span class="n">amount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="6">        <span class="n">department</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;department&quot;</span><span class="p">)</span>
+</span><span data-line="7">        <span class="n">is_urgent</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_urgent&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span data-line="8">        <span class="n">requester_level</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requester_level&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="9">
+</span><span data-line="10">        <span class="c1"># Complex business rules</span>
+</span><span data-line="11">        <span class="k">if</span> <span class="n">is_urgent</span> <span class="ow">and</span> <span class="n">requester_level</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+</span><span data-line="12">            <span class="k">return</span> <span class="s2">&quot;fast_track&quot;</span>
+</span><span data-line="13">
+</span><span data-line="14">        <span class="k">if</span> <span class="n">department</span> <span class="o">==</span> <span class="s2">&quot;engineering&quot;</span><span class="p">:</span>
+</span><span data-line="15">            <span class="k">if</span> <span class="n">amount</span> <span class="o">&gt;</span> <span class="mi">5000</span><span class="p">:</span>
+</span><span data-line="16">                <span class="k">return</span> <span class="s2">&quot;cto_approval&quot;</span>
+</span><span data-line="17">            <span class="k">return</span> <span class="s2">&quot;eng_manager_approval&quot;</span>
+</span><span data-line="18">
+</span><span data-line="19">        <span class="k">if</span> <span class="n">department</span> <span class="o">==</span> <span class="s2">&quot;marketing&quot;</span><span class="p">:</span>
+</span><span data-line="20">            <span class="k">if</span> <span class="n">amount</span> <span class="o">&gt;</span> <span class="mi">3000</span><span class="p">:</span>
+</span><span data-line="21">                <span class="k">return</span> <span class="s2">&quot;cmo_approval&quot;</span>
+</span><span data-line="22">            <span class="k">return</span> <span class="s2">&quot;marketing_manager_approval&quot;</span>
+</span><span data-line="23">
+</span><span data-line="24">        <span class="c1"># Default path</span>
+</span><span data-line="25">        <span class="k">return</span> <span class="s2">&quot;standard_approval&quot;</span>
+</span></pre></div>
+</div>
+</section>
+<section id="multiple-conditions-inclusive-gateway">
+<h2>Multiple Conditions (Inclusive Gateway)<a class="headerlink" href="#multiple-conditions-inclusive-gateway" title="Link to this heading">¶</a></h2>
+<p>When multiple paths should be taken:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">NotificationGateway</span><span class="p">(</span><span class="n">BaseGateway</span><span class="p">):</span>
+</span><span data-line="2"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine which notifications to send.&quot;&quot;&quot;</span>
+</span><span data-line="3">
+</span><span data-line="4">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;notification_gateway&quot;</span>
+</span><span data-line="5">    <span class="n">gateway_type</span> <span class="o">=</span> <span class="s2">&quot;inclusive&quot;</span>  <span class="c1"># Multiple paths allowed</span>
+</span><span data-line="6">
+</span><span data-line="7">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span data-line="8"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of next steps to execute.&quot;&quot;&quot;</span>
+</span><span data-line="9">        <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="10">
+</span><span data-line="11">        <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notify_email&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+</span><span data-line="12">            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;send_email&quot;</span><span class="p">)</span>
+</span><span data-line="13">
+</span><span data-line="14">        <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notify_slack&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+</span><span data-line="15">            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;send_slack&quot;</span><span class="p">)</span>
+</span><span data-line="16">
+</span><span data-line="17">        <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">:</span>
+</span><span data-line="18">            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;send_executive_alert&quot;</span><span class="p">)</span>
+</span><span data-line="19">
+</span><span data-line="20">        <span class="k">return</span> <span class="n">paths</span> <span class="k">if</span> <span class="n">paths</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;skip_notifications&quot;</span><span class="p">]</span>
+</span></pre></div>
+</div>
+</section>
+<section id="conditional-approval-chains">
+<h2>Conditional Approval Chains<a class="headerlink" href="#conditional-approval-chains" title="Link to this heading">¶</a></h2>
+<p>Build dynamic approval chains:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">ApprovalChainGateway</span><span class="p">(</span><span class="n">BaseGateway</span><span class="p">):</span>
+</span><span data-line="2"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine required approvals based on context.&quot;&quot;&quot;</span>
+</span><span data-line="3">
+</span><span data-line="4">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;approval_chain&quot;</span>
+</span><span data-line="5">
+</span><span data-line="6">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="7">        <span class="n">amount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="8">        <span class="n">department</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;department&quot;</span><span class="p">)</span>
+</span><span data-line="9">        <span class="n">approval_count</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;approval_count&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="10">
+</span><span data-line="11">        <span class="c1"># Define approval thresholds</span>
+</span><span data-line="12">        <span class="n">thresholds</span> <span class="o">=</span> <span class="p">[</span>
+</span><span data-line="13">            <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="s2">&quot;team_lead&quot;</span><span class="p">),</span>
+</span><span data-line="14">            <span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="s2">&quot;manager&quot;</span><span class="p">),</span>
+</span><span data-line="15">            <span class="p">(</span><span class="mi">15000</span><span class="p">,</span> <span class="s2">&quot;director&quot;</span><span class="p">),</span>
+</span><span data-line="16">            <span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="s2">&quot;vp&quot;</span><span class="p">),</span>
+</span><span data-line="17">            <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span> <span class="s2">&quot;ceo&quot;</span><span class="p">),</span>
+</span><span data-line="18">        <span class="p">]</span>
+</span><span data-line="19">
+</span><span data-line="20">        <span class="c1"># Find required approval level</span>
+</span><span data-line="21">        <span class="n">required_level</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span data-line="22">        <span class="k">for</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">:</span>
+</span><span data-line="23">            <span class="k">if</span> <span class="n">amount</span> <span class="o">&lt;=</span> <span class="n">threshold</span><span class="p">:</span>
+</span><span data-line="24">                <span class="k">break</span>
+</span><span data-line="25">            <span class="n">required_level</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span data-line="26">
+</span><span data-line="27">        <span class="c1"># Check if all required approvals obtained</span>
+</span><span data-line="28">        <span class="k">if</span> <span class="n">approval_count</span> <span class="o">&gt;=</span> <span class="n">required_level</span><span class="p">:</span>
+</span><span data-line="29">            <span class="k">return</span> <span class="s2">&quot;process_approved&quot;</span>
+</span><span data-line="30">
+</span><span data-line="31">        <span class="c1"># Route to next approver</span>
+</span><span data-line="32">        <span class="k">return</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">approval_count</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+</span></pre></div>
+</div>
+</section>
+<section id="state-machine-pattern">
+<h2>State Machine Pattern<a class="headerlink" href="#state-machine-pattern" title="Link to this heading">¶</a></h2>
+<p>Implement state machine behavior:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrEnum</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="k">class</span><span class="w"> </span><span class="nc">OrderState</span><span class="p">(</span><span class="n">StrEnum</span><span class="p">):</span>
+</span><span data-line="4">    <span class="n">PENDING</span> <span class="o">=</span> <span class="s2">&quot;pending&quot;</span>
+</span><span data-line="5">    <span class="n">PROCESSING</span> <span class="o">=</span> <span class="s2">&quot;processing&quot;</span>
+</span><span data-line="6">    <span class="n">SHIPPED</span> <span class="o">=</span> <span class="s2">&quot;shipped&quot;</span>
+</span><span data-line="7">    <span class="n">DELIVERED</span> <span class="o">=</span> <span class="s2">&quot;delivered&quot;</span>
+</span><span data-line="8">    <span class="n">CANCELLED</span> <span class="o">=</span> <span class="s2">&quot;cancelled&quot;</span>
+</span><span data-line="9">
+</span><span data-line="10"><span class="k">class</span><span class="w"> </span><span class="nc">OrderStateGateway</span><span class="p">(</span><span class="n">BaseGateway</span><span class="p">):</span>
+</span><span data-line="11"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle order state transitions.&quot;&quot;&quot;</span>
+</span><span data-line="12">
+</span><span data-line="13">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;order_state&quot;</span>
+</span><span data-line="14">
+</span><span data-line="15">    <span class="c1"># Valid transitions</span>
+</span><span data-line="16">    <span class="n">TRANSITIONS</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="17">        <span class="n">OrderState</span><span class="o">.</span><span class="n">PENDING</span><span class="p">:</span> <span class="p">[</span><span class="n">OrderState</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span> <span class="n">OrderState</span><span class="o">.</span><span class="n">CANCELLED</span><span class="p">],</span>
+</span><span data-line="18">        <span class="n">OrderState</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">:</span> <span class="p">[</span><span class="n">OrderState</span><span class="o">.</span><span class="n">SHIPPED</span><span class="p">,</span> <span class="n">OrderState</span><span class="o">.</span><span class="n">CANCELLED</span><span class="p">],</span>
+</span><span data-line="19">        <span class="n">OrderState</span><span class="o">.</span><span class="n">SHIPPED</span><span class="p">:</span> <span class="p">[</span><span class="n">OrderState</span><span class="o">.</span><span class="n">DELIVERED</span><span class="p">],</span>
+</span><span data-line="20">        <span class="n">OrderState</span><span class="o">.</span><span class="n">DELIVERED</span><span class="p">:</span> <span class="p">[],</span>
+</span><span data-line="21">        <span class="n">OrderState</span><span class="o">.</span><span class="n">CANCELLED</span><span class="p">:</span> <span class="p">[],</span>
+</span><span data-line="22">    <span class="p">}</span>
+</span><span data-line="23">
+</span><span data-line="24">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="25">        <span class="n">current_state</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;order_state&quot;</span><span class="p">,</span> <span class="n">OrderState</span><span class="o">.</span><span class="n">PENDING</span><span class="p">)</span>
+</span><span data-line="26">        <span class="n">requested_state</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requested_state&quot;</span><span class="p">)</span>
+</span><span data-line="27">
+</span><span data-line="28">        <span class="n">valid_transitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TRANSITIONS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">current_state</span><span class="p">,</span> <span class="p">[])</span>
+</span><span data-line="29">
+</span><span data-line="30">        <span class="k">if</span> <span class="n">requested_state</span> <span class="ow">in</span> <span class="n">valid_transitions</span><span class="p">:</span>
+</span><span data-line="31">            <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;order_state&quot;</span><span class="p">,</span> <span class="n">requested_state</span><span class="p">)</span>
+</span><span data-line="32">            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;handle_</span><span class="si">{</span><span class="n">requested_state</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span data-line="33">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="34">            <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;transition_error&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Cannot transition from </span><span class="si">{</span><span class="n">current_state</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">requested_state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="35">            <span class="k">return</span> <span class="s2">&quot;handle_invalid_transition&quot;</span>
+</span></pre></div>
+</div>
+</section>
+<section id="retry-logic-with-gateways">
+<h2>Retry Logic with Gateways<a class="headerlink" href="#retry-logic-with-gateways" title="Link to this heading">¶</a></h2>
+<p>Implement retry behavior:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">RetryGateway</span><span class="p">(</span><span class="n">BaseGateway</span><span class="p">):</span>
+</span><span data-line="2"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine whether to retry a failed operation.&quot;&quot;&quot;</span>
+</span><span data-line="3">
+</span><span data-line="4">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;retry_gateway&quot;</span>
+</span><span data-line="5">    <span class="n">max_retries</span> <span class="o">=</span> <span class="mi">3</span>
+</span><span data-line="6">
+</span><span data-line="7">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="8">        <span class="n">retry_count</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;retry_count&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="9">        <span class="n">last_error</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;last_error&quot;</span><span class="p">)</span>
+</span><span data-line="10">
+</span><span data-line="11">        <span class="k">if</span> <span class="ow">not</span> <span class="n">last_error</span><span class="p">:</span>
+</span><span data-line="12">            <span class="c1"># No error - proceed normally</span>
+</span><span data-line="13">            <span class="k">return</span> <span class="s2">&quot;next_step&quot;</span>
+</span><span data-line="14">
+</span><span data-line="15">        <span class="k">if</span> <span class="n">retry_count</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">:</span>
+</span><span data-line="16">            <span class="c1"># Max retries reached - fail</span>
+</span><span data-line="17">            <span class="k">return</span> <span class="s2">&quot;handle_failure&quot;</span>
+</span><span data-line="18">
+</span><span data-line="19">        <span class="c1"># Check if error is retryable</span>
+</span><span data-line="20">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_retryable</span><span class="p">(</span><span class="n">last_error</span><span class="p">):</span>
+</span><span data-line="21">            <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;retry_count&quot;</span><span class="p">,</span> <span class="n">retry_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span data-line="22">            <span class="k">return</span> <span class="s2">&quot;retry_operation&quot;</span>
+</span><span data-line="23">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="24">            <span class="k">return</span> <span class="s2">&quot;handle_failure&quot;</span>
+</span><span data-line="25">
+</span><span data-line="26">    <span class="k">def</span><span class="w"> </span><span class="nf">is_retryable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span data-line="27">        <span class="n">retryable_patterns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="s2">&quot;connection&quot;</span><span class="p">,</span> <span class="s2">&quot;rate limit&quot;</span><span class="p">]</span>
+</span><span data-line="28">        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">p</span> <span class="ow">in</span> <span class="n">error</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">retryable_patterns</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="complete-example-multi-level-approval">
+<h2>Complete Example: Multi-Level Approval<a class="headerlink" href="#complete-example-multi-level-approval" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="sd">&quot;&quot;&quot;Multi-level approval workflow with conditional routing.&quot;&quot;&quot;</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span data-line="4">    <span class="n">WorkflowDefinition</span><span class="p">,</span>
+</span><span data-line="5">    <span class="n">Edge</span><span class="p">,</span>
+</span><span data-line="6">    <span class="n">BaseMachineStep</span><span class="p">,</span>
+</span><span data-line="7">    <span class="n">BaseHumanStep</span><span class="p">,</span>
+</span><span data-line="8">    <span class="n">BaseGateway</span><span class="p">,</span>
+</span><span data-line="9">    <span class="n">LocalExecutionEngine</span><span class="p">,</span>
+</span><span data-line="10">    <span class="n">WorkflowRegistry</span><span class="p">,</span>
+</span><span data-line="11">    <span class="n">WorkflowContext</span><span class="p">,</span>
+</span><span data-line="12"><span class="p">)</span>
+</span><span data-line="13">
+</span><span data-line="14">
+</span><span data-line="15"><span class="k">class</span><span class="w"> </span><span class="nc">SubmitRequest</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="16">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;submit&quot;</span>
+</span><span data-line="17">
+</span><span data-line="18">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="19">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;submitted&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</span><span data-line="20">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;approval_level&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="21">
+</span><span data-line="22">
+</span><span data-line="23"><span class="k">class</span><span class="w"> </span><span class="nc">ApprovalRouter</span><span class="p">(</span><span class="n">BaseGateway</span><span class="p">):</span>
+</span><span data-line="24"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Route to appropriate approver based on amount and current level.&quot;&quot;&quot;</span>
+</span><span data-line="25">
+</span><span data-line="26">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;approval_router&quot;</span>
+</span><span data-line="27">
+</span><span data-line="28">    <span class="c1"># Approval levels: (max_amount, step_name, level)</span>
+</span><span data-line="29">    <span class="n">LEVELS</span> <span class="o">=</span> <span class="p">[</span>
+</span><span data-line="30">        <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="s2">&quot;auto_approve&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+</span><span data-line="31">        <span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="s2">&quot;team_lead_approval&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+</span><span data-line="32">        <span class="p">(</span><span class="mi">25000</span><span class="p">,</span> <span class="s2">&quot;manager_approval&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+</span><span data-line="33">        <span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="s2">&quot;director_approval&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+</span><span data-line="34">        <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span> <span class="s2">&quot;vp_approval&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+</span><span data-line="35">    <span class="p">]</span>
+</span><span data-line="36">
+</span><span data-line="37">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="38">        <span class="n">amount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="39">        <span class="n">current_level</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;approval_level&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="40">
+</span><span data-line="41">        <span class="c1"># Find required approval level</span>
+</span><span data-line="42">        <span class="k">for</span> <span class="n">max_amount</span><span class="p">,</span> <span class="n">step_name</span><span class="p">,</span> <span class="n">level</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">LEVELS</span><span class="p">:</span>
+</span><span data-line="43">            <span class="k">if</span> <span class="n">amount</span> <span class="o">&lt;=</span> <span class="n">max_amount</span><span class="p">:</span>
+</span><span data-line="44">                <span class="n">required_level</span> <span class="o">=</span> <span class="n">level</span>
+</span><span data-line="45">                <span class="n">required_step</span> <span class="o">=</span> <span class="n">step_name</span>
+</span><span data-line="46">                <span class="k">break</span>
+</span><span data-line="47">
+</span><span data-line="48">        <span class="c1"># Check if we&#39;ve reached required level</span>
+</span><span data-line="49">        <span class="k">if</span> <span class="n">current_level</span> <span class="o">&gt;=</span> <span class="n">required_level</span><span class="p">:</span>
+</span><span data-line="50">            <span class="k">return</span> <span class="s2">&quot;process_approved&quot;</span>
+</span><span data-line="51">
+</span><span data-line="52">        <span class="c1"># Route to next approver in chain</span>
+</span><span data-line="53">        <span class="k">for</span> <span class="n">max_amount</span><span class="p">,</span> <span class="n">step_name</span><span class="p">,</span> <span class="n">level</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">LEVELS</span><span class="p">:</span>
+</span><span data-line="54">            <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="n">current_level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+</span><span data-line="55">                <span class="k">return</span> <span class="n">step_name</span>
+</span><span data-line="56">
+</span><span data-line="57">        <span class="k">return</span> <span class="s2">&quot;process_approved&quot;</span>
+</span><span data-line="58">
+</span><span data-line="59">
+</span><span data-line="60"><span class="k">class</span><span class="w"> </span><span class="nc">TeamLeadApproval</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="61">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;team_lead_approval&quot;</span>
+</span><span data-line="62">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Team Lead Approval&quot;</span>
+</span><span data-line="63">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="64">        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="65">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="66">            <span class="s2">&quot;approved&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Approve?&quot;</span><span class="p">},</span>
+</span><span data-line="67">            <span class="s2">&quot;escalate&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Escalate to Manager?&quot;</span><span class="p">},</span>
+</span><span data-line="68">        <span class="p">},</span>
+</span><span data-line="69">        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;approved&quot;</span><span class="p">],</span>
+</span><span data-line="70">    <span class="p">}</span>
+</span><span data-line="71">
+</span><span data-line="72">
+</span><span data-line="73"><span class="k">class</span><span class="w"> </span><span class="nc">ManagerApproval</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="74">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;manager_approval&quot;</span>
+</span><span data-line="75">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Manager Approval&quot;</span>
+</span><span data-line="76">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="77">        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="78">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="79">            <span class="s2">&quot;approved&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Approve?&quot;</span><span class="p">},</span>
+</span><span data-line="80">        <span class="p">},</span>
+</span><span data-line="81">        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;approved&quot;</span><span class="p">],</span>
+</span><span data-line="82">    <span class="p">}</span>
+</span><span data-line="83">
+</span><span data-line="84">
+</span><span data-line="85"><span class="k">class</span><span class="w"> </span><span class="nc">UpdateApprovalLevel</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="86">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;update_level&quot;</span>
+</span><span data-line="87">
+</span><span data-line="88">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="89">        <span class="n">current</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;approval_level&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="90">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;approval_level&quot;</span><span class="p">,</span> <span class="n">current</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span data-line="91">
+</span><span data-line="92">
+</span><span data-line="93"><span class="k">class</span><span class="w"> </span><span class="nc">AutoApprove</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="94">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;auto_approve&quot;</span>
+</span><span data-line="95">
+</span><span data-line="96">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="97">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;approved&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</span><span data-line="98">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;approved_by&quot;</span><span class="p">,</span> <span class="s2">&quot;system&quot;</span><span class="p">)</span>
+</span><span data-line="99">
+</span><span data-line="100">
+</span><span data-line="101"><span class="k">class</span><span class="w"> </span><span class="nc">ProcessApproved</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="102">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;process_approved&quot;</span>
+</span><span data-line="103">
+</span><span data-line="104">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="105">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;approved&quot;</span><span class="p">)</span>
+</span><span data-line="106">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;processed&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</span><span data-line="107">
+</span><span data-line="108">
+</span><span data-line="109"><span class="k">class</span><span class="w"> </span><span class="nc">ProcessRejected</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="110">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;process_rejected&quot;</span>
+</span><span data-line="111">
+</span><span data-line="112">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="113">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;rejected&quot;</span><span class="p">)</span>
+</span><span data-line="114">
+</span><span data-line="115">
+</span><span data-line="116"><span class="c1"># Workflow definition</span>
+</span><span data-line="117"><span class="n">approval_workflow</span> <span class="o">=</span> <span class="n">WorkflowDefinition</span><span class="p">(</span>
+</span><span data-line="118">    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;multi_level_approval&quot;</span><span class="p">,</span>
+</span><span data-line="119">    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+</span><span data-line="120">    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Multi-level approval with conditional routing&quot;</span><span class="p">,</span>
+</span><span data-line="121">    <span class="n">steps</span><span class="o">=</span><span class="p">{</span>
+</span><span data-line="122">        <span class="s2">&quot;submit&quot;</span><span class="p">:</span> <span class="n">SubmitRequest</span><span class="p">(),</span>
+</span><span data-line="123">        <span class="s2">&quot;router&quot;</span><span class="p">:</span> <span class="n">ApprovalRouter</span><span class="p">(),</span>
+</span><span data-line="124">        <span class="s2">&quot;auto_approve&quot;</span><span class="p">:</span> <span class="n">AutoApprove</span><span class="p">(),</span>
+</span><span data-line="125">        <span class="s2">&quot;team_lead_approval&quot;</span><span class="p">:</span> <span class="n">TeamLeadApproval</span><span class="p">(),</span>
+</span><span data-line="126">        <span class="s2">&quot;manager_approval&quot;</span><span class="p">:</span> <span class="n">ManagerApproval</span><span class="p">(),</span>
+</span><span data-line="127">        <span class="s2">&quot;update_level&quot;</span><span class="p">:</span> <span class="n">UpdateApprovalLevel</span><span class="p">(),</span>
+</span><span data-line="128">        <span class="s2">&quot;process_approved&quot;</span><span class="p">:</span> <span class="n">ProcessApproved</span><span class="p">(),</span>
+</span><span data-line="129">        <span class="s2">&quot;process_rejected&quot;</span><span class="p">:</span> <span class="n">ProcessRejected</span><span class="p">(),</span>
+</span><span data-line="130">    <span class="p">},</span>
+</span><span data-line="131">    <span class="n">edges</span><span class="o">=</span><span class="p">[</span>
+</span><span data-line="132">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;submit&quot;</span><span class="p">,</span> <span class="s2">&quot;router&quot;</span><span class="p">),</span>
+</span><span data-line="133">        <span class="c1"># Gateway routes to appropriate step</span>
+</span><span data-line="134">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;router&quot;</span><span class="p">,</span> <span class="s2">&quot;auto_approve&quot;</span><span class="p">),</span>
+</span><span data-line="135">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;router&quot;</span><span class="p">,</span> <span class="s2">&quot;team_lead_approval&quot;</span><span class="p">),</span>
+</span><span data-line="136">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;router&quot;</span><span class="p">,</span> <span class="s2">&quot;manager_approval&quot;</span><span class="p">),</span>
+</span><span data-line="137">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;router&quot;</span><span class="p">,</span> <span class="s2">&quot;process_approved&quot;</span><span class="p">),</span>
+</span><span data-line="138">        <span class="c1"># Auto approve goes directly to processing</span>
+</span><span data-line="139">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;auto_approve&quot;</span><span class="p">,</span> <span class="s2">&quot;process_approved&quot;</span><span class="p">),</span>
+</span><span data-line="140">        <span class="c1"># Human approvals check result</span>
+</span><span data-line="141">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="142">            <span class="s2">&quot;team_lead_approval&quot;</span><span class="p">,</span>
+</span><span data-line="143">            <span class="s2">&quot;update_level&quot;</span><span class="p">,</span>
+</span><span data-line="144">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;approved&#39;) == True&quot;</span>
+</span><span data-line="145">        <span class="p">),</span>
+</span><span data-line="146">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="147">            <span class="s2">&quot;team_lead_approval&quot;</span><span class="p">,</span>
+</span><span data-line="148">            <span class="s2">&quot;process_rejected&quot;</span><span class="p">,</span>
+</span><span data-line="149">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;approved&#39;) == False&quot;</span>
+</span><span data-line="150">        <span class="p">),</span>
+</span><span data-line="151">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="152">            <span class="s2">&quot;manager_approval&quot;</span><span class="p">,</span>
+</span><span data-line="153">            <span class="s2">&quot;update_level&quot;</span><span class="p">,</span>
+</span><span data-line="154">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;approved&#39;) == True&quot;</span>
+</span><span data-line="155">        <span class="p">),</span>
+</span><span data-line="156">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="157">            <span class="s2">&quot;manager_approval&quot;</span><span class="p">,</span>
+</span><span data-line="158">            <span class="s2">&quot;process_rejected&quot;</span><span class="p">,</span>
+</span><span data-line="159">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;approved&#39;) == False&quot;</span>
+</span><span data-line="160">        <span class="p">),</span>
+</span><span data-line="161">        <span class="c1"># After level update, re-evaluate routing</span>
+</span><span data-line="162">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;update_level&quot;</span><span class="p">,</span> <span class="s2">&quot;router&quot;</span><span class="p">),</span>
+</span><span data-line="163">    <span class="p">],</span>
+</span><span data-line="164">    <span class="n">initial_step</span><span class="o">=</span><span class="s2">&quot;submit&quot;</span><span class="p">,</span>
+</span><span data-line="165">    <span class="n">terminal_steps</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;process_approved&quot;</span><span class="p">,</span> <span class="s2">&quot;process_rejected&quot;</span><span class="p">},</span>
+</span><span data-line="166"><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading">¶</a></h2>
+<section id="keep-gateway-logic-simple">
+<h3>Keep Gateway Logic Simple<a class="headerlink" href="#keep-gateway-logic-simple" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># Good - clear, simple logic</span>
+</span><span data-line="2"><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+</span><span data-line="3">    <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;approved&quot;</span><span class="p">):</span>
+</span><span data-line="4">        <span class="k">return</span> <span class="s2">&quot;next_step&quot;</span>
+</span><span data-line="5">    <span class="k">return</span> <span class="s2">&quot;rejection_handler&quot;</span>
+</span><span data-line="6">
+</span><span data-line="7"><span class="c1"># Avoid - too complex</span>
+</span><span data-line="8"><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+</span><span data-line="9">    <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">and</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;x&quot;</span><span class="p">):</span>
+</span><span data-line="10">        <span class="c1"># Hard to understand and debug</span>
+</span><span data-line="11">        <span class="o">...</span>
+</span></pre></div>
+</div>
+</section>
+<section id="document-decision-criteria">
+<h3>Document Decision Criteria<a class="headerlink" href="#document-decision-criteria" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">ApprovalGateway</span><span class="p">(</span><span class="n">BaseGateway</span><span class="p">):</span>
+</span><span data-line="2"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Route based on amount thresholds.</span>
+</span><span data-line="3">
+</span><span data-line="4"><span class="sd">    Routing Rules:</span>
+</span><span data-line="5"><span class="sd">    - &lt; $1,000: Auto-approve</span>
+</span><span data-line="6"><span class="sd">    - $1,000 - $5,000: Team lead approval</span>
+</span><span data-line="7"><span class="sd">    - $5,000 - $25,000: Manager approval</span>
+</span><span data-line="8"><span class="sd">    - &gt; $25,000: Director approval</span>
+</span><span data-line="9"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="10">    <span class="o">...</span>
+</span></pre></div>
+</div>
+</section>
+<section id="test-all-branches">
+<h3>Test All Branches<a class="headerlink" href="#test-all-branches" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;amount,expected&quot;</span><span class="p">,</span> <span class="p">[</span>
+</span><span data-line="4">    <span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="s2">&quot;auto_approve&quot;</span><span class="p">),</span>
+</span><span data-line="5">    <span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="s2">&quot;team_lead&quot;</span><span class="p">),</span>
+</span><span data-line="6">    <span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="s2">&quot;manager&quot;</span><span class="p">),</span>
+</span><span data-line="7">    <span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="s2">&quot;director&quot;</span><span class="p">),</span>
+</span><span data-line="8"><span class="p">])</span>
+</span><span data-line="9"><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_gateway_routing</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+</span><span data-line="10">    <span class="n">context</span> <span class="o">=</span> <span class="n">WorkflowContext</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="n">amount</span><span class="p">})</span>
+</span><span data-line="11">    <span class="n">gateway</span> <span class="o">=</span> <span class="n">AmountGateway</span><span class="p">()</span>
+</span><span data-line="12">    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">gateway</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+</span><span data-line="13">    <span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="n">expected</span>
+</span></pre></div>
+</div>
+</section>
+<section id="handle-edge-cases">
+<h3>Handle Edge Cases<a class="headerlink" href="#handle-edge-cases" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">SafeGateway</span><span class="p">(</span><span class="n">BaseGateway</span><span class="p">):</span>
+</span><span data-line="2">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+</span><span data-line="3">        <span class="n">amount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">)</span>
+</span><span data-line="4">
+</span><span data-line="5">        <span class="c1"># Handle missing data</span>
+</span><span data-line="6">        <span class="k">if</span> <span class="n">amount</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="7">            <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;routing_error&quot;</span><span class="p">,</span> <span class="s2">&quot;Amount is required&quot;</span><span class="p">)</span>
+</span><span data-line="8">            <span class="k">return</span> <span class="s2">&quot;handle_error&quot;</span>
+</span><span data-line="9">
+</span><span data-line="10">        <span class="c1"># Handle invalid data</span>
+</span><span data-line="11">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="ow">or</span> <span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span data-line="12">            <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;routing_error&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Invalid amount: </span><span class="si">{</span><span class="n">amount</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="13">            <span class="k">return</span> <span class="s2">&quot;handle_error&quot;</span>
+</span><span data-line="14">
+</span><span data-line="15">        <span class="c1"># Normal routing</span>
+</span><span data-line="16">        <span class="k">if</span> <span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span>
+</span><span data-line="17">            <span class="k">return</span> <span class="s2">&quot;auto_approve&quot;</span>
+</span><span data-line="18">        <span class="k">return</span> <span class="s2">&quot;manual_review&quot;</span>
+</span></pre></div>
+</div>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Learn about parallel execution: See <a class="reference internal" href="parallel-execution.html"><span class="doc">Parallel Execution</span></a></p></li>
+<li><p>Understand human tasks: See <a class="reference internal" href="human-tasks.html"><span class="doc">Working with Human Tasks</span></a></p></li>
+</ul>
+</section>
+</section>
+
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-prev">
+    <a href="parallel-execution.html">
+      <i class="i-lucide chevron-left"></i>
+      <div class="page-info">
+        <span>Previous</span><div class="title">Parallel Execution</div></div>
+    </a>
+  </div><div class="navigation-next">
+    <a href="persistence.html">
+      <div class="page-info">
+        <span>Next</span>
+        <div class="title">Database Persistence</div>
+      </div>
+      <i class="i-lucide chevron-right"></i>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2025, Jacob Coffee</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+<a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+  <iconify-icon icon="simple-icons:github"></iconify-icon>
+</a></div>
+    </div>
+  </div>
+</footer>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=30646c52"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/shibuya.js?v=c1cf1a6b"></script></body>
+</html>
