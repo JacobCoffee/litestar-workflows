@@ -54,8 +54,8 @@ Complete Implementation
 
    """Employee onboarding workflow with parallel tasks and deadline tracking.
 
-   Run with:
-       uv run python -m employee_onboarding
+   Save this file as ``employee_onboarding.py`` and run with:
+       uv run python employee_onboarding.py
    """
 
    from __future__ import annotations

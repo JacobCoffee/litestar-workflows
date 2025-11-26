@@ -24,7 +24,6 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from litestar_workflows.core.context import WorkflowContext
 from litestar_workflows.core.definition import Edge, WorkflowDefinition
 from litestar_workflows.core.types import StepStatus, StepType, WorkflowStatus
-from litestar_workflows.db.engine import PersistentExecutionEngine
 from litestar_workflows.db.models import (
     HumanTaskModel,
     StepExecutionModel,
@@ -39,7 +38,7 @@ from litestar_workflows.db.repositories import (
 )
 from litestar_workflows.engine.local import LocalExecutionEngine
 from litestar_workflows.engine.registry import WorkflowRegistry
-from litestar_workflows.steps.base import BaseHumanStep, BaseMachineStep
+from litestar_workflows.steps.base import BaseMachineStep
 from litestar_workflows.web.controllers import (
     HumanTaskController,
     WorkflowDefinitionController,
@@ -346,8 +345,8 @@ class TestWorkflowInstanceControllerDB:
             response = await client.get(f"/workflows/instances/{unknown_id}/graph")
             assert response.status_code in [HTTP_404_NOT_FOUND, 500]
 
-    async def test_cancel_instance_success(self, db_engine, session_maker, registry, seeded_db) -> None:
-        """Cancel instance updates status."""
+    async def test_cancel_instance_exercises_codepath(self, db_engine, session_maker, registry, seeded_db) -> None:
+        """Exercise cancel instance code path (may fail due to engine state)."""
         app = create_test_app(session_maker, registry, [WorkflowInstanceController])
         instance_id = seeded_db["instance"].id
 
@@ -356,7 +355,7 @@ class TestWorkflowInstanceControllerDB:
                 f"/workflows/instances/{instance_id}/cancel",
                 params={"reason": "Testing cancellation"},
             )
-            # Engine cancel may fail without proper DB wiring, but code path exercised
+            # Exercises code path - 500 acceptable as engine may lack full DB wiring
             assert response.status_code in [HTTP_201_CREATED, 500]
 
     async def test_cancel_instance_not_found(self, db_engine, session_maker, registry) -> None:
@@ -520,8 +519,8 @@ class TestHumanTaskControllerDB:
             )
             assert response.status_code in [HTTP_404_NOT_FOUND, 500]
 
-    async def test_complete_task_success(self, db_engine, session_maker, registry, seeded_db) -> None:
-        """Complete task exercises the success path."""
+    async def test_complete_task_exercises_codepath(self, db_engine, session_maker, registry, seeded_db) -> None:
+        """Exercise complete task code path (may fail due to engine state)."""
         app = create_test_app(session_maker, registry, [HumanTaskController])
         task_id = seeded_db["task"].id
 
@@ -530,7 +529,7 @@ class TestHumanTaskControllerDB:
                 f"/workflows/tasks/{task_id}/complete",
                 json={"output_data": {"approved": True}, "completed_by": "user1"},
             )
-            # May fail due to engine state but exercises the code path
+            # Exercises code path - 500 acceptable as engine may lack full DB wiring
             assert response.status_code in [HTTP_201_CREATED, 500]
 
 
