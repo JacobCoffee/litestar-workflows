@@ -1,0 +1,16 @@
+# Documentation dependencies for litestar-workflows
+
+# Core Sphinx
+sphinx>=7.0.0
+
+# Theme
+furo>=2024.1.0
+
+# Extensions
+sphinx-copybutton>=0.5.0
+sphinx-design>=0.5.0
+myst-parser>=2.0.0
+sphinx-autobuild>=2024.0.0
+
+# For API documentation
+sphinx-autodoc-typehints>=2.0.0

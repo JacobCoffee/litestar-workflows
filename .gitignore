@@ -8,8 +8,6 @@ __pycache__
 .dmypy.json
 dmypy.json
 __pypackages__/
-.pdm.toml
-.pdm-python
 docs/_build/
 
 ## Editors

@@ -1,6 +1,8 @@
 """Base definitions for the library."""
+
 from abc import ABC, abstractmethod
-from typing import Any, Callable, ParamSpec, Protocol, TypeAlias, TypeVar
+from collections.abc import Callable
+from typing import Any, ParamSpec, Protocol, TypeAlias, TypeVar
 
 P = ParamSpec("P")
 T = TypeVar("T")
@@ -18,7 +20,7 @@ class Step(Protocol):
     Inherit from this class to create a new step.
     """
 
-    def execute(self: StepType, context: Context, *args: P.args, **kwargs: P.kwargs) -> None:
+    def execute(self, context: Context, *args: P.args, **kwargs: P.kwargs) -> None:
         """Method that, when ran, should execute the step.
 
         Args:

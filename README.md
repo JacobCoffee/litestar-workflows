@@ -1,54 +1,230 @@
 # litestar-workflows
 
-[![Latest Release](https://github.com/JacobCoffee/litestar-workflows/actions/workflows/publish.yml/badge.svg)](https://github.com/JacobCoffee/litestar-workflows/actions/workflows/publish.yml)
-[![Tests And Linting](https://github.com/JacobCoffee/litestar-workflows/actions/workflows/ci.yml/badge.svg)](https://github.com/JacobCoffee/litestar-workflows/actions/workflows/ci.yml)
+<p align="center">
+  <em>Workflow automation for Litestar with human approval chains, automated pipelines, and web-based workflow management.</em>
+</p>
 
+<p align="center">
+  <a href="https://github.com/JacobCoffee/litestar-workflows/actions/workflows/ci.yml">
+    <img src="https://github.com/JacobCoffee/litestar-workflows/actions/workflows/ci.yml/badge.svg" alt="Tests And Linting">
+  </a>
+  <a href="https://github.com/JacobCoffee/litestar-workflows/actions/workflows/publish.yml">
+    <img src="https://github.com/JacobCoffee/litestar-workflows/actions/workflows/publish.yml/badge.svg" alt="Latest Release">
+  </a>
+  <a href="https://pypi.org/project/litestar-workflows/">
+    <img src="https://img.shields.io/pypi/v/litestar-workflows.svg" alt="PyPI Version">
+  </a>
+  <a href="https://pypi.org/project/litestar-workflows/">
+    <img src="https://img.shields.io/pypi/pyversions/litestar-workflows.svg" alt="Python Versions">
+  </a>
+  <a href="https://github.com/JacobCoffee/litestar-workflows/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/JacobCoffee/litestar-workflows.svg" alt="License">
+  </a>
+</p>
 
-A simple library for creating and managing workflows in Litestar.
+---
 
-"Workflows" are a way to define a series of steps that need to be completed to achieve a goal.
-`litestar-workflows` provides a way to define workflows in code, and then execute them in a controlled manner.
+**Documentation**: [https://jacobcoffee.github.io/litestar-workflows](https://jacobcoffee.github.io/litestar-workflows)
 
-Some examples of workflows that could be defined with `litestar-workflows` include:
+**Source Code**: [https://github.com/JacobCoffee/litestar-workflows](https://github.com/JacobCoffee/litestar-workflows)
 
-- A user creates a new post on a blog, and the post needs to be reviewed by an editor before it can be published.
-- A developer implements a new feature, and the feature must be reviewed by their team -> QA -> product owner -> ...
-  before it can be reflected in the production environment.
-- Approval workflows for various business processes like expense reports, vacation requests, etc.
-- A user requests a new virtual machine, and the request must be approved by a manager before the VM is created.
-- I need to run a command on a set of hosts, but I need approval from a manager -> directory -> VP -> ... before the command is executed.
-- Literally anything with some arbitrary series of steps.
+---
 
-...and many more!
+## Overview
+
+**litestar-workflows** is a flexible, async-first workflow automation framework built specifically for the [Litestar](https://litestar.dev) ecosystem. It enables you to define complex business processes as code, combining automated steps with human approval checkpoints.
+
+### Key Features
+
+- **Async-First Design**: Native `async/await` throughout, leveraging Litestar's async foundation
+- **Human + Machine Tasks**: Combine automated processing with human approval checkpoints
+- **Composable Workflows**: Build complex workflows from simple, reusable primitives
+- **Type-Safe**: Full typing with Protocol-based interfaces for IDE support
+- **Litestar Integration**: Deep integration with Litestar's DI, guards, and plugin system
+- **Flexible Execution**: Local execution engine with optional distributed backends (Celery, SAQ)
+- **Visual Debugging**: MermaidJS workflow visualization support
+
+### Use Cases
+
+- **Approval Workflows**: Expense reports, vacation requests, document reviews
+- **Multi-Stage Pipelines**: Feature releases requiring team, QA, and product approval
+- **Provisioning Workflows**: VM creation, access requests with manager approval
+- **Content Publishing**: Blog posts requiring editorial review before publication
+- **Any Sequential Process**: Anything with an arbitrary series of steps and approvals
 
 ## Installation
 
+Install using pip:
+
 ```bash
-python3 -m pip install litestar-workflows
+pip install litestar-workflows
 ```
 
-## Usage
+Or with optional extras:
 
-Here's a simple example of how to define and execute a workflow using `litestar-workflows`:
+```bash
+# With database persistence (SQLAlchemy)
+pip install litestar-workflows[db]
+
+# With web UI templates
+pip install litestar-workflows[ui]
+
+# All extras
+pip install litestar-workflows[db,ui]
+```
+
+## Quick Start
+
+Here's a simple approval workflow that demonstrates the core concepts:
 
 ```python
-from litestar_workflows import Workflow, Step
+from litestar_workflows import (
+    WorkflowDefinition,
+    Edge,
+    BaseMachineStep,
+    BaseHumanStep,
+    LocalExecutionEngine,
+    WorkflowRegistry,
+    WorkflowContext,
+)
 
-# TODO: Define the steps of the workflow :)
+
+# Define automated steps
+class SubmitRequest(BaseMachineStep):
+    """Initial submission step - runs automatically."""
+
+    name = "submit"
+    description = "Submit a new request for processing"
+
+    async def execute(self, context: WorkflowContext) -> None:
+        # Record submission timestamp
+        context.set("submitted", True)
+        context.set("submitted_by", context.user_id)
+
+
+# Define human approval steps
+class ManagerApproval(BaseHumanStep):
+    """Human task - waits for manager input."""
+
+    name = "manager_approval"
+    title = "Approve Request"
+    description = "Manager reviews and approves or rejects the request"
+    form_schema = {
+        "type": "object",
+        "properties": {
+            "approved": {"type": "boolean", "title": "Approve this request?"},
+            "comments": {"type": "string", "title": "Comments"},
+        },
+        "required": ["approved"],
+    }
+
+
+class ProcessRequest(BaseMachineStep):
+    """Final processing step - runs after approval."""
+
+    name = "process"
+    description = "Process the approved request"
+
+    async def execute(self, context: WorkflowContext) -> None:
+        if context.get("approved"):
+            context.set("status", "processed")
+            # Perform actual processing here
+        else:
+            context.set("status", "rejected")
+
+
+# Create workflow definition
+definition = WorkflowDefinition(
+    name="approval_workflow",
+    version="1.0.0",
+    description="Simple request approval workflow",
+    steps={
+        "submit": SubmitRequest(),
+        "manager_approval": ManagerApproval(),
+        "process": ProcessRequest(),
+    },
+    edges=[
+        Edge("submit", "manager_approval"),
+        Edge("manager_approval", "process"),
+    ],
+    initial_step="submit",
+    terminal_steps={"process"},
+)
+
+# Register and run
+registry = WorkflowRegistry()
+registry.register_definition(definition)
+
+engine = LocalExecutionEngine(registry)
+
+
+# Start a new workflow instance
+async def main():
+    instance = await engine.start_workflow(
+        "approval_workflow",
+        initial_data={"request_id": "REQ-001", "amount": 500.00},
+    )
+    print(f"Workflow started: {instance.id}")
+    print(f"Current step: {instance.current_step}")  # "manager_approval"
+
+    # Later, when a manager completes the approval...
+    await engine.complete_human_task(
+        instance_id=instance.id,
+        step_name="manager_approval",
+        user_id="manager@example.com",
+        data={"approved": True, "comments": "Looks good!"},
+    )
 ```
+
+## Documentation
+
+For comprehensive documentation, tutorials, and API reference, visit:
+[https://jacobcoffee.github.io/litestar-workflows](https://jacobcoffee.github.io/litestar-workflows)
+
+### Quick Links
+
+- [Getting Started Guide](https://jacobcoffee.github.io/litestar-workflows/getting-started/)
+- [Core Concepts](https://jacobcoffee.github.io/litestar-workflows/concepts/)
+- [How-To Guides](https://jacobcoffee.github.io/litestar-workflows/guides/)
+- [API Reference](https://jacobcoffee.github.io/litestar-workflows/api/)
 
 ## Versioning
 
 This project uses [Semantic Versioning](https://semver.org/).
-* Major versions introduce breaking changes.
-* Major versions will support the currently supported version(s) of Litestar.
-    * See the [Litestar Versioning Policy](https://litestar.dev/about/litestar-releases#version-numbering)
-      for more information.
+
+- Major versions introduce breaking changes
+- Major versions support the currently supported version(s) of Litestar
+- See the [Litestar Versioning Policy](https://litestar.dev/about/litestar-releases#version-numbering) for details
 
 ## Contributing
 
-Contributions are welcome! For more information, please see [CONTRIBUTING.rst](CONTRIBUTING.rst).
+Contributions are welcome! Please see [CONTRIBUTING.rst](CONTRIBUTING.rst) for guidelines.
+
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/JacobCoffee/litestar-workflows.git
+cd litestar-workflows
+
+# Install with development dependencies
+pip install -e ".[dev-lint,dev-test]"
+
+# Run tests
+pytest tests
+
+# Run linting
+pre-commit run --all-files
+```
 
 ## License
 
-This project is licensed under the terms of the MIT license. For more information, please see [LICENSE](LICENSE).
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+## Acknowledgments
+
+This library draws inspiration from:
+
+- [Joeflow](https://joeflow.readthedocs.io/) - Human/machine task model and lean automation philosophy
+- [Prefect](https://prefect.io/) - Dynamic execution and event-driven patterns
+- [Celery Canvas](https://docs.celeryq.dev/en/stable/userguide/canvas.html) - Composable task primitives

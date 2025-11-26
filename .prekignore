@@ -1,0 +1,2 @@
+# Exclude worktrees from prek workspace discovery
+worktrees/
