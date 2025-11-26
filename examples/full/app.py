@@ -1,39 +1,104 @@
-"""Full example demonstrating advanced litestar-workflows features.
+"""Full example demonstrating litestar-workflows with built-in REST API and persistence.
 
 This example shows:
-- Human approval tasks
-- Conditional branching
-- Parallel execution
-- Multi-step workflows
-- Complete REST API for workflow management
+- Human approval tasks with form schemas
+- Conditional branching based on human decisions
+- SQLite database persistence with PersistentExecutionEngine
+- Built-in REST API endpoints (auto-enabled)
+- Complete workflow management lifecycle
 
 Run with:
     cd examples/full
-    litestar run --port 8001
+    uv run litestar run --port 8001
 
 Or:
-    uvicorn app:app --reload --port 8001
+    uv run uvicorn app:app --reload --port 8001
+
+API Endpoints (auto-enabled):
+    Definitions:
+        GET  /workflows/definitions                     - List all workflows
+        GET  /workflows/definitions/{name}              - Get workflow details
+        GET  /workflows/definitions/{name}/graph        - Get MermaidJS graph
+
+    Instances:
+        POST /workflows/instances                       - Start a workflow
+        GET  /workflows/instances                       - List instances
+        GET  /workflows/instances/{id}                  - Get instance details
+        GET  /workflows/instances/{id}/graph            - Get instance graph with state
+        POST /workflows/instances/{id}/cancel           - Cancel a workflow
+
+    Human Tasks:
+        GET  /workflows/tasks                           - List pending tasks
+        GET  /workflows/tasks/{id}                      - Get task details
+        POST /workflows/tasks/{id}/complete             - Complete a task
+        POST /workflows/tasks/{id}/reassign             - Reassign a task
+
+Example API Usage:
+    # List available workflows
+    curl http://localhost:8001/workflows/definitions
+
+    # Start a document approval workflow
+    curl -X POST http://localhost:8001/workflows/instances \\
+        -H "Content-Type: application/json" \\
+        -d '{
+            "definition_name": "document_approval",
+            "input_data": {
+                "document_id": "DOC-001",
+                "submitter": "alice@example.com",
+                "title": "Q4 Budget Report"
+            },
+            "user_id": "alice"
+        }'
+
+    # List pending human tasks
+    curl http://localhost:8001/workflows/tasks
+
+    # Complete a human review task
+    curl -X POST http://localhost:8001/workflows/tasks/{task_id}/complete \\
+        -H "Content-Type: application/json" \\
+        -d '{
+            "completed_by": "manager@example.com",
+            "output_data": {
+                "decision": "approve",
+                "comments": "Looks good, approved!"
+            }
+        }'
+
+    # View workflow graph
+    curl http://localhost:8001/workflows/definitions/document_approval/graph
 """
 
 from __future__ import annotations
 
-from typing import Any
-from uuid import UUID
+from typing import TYPE_CHECKING, Any
 
-from litestar import Controller, Litestar, get, post
+from litestar import Litestar, Router, get
+from litestar.di import Provide
+from litestar.openapi import OpenAPIConfig
+from litestar.plugins.sqlalchemy import SQLAlchemyAsyncConfig, SQLAlchemyPlugin
 
 from litestar_workflows import (
     BaseHumanStep,
     BaseMachineStep,
     Edge,
-    LocalExecutionEngine,
     WorkflowContext,
     WorkflowDefinition,
-    WorkflowPlugin,
-    WorkflowPluginConfig,
     WorkflowRegistry,
-    WorkflowStatus,
 )
+from litestar_workflows.db import (
+    HumanTaskRepository,
+    PersistentExecutionEngine,
+    WorkflowDefinitionModel,
+    WorkflowInstanceRepository,
+)
+from litestar_workflows.web.controllers import (
+    HumanTaskController,
+    WorkflowDefinitionController,
+    WorkflowInstanceController,
+)
+
+if TYPE_CHECKING:
+    from sqlalchemy.ext.asyncio import AsyncSession
 
 # =============================================================================
 # Document Approval Workflow Steps
@@ -41,12 +106,16 @@ from litestar_workflows import (
 
 
 class SubmitDocument(BaseMachineStep):
-    """Initial document submission step."""
+    """Initial document submission step.
+
+    Records the document submission and prepares it for human review.
+    """
 
     async def execute(self, context: WorkflowContext) -> dict[str, Any]:
         """Process document submission."""
         doc_id = context.get("document_id")
         submitter = context.get("submitter")
+        title = context.get("title", "Untitled Document")
 
         context.set("submission_timestamp", "2024-01-15T10:30:00Z")
         context.set("document_status", "submitted")
@@ -54,26 +123,32 @@ class SubmitDocument(BaseMachineStep):
         return {
             "document_id": doc_id,
             "submitter": submitter,
+            "title": title,
             "status": "submitted",
         }
 
 
 class ReviewDocument(BaseHumanStep):
-    """Human review step for document approval."""
+    """Human review step for document approval.
+
+    Presents a form to the reviewer with approve/reject/request changes options.
+    The form schema is defined in the step configuration and rendered by the UI.
+    """
 
     async def execute(self, context: WorkflowContext) -> dict[str, Any]:
-        """Process the review decision."""
+        """Process the review decision after human input."""
         decision = context.get("decision")
         comments = context.get("comments", "")
 
         context.set("review_decision", decision)
         context.set("review_comments", comments)
+        context.set("reviewer", context.get("completed_by", "unknown"))
 
         return {"decision": decision, "comments": comments}
 
 
 class ApproveDocument(BaseMachineStep):
-    """Final approval step."""
+    """Final approval step - marks document as approved."""
 
     async def execute(self, context: WorkflowContext) -> dict[str, Any]:
         """Mark document as approved."""
@@ -86,7 +161,7 @@ class ApproveDocument(BaseMachineStep):
 
 
 class RejectDocument(BaseMachineStep):
-    """Document rejection step."""
+    """Document rejection step - marks document as rejected with reason."""
 
     async def execute(self, context: WorkflowContext) -> dict[str, Any]:
         """Mark document as rejected."""
@@ -100,7 +175,7 @@ class RejectDocument(BaseMachineStep):
 
 
 class RequestChanges(BaseMachineStep):
-    """Request changes step."""
+    """Request changes step - sends document back for revision."""
 
     async def execute(self, context: WorkflowContext) -> dict[str, Any]:
         """Request changes to document."""
@@ -114,16 +189,23 @@ class RequestChanges(BaseMachineStep):
 
 
 class NotifySubmitter(BaseMachineStep):
-    """Notify the document submitter of the decision."""
+    """Notification step - notifies the submitter of the final decision."""
 
     async def execute(self, context: WorkflowContext) -> dict[str, Any]:
         """Send notification to submitter."""
         submitter = context.get("submitter")
         status = context.get("document_status")
+        doc_id = context.get("document_id")
 
         context.set("notification_sent", True)
 
-        return {"notified": submitter, "status": status}
+        # In a real application, this would send an email or push notification
+        return {
+            "notified": submitter,
+            "document_id": doc_id,
+            "final_status": status,
+            "message": f"Document {doc_id} has been {status}",
+        }
 
 
 # =============================================================================
@@ -133,6 +215,12 @@ class NotifySubmitter(BaseMachineStep):
 
 class DocumentApprovalWorkflow:
     """Document approval workflow with human review and conditional branching.
+
+    This workflow demonstrates:
+    - Human task with JSON Schema form
+    - Conditional branching based on human decision
+    - Multiple terminal paths (approve/reject/request changes)
+    - Notification step at the end
 
     Flow:
         submit_document -> review_document -> [approve|reject|request_changes] -> notify_submitter
@@ -157,18 +245,22 @@ class DocumentApprovalWorkflow:
                 "review_document": ReviewDocument(
                     name="review_document",
                     title="Review Document",
-                    description="Human review of document",
+                    description="Review the submitted document and make a decision",
                     form_schema={
                         "type": "object",
+                        "title": "Document Review Form",
                         "properties": {
                             "decision": {
                                 "type": "string",
-                                "enum": ["approve", "reject", "request_changes"],
                                 "title": "Decision",
+                                "enum": ["approve", "reject", "request_changes"],
+                                "enumNames": ["Approve", "Reject", "Request Changes"],
+                                "description": "Select your decision for this document",
                             },
                             "comments": {
                                 "type": "string",
                                 "title": "Comments",
+                                "description": "Add any comments or feedback",
                             },
                         },
                         "required": ["decision"],
@@ -218,24 +310,28 @@ class DocumentApprovalWorkflow:
 
 
 # =============================================================================
-# Simple Workflow (for basic testing)
+# Simple Workflow (for quick testing)
 # =============================================================================
 
 
 class SimpleStep(BaseMachineStep):
-    """Simple step that records execution."""
+    """Simple step that records execution - useful for testing."""
 
     async def execute(self, context: WorkflowContext) -> dict[str, Any]:
         context.set("simple_executed", True)
-        return {"success": True}
+        return {"success": True, "message": "Simple workflow completed!"}
 
 
 class SimpleWorkflow:
-    """Simple single-step workflow for testing."""
+    """Simple single-step workflow for basic testing.
+
+    This workflow completes immediately without human intervention.
+    Useful for testing the API and verifying the setup works.
+    """
 
     __workflow_name__ = "simple_workflow"
     __workflow_version__ = "1.0.0"
-    __workflow_description__ = "Simple test workflow"
+    __workflow_description__ = "Simple test workflow that completes immediately"
 
     @classmethod
     def get_definition(cls) -> WorkflowDefinition:
@@ -244,7 +340,7 @@ class SimpleWorkflow:
             name=cls.__workflow_name__,
             version=cls.__workflow_version__,
             description=cls.__workflow_description__,
-            steps={"simple_step": SimpleStep(name="simple_step", description="A simple step")},
+            steps={"simple_step": SimpleStep(name="simple_step", description="A simple automated step")},
             edges=[],
             initial_step="simple_step",
             terminal_steps={"simple_step"},
@@ -252,220 +348,149 @@ class SimpleWorkflow:
 
 
 # =============================================================================
-# API Controllers
+# Dependency Providers
 # =============================================================================
 
-
-class WorkflowController(Controller):
-    """REST API for workflow management."""
-
-    path = "/workflows"
-    tags = ["Workflows"]
-
-    @get("/")
-    async def list_workflows(
-        self,
-        workflow_registry: WorkflowRegistry,
-    ) -> list[dict[str, Any]]:
-        """List all registered workflows."""
-        definitions = workflow_registry.list_definitions()
-        return [
-            {
-                "name": d.name,
-                "version": d.version,
-                "description": d.description,
-                "steps": list(d.steps.keys()),
-                "initial_step": d.initial_step,
-                "terminal_steps": list(d.terminal_steps),
-            }
-            for d in definitions
-        ]
-
-    @get("/{name:str}")
-    async def get_workflow(
-        self,
-        name: str,
-        workflow_registry: WorkflowRegistry,
-    ) -> dict[str, Any]:
-        """Get a specific workflow definition."""
-        definition = workflow_registry.get_definition(name)
-        return {
-            "name": definition.name,
-            "version": definition.version,
-            "description": definition.description,
-            "steps": {
-                step_name: {
-                    "name": step.name,
-                    "description": step.description,
-                    "type": step.step_type.value,
-                }
-                for step_name, step in definition.steps.items()
-            },
-            "edges": [
-                {
-                    "source": e.get_source_name(),
-                    "target": e.get_target_name(),
-                    "condition": e.condition,
-                }
-                for e in definition.edges
-            ],
-            "initial_step": definition.initial_step,
-            "terminal_steps": list(definition.terminal_steps),
-            "mermaid": definition.to_mermaid(),
-        }
-
-    @post("/{name:str}/start")
-    async def start_workflow(
-        self,
-        name: str,
-        data: dict[str, Any],
-        workflow_engine: LocalExecutionEngine,
-        workflow_registry: WorkflowRegistry,
-    ) -> dict[str, Any]:
-        """Start a new workflow instance."""
-        workflow_class = workflow_registry.get_workflow_class(name)
-        instance = await workflow_engine.start_workflow(workflow_class, initial_data=data)
-        return {
-            "instance_id": str(instance.id),
-            "workflow_name": instance.workflow_name,
-            "status": instance.status.value,
-        }
+# Global registry - shared across requests
+_registry = WorkflowRegistry()
+_registry.register(DocumentApprovalWorkflow)
+_registry.register(SimpleWorkflow)
 
 
-class InstanceController(Controller):
-    """REST API for workflow instance management."""
+def provide_registry() -> WorkflowRegistry:
+    """Provide the workflow registry."""
+    return _registry
 
-    path = "/instances"
-    tags = ["Instances"]
 
-    @get("/")
-    async def list_instances(
-        self,
-        workflow_engine: LocalExecutionEngine,
-    ) -> list[dict[str, Any]]:
-        """List all workflow instances."""
-        instances = workflow_engine.get_all_instances()
-        return [
-            {
-                "instance_id": str(i.id),
-                "workflow_name": i.workflow_name,
-                "status": i.status.value,
-                "current_step": i.current_step,
-            }
-            for i in instances
-        ]
+async def provide_workflow_engine(db_session: AsyncSession) -> PersistentExecutionEngine:
+    """Provide a PersistentExecutionEngine with database session."""
+    return PersistentExecutionEngine(
+        registry=_registry,
+        session=db_session,
+    )
 
-    @get("/{instance_id:uuid}")
-    async def get_instance(
-        self,
-        instance_id: UUID,
-        workflow_engine: LocalExecutionEngine,
-    ) -> dict[str, Any]:
-        """Get workflow instance details."""
-        instance = await workflow_engine.get_instance(instance_id)
-        return {
-            "instance_id": str(instance.id),
-            "workflow_name": instance.workflow_name,
-            "status": instance.status.value,
-            "current_step": instance.current_step,
-            "data": instance.context.data,
-            "step_history": [
-                {
-                    "step_name": h.step_name,
-                    "status": str(h.status),
-                    "result": h.result,
-                }
-                for h in instance.context.step_history
-            ],
-            "error": instance.error,
-        }
 
-    @post("/{instance_id:uuid}/complete-task")
-    async def complete_human_task(
-        self,
-        instance_id: UUID,
-        data: dict[str, Any],
-        workflow_engine: LocalExecutionEngine,
-    ) -> dict[str, Any]:
-        """Complete a human task with provided data."""
-        instance = await workflow_engine.get_instance(instance_id)
+async def provide_workflow_instance_repo(db_session: AsyncSession) -> WorkflowInstanceRepository:
+    """Provide WorkflowInstanceRepository with database session."""
+    return WorkflowInstanceRepository(session=db_session)
 
-        if instance.status != WorkflowStatus.WAITING:
-            return {
-                "error": f"Instance is not waiting for input (status: {instance.status.value})",
-                "instance_id": str(instance_id),
-            }
 
-        step_name = instance.current_step
-        if step_name is None:
-            return {
-                "error": "Instance has no current step",
-                "instance_id": str(instance_id),
-            }
-
-        user_id = data.pop("user_id", "anonymous")
-
-        await workflow_engine.complete_human_task(
-            instance_id=instance_id,
-            step_name=step_name,
-            user_id=user_id,
-            data=data,
-        )
-
-        # Get updated instance
-        instance = await workflow_engine.get_instance(instance_id)
-
-        return {
-            "instance_id": str(instance.id),
-            "status": instance.status.value,
-            "current_step": instance.current_step,
-        }
-
-    @post("/{instance_id:uuid}/cancel")
-    async def cancel_workflow(
-        self,
-        instance_id: UUID,
-        data: dict[str, Any],
-        workflow_engine: LocalExecutionEngine,
-    ) -> dict[str, Any]:
-        """Cancel a running workflow."""
-        reason = data.get("reason", "Canceled by user")
-        await workflow_engine.cancel_workflow(instance_id, reason)
-
-        instance = await workflow_engine.get_instance(instance_id)
-        return {
-            "instance_id": str(instance.id),
-            "status": instance.status.value,
-            "error": instance.error,
-        }
+async def provide_human_task_repo(db_session: AsyncSession) -> HumanTaskRepository:
+    """Provide HumanTaskRepository with database session."""
+    return HumanTaskRepository(session=db_session)
 
 
 # =============================================================================
-# Application
+# Application Setup
 # =============================================================================
 
 
 @get("/health")
 async def health_check() -> dict[str, str]:
     """Health check endpoint."""
-    return {"status": "healthy"}
+    return {"status": "healthy", "service": "litestar-workflows-example"}
 
 
-# Configure the plugin
-plugin_config = WorkflowPluginConfig(
-    auto_register_workflows=[DocumentApprovalWorkflow, SimpleWorkflow],
-    enable_api=False,  # Disable auto API since we have custom controllers
+@get("/")
+async def index() -> dict[str, Any]:
+    """API documentation index."""
+    return {
+        "name": "Litestar Workflows Example",
+        "description": "Full example with built-in REST API and persistence",
+        "endpoints": {
+            "openapi": "/schema",
+            "health": "/health",
+            "workflows": {
+                "definitions": "/workflows/definitions",
+                "instances": "/workflows/instances",
+                "tasks": "/workflows/tasks",
+            },
+        },
+        "example_usage": {
+            "start_simple_workflow": {
+                "method": "POST",
+                "url": "/workflows/instances",
+                "body": {
+                    "definition_name": "simple_workflow",
+                    "input_data": {},
+                    "user_id": "demo-user",
+                },
+            },
+            "start_document_approval": {
+                "method": "POST",
+                "url": "/workflows/instances",
+                "body": {
+                    "definition_name": "document_approval",
+                    "input_data": {
+                        "document_id": "DOC-001",
+                        "submitter": "alice@example.com",
+                        "title": "Q4 Budget Report",
+                    },
+                    "user_id": "alice",
+                },
+            },
+        },
+    }
+
+
+# Database configuration - SQLite for simplicity
+# In production, use PostgreSQL or another production database
+sqlalchemy_config = SQLAlchemyAsyncConfig(
+    connection_string="sqlite+aiosqlite:///./workflows.db",
+    metadata=WorkflowDefinitionModel.metadata,
+    create_all=True,  # Auto-create tables on startup
+)
+
+# Create workflow API router with proper dependency injection
+workflow_router = Router(
+    path="/workflows",
+    route_handlers=[
+        WorkflowDefinitionController,
+        WorkflowInstanceController,
+        HumanTaskController,
+    ],
+    dependencies={
+        "workflow_registry": Provide(provide_registry, sync_to_thread=False),
+        "workflow_engine": Provide(provide_workflow_engine),
+        "workflow_instance_repo": Provide(provide_workflow_instance_repo),
+        "human_task_repo": Provide(provide_human_task_repo),
+    },
+    tags=["Workflows"],
 )
 
 # Create the Litestar application
 app = Litestar(
-    route_handlers=[WorkflowController, InstanceController, health_check],
-    plugins=[WorkflowPlugin(config=plugin_config)],
+    route_handlers=[health_check, index, workflow_router],
+    plugins=[
+        SQLAlchemyPlugin(config=sqlalchemy_config),
+    ],
+    openapi_config=OpenAPIConfig(
+        title="Litestar Workflows - Full Example",
+        version="1.0.0",
+        description=(
+            "Full example demonstrating litestar-workflows with human tasks, "
+            "conditional branching, database persistence, and built-in REST API."
+        ),
+    ),
     debug=True,
 )
 
 
 if __name__ == "__main__":
     import uvicorn
+
+    print("\n" + "=" * 80)
+    print("Litestar Workflows - Full Example")
+    print("=" * 80)
+    print("\nStarting server on http://localhost:8001")
+    print("\nKey endpoints:")
+    print("  - http://localhost:8001/          - API index")
+    print("  - http://localhost:8001/schema    - OpenAPI documentation")
+    print("  - http://localhost:8001/health    - Health check")
+    print("\nWorkflow API:")
+    print("  - GET  /workflows/definitions     - List workflows")
+    print("  - POST /workflows/instances       - Start a workflow")
+    print("  - GET  /workflows/tasks           - List pending human tasks")
+    print("=" * 80 + "\n")
 
     uvicorn.run(app, host="0.0.0.0", port=8001)
