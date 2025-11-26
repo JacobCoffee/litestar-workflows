@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1](https://github.com/JacobCoffee/litestar-workflows/compare/v0.3.0..v0.3.1) - 2025-11-26
+
+
+### Documentation
+
+
+- regenerate changelog for v0.3.0 - ([cbac018](https://github.com/JacobCoffee/litestar-workflows/commit/cbac0184acc4b77adf27a4f2f53719ae91a16880)) - github-actions[bot]
+
+- add UI screenshots to README and web-plugin guide - ([04d8ea3](https://github.com/JacobCoffee/litestar-workflows/commit/04d8ea30650d4111eb3786a28dfb081e4bb7437a)) - Jacob Coffee
 ## [0.3.0](https://github.com/JacobCoffee/litestar-workflows/compare/v0.1.0..v0.3.0) - 2025-11-26
 
 
