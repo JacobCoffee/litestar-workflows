@@ -29,13 +29,7 @@ jobs:
       - name: Run zizmor
         uses: zizmorcore/zizmor-action@v0.3.0
         with:
-          args: --format sarif --output results.sarif .github/workflows/
-
-      - name: Upload SARIF results
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: results.sarif
-        if: always()
+          inputs: .github/workflows/
 
   # ==================================================================================== #
   # LINT

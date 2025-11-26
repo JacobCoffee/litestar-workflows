@@ -1032,7 +1032,7 @@ class TestPersistentExecutionEngine:
         assert isinstance(running, list)
 
         # Clean up running tasks to avoid session conflicts on teardown
-        for task in engine._running_tasks.values():
+        for task in engine._running.values():
             if not task.done():
                 task.cancel()
                 try:
