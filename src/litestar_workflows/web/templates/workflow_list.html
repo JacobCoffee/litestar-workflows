@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Workflows{% endblock %}
+
+{% block page_title %}Workflow Definitions{% endblock %}
+{% block page_subtitle %}
+<p class="mt-1 text-sm text-gray-500">Registered workflow definitions available for execution</p>
+{% endblock %}
+
+{% block content %}
+<div class="bg-white shadow overflow-hidden sm:rounded-md">
+    <ul role="list" class="divide-y divide-gray-200">
+        {% for workflow in workflows %}
+        <li>
+            <a href="{{ url_for('workflow_ui:workflow_detail', name=workflow.name) }}" class="block hover:bg-gray-50">
+                <div class="px-4 py-4 sm:px-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <div class="h-10 w-10 rounded-lg bg-primary-100 flex items-center justify-center">
+                                    <svg class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-primary-600 truncate">{{ workflow.name }}</p>
+                                <p class="text-sm text-gray-500">{{ workflow.description or 'No description' }}</p>
+                            </div>
+                        </div>
+                        <div class="ml-2 flex flex-shrink-0 items-center space-x-4">
+                            <span class="inline-flex items-center rounded-md bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+                                v{{ workflow.version }}
+                            </span>
+                            <span class="inline-flex items-center rounded-md bg-primary-50 px-2.5 py-0.5 text-xs font-medium text-primary-700">
+                                {{ workflow.steps|length }} steps
+                            </span>
+                            <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex flex-wrap gap-1">
+                            {% for step in workflow.steps[:5] %}
+                            <span class="inline-flex items-center rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
+                                {{ step }}
+                            </span>
+                            {% endfor %}
+                            {% if workflow.steps|length > 5 %}
+                            <span class="inline-flex items-center rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
+                                +{{ workflow.steps|length - 5 }} more
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </li>
+        {% else %}
+        <li class="px-4 py-12 text-center">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">No workflows</h3>
+            <p class="mt-1 text-sm text-gray-500">No workflow definitions have been registered yet.</p>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

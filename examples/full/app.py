@@ -96,6 +96,7 @@ from litestar_workflows.web.controllers import (
     WorkflowDefinitionController,
     WorkflowInstanceController,
 )
+from litestar_workflows.web.views import WorkflowUIController, get_template_config
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
@@ -396,11 +397,12 @@ async def index() -> dict[str, Any]:
     """API documentation index."""
     return {
         "name": "Litestar Workflows Example",
-        "description": "Full example with built-in REST API and persistence",
+        "description": "Full example with built-in REST API, UI, and persistence",
         "endpoints": {
+            "ui": "/ui",
             "openapi": "/schema",
             "health": "/health",
-            "workflows": {
+            "api": {
                 "definitions": "/workflows/definitions",
                 "instances": "/workflows/instances",
                 "tasks": "/workflows/tasks",
@@ -441,6 +443,14 @@ sqlalchemy_config = SQLAlchemyAsyncConfig(
     create_all=True,  # Auto-create tables on startup
 )
 
+# Shared dependencies for both API and UI
+workflow_dependencies = {
+    "workflow_registry": Provide(provide_registry, sync_to_thread=False),
+    "workflow_engine": Provide(provide_workflow_engine),
+    "workflow_instance_repo": Provide(provide_workflow_instance_repo),
+    "human_task_repo": Provide(provide_human_task_repo),
+}
+
 # Create workflow API router with proper dependency injection
 workflow_router = Router(
     path="/workflows",
@@ -449,27 +459,30 @@ workflow_router = Router(
         WorkflowInstanceController,
         HumanTaskController,
     ],
-    dependencies={
-        "workflow_registry": Provide(provide_registry, sync_to_thread=False),
-        "workflow_engine": Provide(provide_workflow_engine),
-        "workflow_instance_repo": Provide(provide_workflow_instance_repo),
-        "human_task_repo": Provide(provide_human_task_repo),
-    },
-    tags=["Workflows"],
+    dependencies=workflow_dependencies,
+    tags=["Workflows API"],
+)
+
+# Create UI router with same dependencies
+ui_router = Router(
+    path="",
+    route_handlers=[WorkflowUIController],
+    dependencies=workflow_dependencies,
 )
 
 # Create the Litestar application
 app = Litestar(
-    route_handlers=[health_check, index, workflow_router],
+    route_handlers=[health_check, index, workflow_router, ui_router],
     plugins=[
         SQLAlchemyPlugin(config=sqlalchemy_config),
     ],
+    template_config=get_template_config(),
     openapi_config=OpenAPIConfig(
         title="Litestar Workflows - Full Example",
         version="1.0.0",
         description=(
             "Full example demonstrating litestar-workflows with human tasks, "
-            "conditional branching, database persistence, and built-in REST API."
+            "conditional branching, database persistence, REST API, and web UI."
         ),
     ),
     debug=True,
@@ -485,12 +498,17 @@ if __name__ == "__main__":
     print("\nStarting server on http://localhost:8001")
     print("\nKey endpoints:")
     print("  - http://localhost:8001/          - API index")
+    print("  - http://localhost:8001/ui        - Web UI Dashboard")
     print("  - http://localhost:8001/schema    - OpenAPI documentation")
     print("  - http://localhost:8001/health    - Health check")
     print("\nWorkflow API:")
     print("  - GET  /workflows/definitions     - List workflows")
     print("  - POST /workflows/instances       - Start a workflow")
     print("  - GET  /workflows/tasks           - List pending human tasks")
+    print("\nWeb UI:")
+    print("  - /ui/workflows                   - Browse workflow definitions")
+    print("  - /ui/instances                   - View workflow instances")
+    print("  - /ui/tasks                       - Manage human tasks")
     print("=" * 80 + "\n")
 
     uvicorn.run(app, host="0.0.0.0", port=8001)

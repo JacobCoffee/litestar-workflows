@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Instance {{ instance.id[:8] }}...{% endblock %}
+
+{% block head %}
+<!-- Mermaid for graph rendering -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'base',
+        themeVariables: {
+            primaryColor: '#0ea5e9',
+            primaryTextColor: '#fff',
+            primaryBorderColor: '#0284c7',
+            lineColor: '#64748b',
+            secondaryColor: '#f1f5f9',
+            tertiaryColor: '#f8fafc'
+        }
+    });
+</script>
+{% endblock %}
+
+{% block page_title %}
+<div class="flex items-center">
+    <span>{{ instance.definition_name }}</span>
+    <span class="ml-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
+        {% if instance.status == 'running' %}bg-blue-100 text-blue-800
+        {% elif instance.status == 'completed' %}bg-green-100 text-green-800
+        {% elif instance.status == 'failed' %}bg-red-100 text-red-800
+        {% elif instance.status == 'waiting' %}bg-yellow-100 text-yellow-800
+        {% else %}bg-gray-100 text-gray-800{% endif %}">
+        {{ instance.status }}
+    </span>
+</div>
+{% endblock %}
+{% block page_subtitle %}
+<p class="mt-1 text-sm text-gray-500">Instance ID: {{ instance.id }}</p>
+{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Actions -->
+    {% if instance.status in ['running', 'waiting'] %}
+    <div class="flex space-x-3">
+        <form method="post" action="{{ url_for('workflow_ui:cancel_instance', instance_id=instance.id) }}"
+              onsubmit="return confirm('Are you sure you want to cancel this workflow?');">
+            <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700">
+                <svg class="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Cancel Workflow
+            </button>
+        </form>
+    </div>
+    {% endif %}
+
+    <!-- Instance Info -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Instance Details</h3>
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+            <dl class="sm:divide-y sm:divide-gray-200">
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Status</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
+                            {% if instance.status == 'running' %}bg-blue-100 text-blue-800
+                            {% elif instance.status == 'completed' %}bg-green-100 text-green-800
+                            {% elif instance.status == 'failed' %}bg-red-100 text-red-800
+                            {% elif instance.status == 'waiting' %}bg-yellow-100 text-yellow-800
+                            {% else %}bg-gray-100 text-gray-800{% endif %}">
+                            {{ instance.status }}
+                        </span>
+                    </dd>
+                </div>
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Current Step</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {% if instance.current_step %}
+                        <span class="inline-flex items-center rounded-md bg-primary-50 px-2 py-1 text-xs font-medium text-primary-700 ring-1 ring-inset ring-primary-600/20">
+                            {{ instance.current_step }}
+                        </span>
+                        {% else %}
+                        <span class="text-gray-400">None</span>
+                        {% endif %}
+                    </dd>
+                </div>
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Started At</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {{ instance.started_at.strftime('%Y-%m-%d %H:%M:%S UTC') if instance.started_at else 'N/A' }}
+                    </dd>
+                </div>
+                {% if instance.completed_at %}
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Completed At</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {{ instance.completed_at.strftime('%Y-%m-%d %H:%M:%S UTC') }}
+                    </dd>
+                </div>
+                {% endif %}
+                {% if instance.created_by %}
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Created By</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ instance.created_by }}</dd>
+                </div>
+                {% endif %}
+                {% if instance.error %}
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Error</dt>
+                    <dd class="mt-1 text-sm text-red-600 sm:mt-0 sm:col-span-2">
+                        <pre class="bg-red-50 p-3 rounded-md overflow-auto">{{ instance.error }}</pre>
+                    </dd>
+                </div>
+                {% endif %}
+            </dl>
+        </div>
+    </div>
+
+    <!-- Workflow Graph with State -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Execution Graph</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">Current execution state highlighted</p>
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+            <div class="mermaid bg-gray-50 p-4 rounded-lg overflow-auto">
+{{ graph.mermaid_source }}
+            </div>
+            <div class="mt-4 flex space-x-4 text-sm">
+                <div class="flex items-center">
+                    <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                    <span class="text-gray-600">Completed</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+                    <span class="text-gray-600">Current</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                    <span class="text-gray-600">Failed</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-3 h-3 rounded-full bg-gray-300 mr-2"></div>
+                    <span class="text-gray-600">Pending</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step History -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Step History</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">Execution history for each step</p>
+        </div>
+        <div class="border-t border-gray-200">
+            <ul role="list" class="divide-y divide-gray-200">
+                {% for step in instance.step_history %}
+                <li class="px-4 py-4 sm:px-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            {% if step.status == 'succeeded' %}
+                            <div class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                                <svg class="h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            {% elif step.status == 'failed' %}
+                            <div class="h-8 w-8 rounded-full bg-red-100 flex items-center justify-center">
+                                <svg class="h-4 w-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </div>
+                            {% elif step.status == 'running' %}
+                            <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                <svg class="h-4 w-4 text-blue-600 animate-spin" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                </svg>
+                            </div>
+                            {% else %}
+                            <div class="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center">
+                                <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            {% endif %}
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-900">{{ step.step_name }}</p>
+                                <p class="text-xs text-gray-500">
+                                    {% if step.started_at %}
+                                    Started: {{ step.started_at.strftime('%H:%M:%S') }}
+                                    {% endif %}
+                                    {% if step.completed_at %}
+                                    | Completed: {{ step.completed_at.strftime('%H:%M:%S') }}
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
+                            {% if step.status == 'succeeded' %}bg-green-100 text-green-800
+                            {% elif step.status == 'failed' %}bg-red-100 text-red-800
+                            {% elif step.status == 'running' %}bg-blue-100 text-blue-800
+                            {% else %}bg-gray-100 text-gray-800{% endif %}">
+                            {{ step.status }}
+                        </span>
+                    </div>
+                    {% if step.error %}
+                    <div class="mt-2 ml-12 text-sm text-red-600 bg-red-50 p-2 rounded">
+                        {{ step.error }}
+                    </div>
+                    {% endif %}
+                </li>
+                {% else %}
+                <li class="px-4 py-8 text-center text-gray-500">
+                    No step executions recorded yet.
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Context Data -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg" x-data="{ open: false }">
+        <div class="px-4 py-5 sm:px-6 cursor-pointer" @click="open = !open">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Context Data</h3>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">Workflow execution context</p>
+                </div>
+                <svg class="h-5 w-5 text-gray-400 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </div>
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:px-6" x-show="open" x-cloak>
+            <pre class="bg-gray-50 p-4 rounded-lg overflow-auto text-sm">{{ instance.context_data | tojson(indent=2) }}</pre>
+        </div>
+    </div>
+</div>
+{% endblock %}
