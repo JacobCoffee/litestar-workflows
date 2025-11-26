@@ -30,7 +30,7 @@ jobs:
           persist-credentials: false
 
       - name: Generate changelog
-        uses: orhun/git-cliff-action@4a4a951bc43fafe41cd2348d067f62ce5f405afa # v4
+        uses: orhun/git-cliff-action@d77b37db2e3f7398432d34b72a12aa3e2ba87e51 # v4.6.0
         with:
           config: pyproject.toml
           args: --verbose
