@@ -27,7 +27,7 @@ jobs:
           persist-credentials: false
 
       - name: Run zizmor
-        uses: zizmorcore/zizmor-action@v1
+        uses: zizmorcore/zizmor-action@v0.3.0
         with:
           args: --format sarif --output results.sarif .github/workflows/
 
@@ -89,10 +89,16 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Run ty type checker
-        uses: JacobCoffee/ty-action@v0.0.1
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
         with:
-          args: check src
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --all-extras --dev
+
+      - name: Run ty type checker
+        run: uv run ty check src
 
   # ==================================================================================== #
   # TESTS

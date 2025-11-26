@@ -1007,6 +1007,8 @@ class TestPersistentExecutionEngine:
         make_workflow_class,
     ):
         """Test getting running instance IDs."""
+        import asyncio
+
         from litestar_workflows.db.engine import PersistentExecutionEngine
 
         workflow_class = make_workflow_class(human_workflow_definition)
@@ -1019,8 +1021,6 @@ class TestPersistentExecutionEngine:
 
         result = await engine.start_workflow(workflow_class)
 
-        import asyncio
-
         await asyncio.sleep(0.1)
 
         # The workflow might still be "running" in memory (task exists)
@@ -1030,6 +1030,15 @@ class TestPersistentExecutionEngine:
         # Note: This test checks the in-memory task tracking
         # After human step wait, the task should have returned
         assert isinstance(running, list)
+
+        # Clean up running tasks to avoid session conflicts on teardown
+        for task in engine._running_tasks.values():
+            if not task.done():
+                task.cancel()
+                try:
+                    await task
+                except asyncio.CancelledError:
+                    pass
 
     async def test_definition_persisted(
         self,
