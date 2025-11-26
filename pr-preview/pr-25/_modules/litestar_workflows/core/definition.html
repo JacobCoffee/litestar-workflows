@@ -444,58 +444,70 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="261">            <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 </span><span data-line="262">            <span class="k">if</span> <span class="n">edge</span><span class="o">.</span><span class="n">condition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="263">                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edge</span><span class="o">.</span><span class="n">condition</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-</span><span data-line="264">                    <span class="c1"># Sanitize for mermaid: remove quotes and parentheses (they break syntax)</span>
-</span><span data-line="265">                    <span class="n">safe_condition</span> <span class="o">=</span> <span class="n">edge</span><span class="o">.</span><span class="n">condition</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-</span><span data-line="266">                    <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;|</span><span class="si">{</span><span class="n">safe_condition</span><span class="si">}</span><span class="s2">|&quot;</span>
-</span><span data-line="267">                <span class="k">else</span><span class="p">:</span>
-</span><span data-line="268">                    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;|conditional|&quot;</span>
-</span><span data-line="269">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2"> --&gt;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span data-line="270">
-</span><span data-line="271">        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+</span><span data-line="264">                    <span class="c1"># Sanitize for mermaid: remove special characters that break syntax</span>
+</span><span data-line="265">                    <span class="n">safe_condition</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="266">                        <span class="n">edge</span><span class="o">.</span><span class="n">condition</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span data-line="267">                        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span data-line="268">                        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span data-line="269">                        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span data-line="270">                        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span data-line="271">                        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span data-line="272">                        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span data-line="273">                        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span data-line="274">                        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span data-line="275">                        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span data-line="276">                        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span data-line="277">                    <span class="p">)</span>
+</span><span data-line="278">                    <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;|</span><span class="si">{</span><span class="n">safe_condition</span><span class="si">}</span><span class="s2">|&quot;</span>
+</span><span data-line="279">                <span class="k">else</span><span class="p">:</span>
+</span><span data-line="280">                    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;|conditional|&quot;</span>
+</span><span data-line="281">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2"> --&gt;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="282">
+</span><span data-line="283">        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
 
-</span><span data-line="272">
+</span><span data-line="284">
 <div class="viewcode-block" id="WorkflowDefinition.to_mermaid_with_state">
 <a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.WorkflowDefinition.to_mermaid_with_state">[docs]</a>
-</span><span data-line="273">    <span class="k">def</span><span class="w"> </span><span class="nf">to_mermaid_with_state</span><span class="p">(</span>
-</span><span data-line="274">        <span class="bp">self</span><span class="p">,</span>
-</span><span data-line="275">        <span class="n">current_step</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span data-line="276">        <span class="n">completed_steps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span data-line="277">        <span class="n">failed_steps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span data-line="278">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span data-line="279"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a MermaidJS graph with execution state highlighting.</span>
-</span><span data-line="280">
-</span><span data-line="281"><span class="sd">        Args:</span>
-</span><span data-line="282"><span class="sd">            current_step: Name of the currently executing step.</span>
-</span><span data-line="283"><span class="sd">            completed_steps: List of successfully completed step names.</span>
-</span><span data-line="284"><span class="sd">            failed_steps: List of failed step names.</span>
-</span><span data-line="285">
-</span><span data-line="286"><span class="sd">        Returns:</span>
-</span><span data-line="287"><span class="sd">            MermaidJS graph definition with state styling.</span>
-</span><span data-line="288">
-</span><span data-line="289"><span class="sd">        Example:</span>
-</span><span data-line="290"><span class="sd">            &gt;&gt;&gt; mermaid = definition.to_mermaid_with_state(</span>
-</span><span data-line="291"><span class="sd">            ...     current_step=&quot;review&quot;, completed_steps=[&quot;submit&quot;], failed_steps=[]</span>
-</span><span data-line="292"><span class="sd">            ... )</span>
-</span><span data-line="293"><span class="sd">        &quot;&quot;&quot;</span>
-</span><span data-line="294">        <span class="n">completed_steps</span> <span class="o">=</span> <span class="n">completed_steps</span> <span class="ow">or</span> <span class="p">[]</span>
-</span><span data-line="295">        <span class="n">failed_steps</span> <span class="o">=</span> <span class="n">failed_steps</span> <span class="ow">or</span> <span class="p">[]</span>
-</span><span data-line="296">
-</span><span data-line="297">        <span class="n">base_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_mermaid</span><span class="p">()</span>
-</span><span data-line="298">        <span class="n">lines</span> <span class="o">=</span> <span class="n">base_graph</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span data-line="299">
-</span><span data-line="300">        <span class="c1"># Add styling</span>
-</span><span data-line="301">        <span class="n">style_lines</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span data-line="302">        <span class="k">for</span> <span class="n">step_name</span> <span class="ow">in</span> <span class="n">completed_steps</span><span class="p">:</span>
-</span><span data-line="303">            <span class="n">style_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    style </span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s2"> fill:#90EE90,stroke:#006400,stroke-width:2px&quot;</span><span class="p">)</span>
-</span><span data-line="304">
-</span><span data-line="305">        <span class="k">for</span> <span class="n">step_name</span> <span class="ow">in</span> <span class="n">failed_steps</span><span class="p">:</span>
-</span><span data-line="306">            <span class="n">style_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    style </span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s2"> fill:#FFB6C1,stroke:#8B0000,stroke-width:2px&quot;</span><span class="p">)</span>
-</span><span data-line="307">
-</span><span data-line="308">        <span class="k">if</span> <span class="n">current_step</span><span class="p">:</span>
-</span><span data-line="309">            <span class="n">style_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    style </span><span class="si">{</span><span class="n">current_step</span><span class="si">}</span><span class="s2"> fill:#FFD700,stroke:#FFA500,stroke-width:3px&quot;</span><span class="p">)</span>
-</span><span data-line="310">
-</span><span data-line="311">        <span class="n">lines</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">style_lines</span><span class="p">)</span>
-</span><span data-line="312">        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+</span><span data-line="285">    <span class="k">def</span><span class="w"> </span><span class="nf">to_mermaid_with_state</span><span class="p">(</span>
+</span><span data-line="286">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="287">        <span class="n">current_step</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="288">        <span class="n">completed_steps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="289">        <span class="n">failed_steps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="290">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="291"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a MermaidJS graph with execution state highlighting.</span>
+</span><span data-line="292">
+</span><span data-line="293"><span class="sd">        Args:</span>
+</span><span data-line="294"><span class="sd">            current_step: Name of the currently executing step.</span>
+</span><span data-line="295"><span class="sd">            completed_steps: List of successfully completed step names.</span>
+</span><span data-line="296"><span class="sd">            failed_steps: List of failed step names.</span>
+</span><span data-line="297">
+</span><span data-line="298"><span class="sd">        Returns:</span>
+</span><span data-line="299"><span class="sd">            MermaidJS graph definition with state styling.</span>
+</span><span data-line="300">
+</span><span data-line="301"><span class="sd">        Example:</span>
+</span><span data-line="302"><span class="sd">            &gt;&gt;&gt; mermaid = definition.to_mermaid_with_state(</span>
+</span><span data-line="303"><span class="sd">            ...     current_step=&quot;review&quot;, completed_steps=[&quot;submit&quot;], failed_steps=[]</span>
+</span><span data-line="304"><span class="sd">            ... )</span>
+</span><span data-line="305"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="306">        <span class="n">completed_steps</span> <span class="o">=</span> <span class="n">completed_steps</span> <span class="ow">or</span> <span class="p">[]</span>
+</span><span data-line="307">        <span class="n">failed_steps</span> <span class="o">=</span> <span class="n">failed_steps</span> <span class="ow">or</span> <span class="p">[]</span>
+</span><span data-line="308">
+</span><span data-line="309">        <span class="n">base_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_mermaid</span><span class="p">()</span>
+</span><span data-line="310">        <span class="n">lines</span> <span class="o">=</span> <span class="n">base_graph</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="311">
+</span><span data-line="312">        <span class="c1"># Add styling</span>
+</span><span data-line="313">        <span class="n">style_lines</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="314">        <span class="k">for</span> <span class="n">step_name</span> <span class="ow">in</span> <span class="n">completed_steps</span><span class="p">:</span>
+</span><span data-line="315">            <span class="n">style_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    style </span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s2"> fill:#90EE90,stroke:#006400,stroke-width:2px&quot;</span><span class="p">)</span>
+</span><span data-line="316">
+</span><span data-line="317">        <span class="k">for</span> <span class="n">step_name</span> <span class="ow">in</span> <span class="n">failed_steps</span><span class="p">:</span>
+</span><span data-line="318">            <span class="n">style_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    style </span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s2"> fill:#FFB6C1,stroke:#8B0000,stroke-width:2px&quot;</span><span class="p">)</span>
+</span><span data-line="319">
+</span><span data-line="320">        <span class="k">if</span> <span class="n">current_step</span><span class="p">:</span>
+</span><span data-line="321">            <span class="n">style_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    style </span><span class="si">{</span><span class="n">current_step</span><span class="si">}</span><span class="s2"> fill:#FFD700,stroke:#FFA500,stroke-width:3px&quot;</span><span class="p">)</span>
+</span><span data-line="322">
+</span><span data-line="323">        <span class="n">lines</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">style_lines</span><span class="p">)</span>
+</span><span data-line="324">        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
 </div>
 
 </span></pre></div>
