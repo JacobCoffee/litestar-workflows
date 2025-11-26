@@ -12,68 +12,10 @@ concurrency:
 
 jobs:
   # ==================================================================================== #
-  # SECURITY SCAN
+  # VALIDATE (lint, format, type-check in one job)
   # ==================================================================================== #
-  zizmor:
-    name: Security Scan
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Run zizmor
-        uses: zizmorcore/zizmor-action@v0.3.0
-        with:
-          inputs: .github/workflows/
-
-  # ==================================================================================== #
-  # LINT
-  # ==================================================================================== #
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Run ruff check
-        uses: astral-sh/ruff-action@v3
-        with:
-          args: check
-
-  # ==================================================================================== #
-  # FORMAT CHECK
-  # ==================================================================================== #
-  format:
-    name: Format
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Run ruff format check
-        uses: astral-sh/ruff-action@v3
-        with:
-          args: format --check
-
-  # ==================================================================================== #
-  # TYPE CHECK
-  # ==================================================================================== #
-  type-check:
-    name: Type Check
+  validate:
+    name: Validate
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -91,16 +33,42 @@ jobs:
       - name: Create virtual environment
         run: uv sync --all-extras --dev
 
+      - name: Run ruff check
+        run: uv run ruff check
+
+      - name: Run ruff format check
+        run: uv run ruff format --check
+
       - name: Run ty type checker
         uses: JacobCoffee/ty-action@v0.0.1
         with:
           args: check src
 
   # ==================================================================================== #
+  # SECURITY SCAN (separate for security-events permission)
+  # ==================================================================================== #
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@v0.3.0
+        with:
+          inputs: .github/workflows/
+
+  # ==================================================================================== #
   # TESTS
   # ==================================================================================== #
   test:
-    name: Test - Python ${{ matrix.python-version }} on ${{ matrix.os }}
+    name: Test (py${{ matrix.python-version }}/${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
@@ -109,7 +77,6 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ["3.10", "3.11", "3.12", "3.13"]
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -141,22 +108,20 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   # ==================================================================================== #
-  # CI SUCCESS
+  # CI SUCCESS (gate for branch protection)
   # ==================================================================================== #
   ci-success:
     name: CI Success
     runs-on: ubuntu-latest
-    needs: [zizmor, lint, format, type-check, test]
+    needs: [validate, security, test]
     if: always()
     permissions:
       contents: read
     steps:
       - name: Check CI results
         run: |
-          if [[ "${{ needs.zizmor.result }}" != "success" || \
-                "${{ needs.lint.result }}" != "success" || \
-                "${{ needs.format.result }}" != "success" || \
-                "${{ needs.type-check.result }}" != "success" || \
+          if [[ "${{ needs.validate.result }}" != "success" || \
+                "${{ needs.security.result }}" != "success" || \
                 "${{ needs.test.result }}" != "success" ]]; then
             echo "CI failed!"
             exit 1
