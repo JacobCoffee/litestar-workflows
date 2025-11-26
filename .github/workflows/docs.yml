@@ -7,16 +7,17 @@ on:
       - 'docs/**'
       - 'src/**'
       - '.github/workflows/docs.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - 'src/**'
+      - '.github/workflows/docs.yml'
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   # ==================================================================================== #
@@ -25,6 +26,8 @@ jobs:
   build:
     name: Build Documentation
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -47,23 +50,114 @@ jobs:
       - name: Build documentation
         run: uv run sphinx-build -b html docs docs/_build/html -W --keep-going
 
-      - name: Upload artifact
+      - name: Upload artifact for Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/_build/html
 
+      - name: Upload artifact for PR preview
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-preview-${{ github.event.pull_request.number }}
+          path: docs/_build/html
+          retention-days: 7
+
   # ==================================================================================== #
-  # DEPLOY TO GITHUB PAGES
+  # DEPLOY TO GITHUB PAGES (main branch only)
   # ==================================================================================== #
   deploy:
     name: Deploy to GitHub Pages
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      pages: write
+      id-token: write
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # ==================================================================================== #
+  # PR PREVIEW DEPLOYMENT
+  # ==================================================================================== #
+  deploy-preview:
+    name: Deploy PR Preview
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Download docs artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-preview-${{ github.event.pull_request.number }}
+          path: preview
+
+      - name: Deploy preview
+        run: |
+          PR_NUM=${{ github.event.pull_request.number }}
+          PREVIEW_DIR="gh-pages/pr-preview/pr-$PR_NUM"
+
+          # Create preview directory
+          mkdir -p "$PREVIEW_DIR"
+
+          # Copy built docs
+          cp -r preview/* "$PREVIEW_DIR/"
+
+          # Commit and push
+          cd gh-pages
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git diff --staged --quiet || git commit -m "docs: deploy preview for PR #$PR_NUM"
+          git push
+
+      - name: Comment preview link
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const previewUrl = `https://jacobcoffee.github.io/litestar-workflows/pr-preview/pr-${prNumber}/`;
+
+            // Check for existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+
+            const botComment = comments.find(c =>
+              c.user.type === 'Bot' && c.body.includes('📚 Documentation Preview')
+            );
+
+            const body = `📚 **Documentation Preview**\n\n🔗 Preview URL: ${previewUrl}\n\n_This preview will be available after the workflow completes._`;
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body,
+              });
+            }
