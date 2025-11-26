@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="violet" data-content_root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Expense Approval Workflow - litestar-workflows</title><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Document Review Workflow" href="document-review.html" /><link rel="prev" title="Cookbook" href="index.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=14737038" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=8975404a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    <meta property="og:type" content="website"/><meta property="og:title" content="Expense Approval Workflow"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../index.html">
+      
+      
+      <strong>litestar-workflows</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"><ul><li class="link">
+          <a href="https://litestar.dev/">
+            <span>Litestar</span></a>
+        </li><li class="link">
+          <a href="https://pypi.org/project/litestar-workflows/">
+            <span>PyPI</span></a>
+        </li></ul></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Learn</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/quickstart.html">Quickstart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Core Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/workflows.html">Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/steps.html">Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/context.html">Workflow Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/execution.html">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/index.html">How-To Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../guides/simple-workflow.html">Building a Simple Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/human-tasks.html">Working with Human Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/parallel-execution.html">Parallel Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/conditional-logic.html">Conditional Logic and Gateways</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/persistence.html">Database Persistence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/web-plugin.html">Web Plugin (REST API)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Cookbook</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Expense Approval Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="document-review.html">Document Review Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onboarding.html">Employee Onboarding Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration-patterns.html">Integration Patterns</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/modules.html">Module Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/web.html">Web Plugin API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architecture Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../architecture/phase3-web.html">Phase 3: Web Plugin Architecture</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/litestar-919193495116337154">Discord</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#complete-implementation">Complete Implementation</a></li>
+<li><a class="reference internal" href="#key-concepts">Key Concepts</a><ul>
+<li><a class="reference internal" href="#multi-level-approval-chain">Multi-Level Approval Chain</a></li>
+<li><a class="reference internal" href="#conditional-routing">Conditional Routing</a></li>
+<li><a class="reference internal" href="#json-schema-forms">JSON Schema Forms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#customization-points">Customization Points</a></li>
+<li><a class="reference internal" href="#testing-the-workflow">Testing the Workflow</a></li>
+<li><a class="reference internal" href="#common-variations">Common Variations</a></li>
+<li><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">litestar-workflows</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="index.html"><span itemprop="name">Cookbook</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">Expense Approval Workflow</strong>
+        <meta itemprop="position" content="3" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+        <article class="yue" role="main">
+          <section id="expense-approval-workflow">
+<h1>Expense Approval Workflow<a class="headerlink" href="#expense-approval-workflow" title="Link to this heading">¶</a></h1>
+<p>A complete expense approval system with multi-level approval chains,
+conditional routing based on amount, and full REST API integration.</p>
+<p>This recipe demonstrates:</p>
+<ul class="simple">
+<li><p>Multi-level approval chains (Manager -&gt; Finance -&gt; CFO)</p></li>
+<li><p>Conditional routing based on expense amount</p></li>
+<li><p>Human task forms with JSON Schema validation</p></li>
+<li><p>Rejection handling and notifications</p></li>
+<li><p>Full Litestar integration with the web plugin</p></li>
+</ul>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>The workflow routes expense requests through appropriate approval levels:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><span data-line="1">[Submit] --&gt; [Route by Amount] --&gt; [Manager Approval] --&gt; [Route by Amount]
+</span><span data-line="2">                  |                                            |
+</span><span data-line="3">                  +---(&lt; $1,000)--&gt; [Auto Approve] -----+      +---(&lt; $5,000)--&gt; [Process]
+</span><span data-line="4">                  |                                     |      |
+</span><span data-line="5">                  +---(&gt;= $1,000)---&gt; [Manager] --------+      +---(&gt;= $5,000)--&gt; [Finance]
+</span><span data-line="6">                  |                                            |
+</span><span data-line="7">                  +---(&gt;= $10,000)-&gt; [Manager] -&gt; [Finance] ---+--(&gt;= $10,000)--&gt; [CFO]
+</span><span data-line="8">                                                               |
+</span><span data-line="9">                                                               v
+</span><span data-line="10">                                                           [Process]
+</span></pre></div>
+</div>
+<p><strong>Approval Thresholds:</strong></p>
+<ul class="simple">
+<li><p>Under $1,000: Auto-approved</p></li>
+<li><p>$1,000 - $4,999: Manager approval only</p></li>
+<li><p>$5,000 - $9,999: Manager + Finance approval</p></li>
+<li><p>$10,000+: Manager + Finance + CFO approval</p></li>
+</ul>
+</section>
+<section id="complete-implementation">
+<h2>Complete Implementation<a class="headerlink" href="#complete-implementation" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="sd">&quot;&quot;&quot;Expense approval workflow with multi-level approval chain.</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="sd">Run with:</span>
+</span><span data-line="4"><span class="sd">    uv run python -m expense_approval</span>
+</span><span data-line="5"><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="6">
+</span><span data-line="7"><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+</span><span data-line="8">
+</span><span data-line="9"><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+</span><span data-line="10"><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span>
+</span><span data-line="11">
+</span><span data-line="12"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar</span><span class="w"> </span><span class="kn">import</span> <span class="n">Litestar</span><span class="p">,</span> <span class="n">get</span>
+</span><span data-line="13"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar.di</span><span class="w"> </span><span class="kn">import</span> <span class="n">Provide</span>
+</span><span data-line="14"><span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.ext.asyncio</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncSession</span><span class="p">,</span> <span class="n">async_sessionmaker</span><span class="p">,</span> <span class="n">create_async_engine</span>
+</span><span data-line="15">
+</span><span data-line="16"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span data-line="17">    <span class="n">BaseMachineStep</span><span class="p">,</span>
+</span><span data-line="18">    <span class="n">BaseHumanStep</span><span class="p">,</span>
+</span><span data-line="19">    <span class="n">Edge</span><span class="p">,</span>
+</span><span data-line="20">    <span class="n">ExclusiveGateway</span><span class="p">,</span>
+</span><span data-line="21">    <span class="n">LocalExecutionEngine</span><span class="p">,</span>
+</span><span data-line="22">    <span class="n">WorkflowContext</span><span class="p">,</span>
+</span><span data-line="23">    <span class="n">WorkflowDefinition</span><span class="p">,</span>
+</span><span data-line="24">    <span class="n">WorkflowPlugin</span><span class="p">,</span>
+</span><span data-line="25">    <span class="n">WorkflowPluginConfig</span><span class="p">,</span>
+</span><span data-line="26">    <span class="n">WorkflowRegistry</span><span class="p">,</span>
+</span><span data-line="27"><span class="p">)</span>
+</span><span data-line="28"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">PersistentExecutionEngine</span>
+</span><span data-line="29">
+</span><span data-line="30"><span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+</span><span data-line="31">    <span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkflowContext</span>
+</span><span data-line="32">
+</span><span data-line="33">
+</span><span data-line="34"><span class="c1"># =============================================================================</span>
+</span><span data-line="35"><span class="c1"># Step Definitions</span>
+</span><span data-line="36"><span class="c1"># =============================================================================</span>
+</span><span data-line="37">
+</span><span data-line="38"><span class="k">class</span><span class="w"> </span><span class="nc">SubmitExpense</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="39"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Record the expense submission with metadata.&quot;&quot;&quot;</span>
+</span><span data-line="40">
+</span><span data-line="41">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;submit_expense&quot;</span>
+</span><span data-line="42">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Record expense submission and prepare for routing&quot;</span>
+</span><span data-line="43">
+</span><span data-line="44">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span data-line="45"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the expense request in the workflow context.&quot;&quot;&quot;</span>
+</span><span data-line="46">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;submitted_at&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="47">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;pending&quot;</span><span class="p">)</span>
+</span><span data-line="48">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;approval_chain&quot;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span data-line="49">
+</span><span data-line="50">        <span class="c1"># Validate required fields</span>
+</span><span data-line="51">        <span class="n">amount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">)</span>
+</span><span data-line="52">        <span class="k">if</span> <span class="n">amount</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">amount</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+</span><span data-line="53">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Amount must be a positive number&quot;</span><span class="p">)</span>
+</span><span data-line="54">
+</span><span data-line="55">        <span class="n">requester</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requester&quot;</span><span class="p">)</span>
+</span><span data-line="56">        <span class="k">if</span> <span class="ow">not</span> <span class="n">requester</span><span class="p">:</span>
+</span><span data-line="57">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Requester email is required&quot;</span><span class="p">)</span>
+</span><span data-line="58">
+</span><span data-line="59">        <span class="k">return</span> <span class="p">{</span>
+</span><span data-line="60">            <span class="s2">&quot;submitted&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span data-line="61">            <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="n">amount</span><span class="p">,</span>
+</span><span data-line="62">            <span class="s2">&quot;requester&quot;</span><span class="p">:</span> <span class="n">requester</span><span class="p">,</span>
+</span><span data-line="63">        <span class="p">}</span>
+</span><span data-line="64">
+</span><span data-line="65">
+</span><span data-line="66"><span class="k">class</span><span class="w"> </span><span class="nc">AmountRouter</span><span class="p">(</span><span class="n">ExclusiveGateway</span><span class="p">):</span>
+</span><span data-line="67"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Route expense to appropriate approval level based on amount.&quot;&quot;&quot;</span>
+</span><span data-line="68">
+</span><span data-line="69">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;amount_router&quot;</span>
+</span><span data-line="70">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Determine required approval level&quot;</span>
+</span><span data-line="71">
+</span><span data-line="72">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="73"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the next step based on amount and current approval state.&quot;&quot;&quot;</span>
+</span><span data-line="74">        <span class="n">amount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="75">        <span class="n">approval_chain</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;approval_chain&quot;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span data-line="76">
+</span><span data-line="77">        <span class="c1"># Determine required approvals</span>
+</span><span data-line="78">        <span class="n">required_approvals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_required_approvals</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
+</span><span data-line="79">
+</span><span data-line="80">        <span class="c1"># Find next unobtained approval</span>
+</span><span data-line="81">        <span class="k">for</span> <span class="n">approval_level</span> <span class="ow">in</span> <span class="n">required_approvals</span><span class="p">:</span>
+</span><span data-line="82">            <span class="k">if</span> <span class="n">approval_level</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">approval_chain</span><span class="p">:</span>
+</span><span data-line="83">                <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">approval_level</span><span class="si">}</span><span class="s2">_approval&quot;</span>
+</span><span data-line="84">
+</span><span data-line="85">        <span class="c1"># All required approvals obtained</span>
+</span><span data-line="86">        <span class="k">return</span> <span class="s2">&quot;process_approved&quot;</span>
+</span><span data-line="87">
+</span><span data-line="88">    <span class="k">def</span><span class="w"> </span><span class="nf">_get_required_approvals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span data-line="89"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine which approvals are needed based on amount.&quot;&quot;&quot;</span>
+</span><span data-line="90">        <span class="k">if</span> <span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span>
+</span><span data-line="91">            <span class="k">return</span> <span class="p">[]</span>  <span class="c1"># Auto-approve</span>
+</span><span data-line="92">        <span class="k">elif</span> <span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">5000</span><span class="p">:</span>
+</span><span data-line="93">            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;manager&quot;</span><span class="p">]</span>
+</span><span data-line="94">        <span class="k">elif</span> <span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">10000</span><span class="p">:</span>
+</span><span data-line="95">            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;manager&quot;</span><span class="p">,</span> <span class="s2">&quot;finance&quot;</span><span class="p">]</span>
+</span><span data-line="96">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="97">            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;manager&quot;</span><span class="p">,</span> <span class="s2">&quot;finance&quot;</span><span class="p">,</span> <span class="s2">&quot;cfo&quot;</span><span class="p">]</span>
+</span><span data-line="98">
+</span><span data-line="99">
+</span><span data-line="100"><span class="k">class</span><span class="w"> </span><span class="nc">AutoApprove</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="101"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Automatically approve small expenses.&quot;&quot;&quot;</span>
+</span><span data-line="102">
+</span><span data-line="103">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;auto_approve&quot;</span>
+</span><span data-line="104">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Auto-approve expenses under threshold&quot;</span>
+</span><span data-line="105">
+</span><span data-line="106">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span data-line="107"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Mark expense as auto-approved.&quot;&quot;&quot;</span>
+</span><span data-line="108">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;approved&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</span><span data-line="109">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;approved_by&quot;</span><span class="p">,</span> <span class="s2">&quot;system&quot;</span><span class="p">)</span>
+</span><span data-line="110">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;approved_at&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="111">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;approved&quot;</span><span class="p">)</span>
+</span><span data-line="112">
+</span><span data-line="113">        <span class="n">approval_chain</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;approval_chain&quot;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span data-line="114">        <span class="n">approval_chain</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+</span><span data-line="115">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;approval_chain&quot;</span><span class="p">,</span> <span class="n">approval_chain</span><span class="p">)</span>
+</span><span data-line="116">
+</span><span data-line="117">        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;auto_approved&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+</span><span data-line="118">
+</span><span data-line="119">
+</span><span data-line="120"><span class="k">class</span><span class="w"> </span><span class="nc">ManagerApproval</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="121"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Manager reviews and approves/rejects the expense.&quot;&quot;&quot;</span>
+</span><span data-line="122">
+</span><span data-line="123">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;manager_approval&quot;</span>
+</span><span data-line="124">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Manager Approval Required&quot;</span>
+</span><span data-line="125">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Review expense request and approve or reject&quot;</span>
+</span><span data-line="126">
+</span><span data-line="127">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="128">        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="129">        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Expense Approval&quot;</span><span class="p">,</span>
+</span><span data-line="130">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="131">            <span class="s2">&quot;decision&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="132">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="133">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Decision&quot;</span><span class="p">,</span>
+</span><span data-line="134">                <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;approve&quot;</span><span class="p">,</span> <span class="s2">&quot;reject&quot;</span><span class="p">,</span> <span class="s2">&quot;request_info&quot;</span><span class="p">],</span>
+</span><span data-line="135">                <span class="s2">&quot;enumNames&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Approve&quot;</span><span class="p">,</span> <span class="s2">&quot;Reject&quot;</span><span class="p">,</span> <span class="s2">&quot;Request More Information&quot;</span><span class="p">],</span>
+</span><span data-line="136">                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Your decision on this expense request&quot;</span><span class="p">,</span>
+</span><span data-line="137">            <span class="p">},</span>
+</span><span data-line="138">            <span class="s2">&quot;comments&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="139">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="140">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Comments&quot;</span><span class="p">,</span>
+</span><span data-line="141">                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Feedback for the requester (required for rejection)&quot;</span><span class="p">,</span>
+</span><span data-line="142">                <span class="s2">&quot;maxLength&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+</span><span data-line="143">            <span class="p">},</span>
+</span><span data-line="144">            <span class="s2">&quot;cost_center&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="145">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="146">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Cost Center&quot;</span><span class="p">,</span>
+</span><span data-line="147">                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Assign to cost center (optional)&quot;</span><span class="p">,</span>
+</span><span data-line="148">                <span class="s2">&quot;pattern&quot;</span><span class="p">:</span> <span class="s2">&quot;^[A-Z]</span><span class="si">{2}</span><span class="s2">-[0-9]</span><span class="si">{4}</span><span class="s2">$&quot;</span><span class="p">,</span>
+</span><span data-line="149">            <span class="p">},</span>
+</span><span data-line="150">        <span class="p">},</span>
+</span><span data-line="151">        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;decision&quot;</span><span class="p">],</span>
+</span><span data-line="152">        <span class="s2">&quot;if&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="153">            <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;decision&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;const&quot;</span><span class="p">:</span> <span class="s2">&quot;reject&quot;</span><span class="p">}}</span>
+</span><span data-line="154">        <span class="p">},</span>
+</span><span data-line="155">        <span class="s2">&quot;then&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="156">            <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;decision&quot;</span><span class="p">,</span> <span class="s2">&quot;comments&quot;</span><span class="p">]</span>
+</span><span data-line="157">        <span class="p">},</span>
+</span><span data-line="158">    <span class="p">}</span>
+</span><span data-line="159">
+</span><span data-line="160">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="161"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a dynamic description with expense details.&quot;&quot;&quot;</span>
+</span><span data-line="162">        <span class="n">amount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="163">        <span class="n">requester</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requester&quot;</span><span class="p">,</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">)</span>
+</span><span data-line="164">        <span class="n">description</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;No description provided&quot;</span><span class="p">)</span>
+</span><span data-line="165">
+</span><span data-line="166">        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+</span><span data-line="167"><span class="s2">**Expense Request**</span>
+</span><span data-line="168">
+</span><span data-line="169"><span class="s2">- **Requester:** </span><span class="si">{</span><span class="n">requester</span><span class="si">}</span>
+</span><span data-line="170"><span class="s2">- **Amount:** $</span><span class="si">{</span><span class="n">amount</span><span class="si">:</span><span class="s2">,.2f</span><span class="si">}</span>
+</span><span data-line="171"><span class="s2">- **Description:** </span><span class="si">{</span><span class="n">description</span><span class="si">}</span>
+</span><span data-line="172">
+</span><span data-line="173"><span class="s2">Please review and approve or reject this expense request.</span>
+</span><span data-line="174"><span class="s2">&quot;&quot;&quot;</span>
+</span><span data-line="175">
+</span><span data-line="176">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_assignee</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="177"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Route to the requester&#39;s manager.&quot;&quot;&quot;</span>
+</span><span data-line="178">        <span class="n">requester</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requester&quot;</span><span class="p">)</span>
+</span><span data-line="179">        <span class="c1"># In a real application, look up the manager</span>
+</span><span data-line="180">        <span class="c1"># For demo, use a pattern</span>
+</span><span data-line="181">        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;manager-of-</span><span class="si">{</span><span class="n">requester</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span data-line="182">
+</span><span data-line="183">
+</span><span data-line="184"><span class="k">class</span><span class="w"> </span><span class="nc">FinanceApproval</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="185"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Finance team reviews larger expenses.&quot;&quot;&quot;</span>
+</span><span data-line="186">
+</span><span data-line="187">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;finance_approval&quot;</span>
+</span><span data-line="188">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Finance Approval Required&quot;</span>
+</span><span data-line="189">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Finance review for expenses over $5,000&quot;</span>
+</span><span data-line="190">
+</span><span data-line="191">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="192">        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="193">        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Finance Review&quot;</span><span class="p">,</span>
+</span><span data-line="194">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="195">            <span class="s2">&quot;decision&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="196">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="197">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Decision&quot;</span><span class="p">,</span>
+</span><span data-line="198">                <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;approve&quot;</span><span class="p">,</span> <span class="s2">&quot;reject&quot;</span><span class="p">],</span>
+</span><span data-line="199">            <span class="p">},</span>
+</span><span data-line="200">            <span class="s2">&quot;budget_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="201">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="202">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Budget Code&quot;</span><span class="p">,</span>
+</span><span data-line="203">                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Assign expense to budget&quot;</span><span class="p">,</span>
+</span><span data-line="204">                <span class="s2">&quot;pattern&quot;</span><span class="p">:</span> <span class="s2">&quot;^BUD-[0-9]</span><span class="si">{6}</span><span class="s2">$&quot;</span><span class="p">,</span>
+</span><span data-line="205">            <span class="p">},</span>
+</span><span data-line="206">            <span class="s2">&quot;fiscal_year&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="207">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="208">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Fiscal Year&quot;</span><span class="p">,</span>
+</span><span data-line="209">                <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;FY2024&quot;</span><span class="p">,</span> <span class="s2">&quot;FY2025&quot;</span><span class="p">],</span>
+</span><span data-line="210">            <span class="p">},</span>
+</span><span data-line="211">            <span class="s2">&quot;comments&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="212">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="213">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Comments&quot;</span><span class="p">,</span>
+</span><span data-line="214">            <span class="p">},</span>
+</span><span data-line="215">        <span class="p">},</span>
+</span><span data-line="216">        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;decision&quot;</span><span class="p">,</span> <span class="s2">&quot;budget_code&quot;</span><span class="p">,</span> <span class="s2">&quot;fiscal_year&quot;</span><span class="p">],</span>
+</span><span data-line="217">    <span class="p">}</span>
+</span><span data-line="218">
+</span><span data-line="219">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_assignee_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="220"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Assign to finance approvers group.&quot;&quot;&quot;</span>
+</span><span data-line="221">        <span class="k">return</span> <span class="s2">&quot;finance-approvers&quot;</span>
+</span><span data-line="222">
+</span><span data-line="223">
+</span><span data-line="224"><span class="k">class</span><span class="w"> </span><span class="nc">CFOApproval</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="225"><span class="w">    </span><span class="sd">&quot;&quot;&quot;CFO reviews high-value expenses.&quot;&quot;&quot;</span>
+</span><span data-line="226">
+</span><span data-line="227">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;cfo_approval&quot;</span>
+</span><span data-line="228">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;CFO Approval Required&quot;</span>
+</span><span data-line="229">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Executive approval for expenses over $10,000&quot;</span>
+</span><span data-line="230">
+</span><span data-line="231">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="232">        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="233">        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Executive Approval&quot;</span><span class="p">,</span>
+</span><span data-line="234">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="235">            <span class="s2">&quot;decision&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="236">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="237">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Decision&quot;</span><span class="p">,</span>
+</span><span data-line="238">                <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;approve&quot;</span><span class="p">,</span> <span class="s2">&quot;reject&quot;</span><span class="p">,</span> <span class="s2">&quot;defer&quot;</span><span class="p">],</span>
+</span><span data-line="239">                <span class="s2">&quot;enumNames&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Approve&quot;</span><span class="p">,</span> <span class="s2">&quot;Reject&quot;</span><span class="p">,</span> <span class="s2">&quot;Defer to Board&quot;</span><span class="p">],</span>
+</span><span data-line="240">            <span class="p">},</span>
+</span><span data-line="241">            <span class="s2">&quot;strategic_alignment&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="242">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="243">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Strategically Aligned&quot;</span><span class="p">,</span>
+</span><span data-line="244">                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Does this expense align with company strategy?&quot;</span><span class="p">,</span>
+</span><span data-line="245">            <span class="p">},</span>
+</span><span data-line="246">            <span class="s2">&quot;comments&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="247">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="248">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Executive Notes&quot;</span><span class="p">,</span>
+</span><span data-line="249">                <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;textarea&quot;</span><span class="p">,</span>
+</span><span data-line="250">            <span class="p">},</span>
+</span><span data-line="251">        <span class="p">},</span>
+</span><span data-line="252">        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;decision&quot;</span><span class="p">],</span>
+</span><span data-line="253">    <span class="p">}</span>
+</span><span data-line="254">
+</span><span data-line="255">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_assignee</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="256"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Route to CFO.&quot;&quot;&quot;</span>
+</span><span data-line="257">        <span class="k">return</span> <span class="s2">&quot;cfo@company.com&quot;</span>
+</span><span data-line="258">
+</span><span data-line="259">
+</span><span data-line="260"><span class="k">class</span><span class="w"> </span><span class="nc">RecordApproval</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="261"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Record approval from a human step and route to next.&quot;&quot;&quot;</span>
+</span><span data-line="262">
+</span><span data-line="263">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;record_approval&quot;</span>
+</span><span data-line="264">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Process approval decision and update chain&quot;</span>
+</span><span data-line="265">
+</span><span data-line="266">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span data-line="267"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Record the approval decision and prepare for routing.&quot;&quot;&quot;</span>
+</span><span data-line="268">        <span class="n">decision</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;decision&quot;</span><span class="p">)</span>
+</span><span data-line="269">        <span class="n">approval_chain</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;approval_chain&quot;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span data-line="270">
+</span><span data-line="271">        <span class="k">if</span> <span class="n">decision</span> <span class="o">==</span> <span class="s2">&quot;approve&quot;</span><span class="p">:</span>
+</span><span data-line="272">            <span class="c1"># Determine which approval was just completed</span>
+</span><span data-line="273">            <span class="n">current_step</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_current_step&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span data-line="274">            <span class="k">if</span> <span class="s2">&quot;manager&quot;</span> <span class="ow">in</span> <span class="n">current_step</span><span class="p">:</span>
+</span><span data-line="275">                <span class="n">approval_chain</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;manager&quot;</span><span class="p">)</span>
+</span><span data-line="276">            <span class="k">elif</span> <span class="s2">&quot;finance&quot;</span> <span class="ow">in</span> <span class="n">current_step</span><span class="p">:</span>
+</span><span data-line="277">                <span class="n">approval_chain</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;finance&quot;</span><span class="p">)</span>
+</span><span data-line="278">            <span class="k">elif</span> <span class="s2">&quot;cfo&quot;</span> <span class="ow">in</span> <span class="n">current_step</span><span class="p">:</span>
+</span><span data-line="279">                <span class="n">approval_chain</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;cfo&quot;</span><span class="p">)</span>
+</span><span data-line="280">
+</span><span data-line="281">            <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;approval_chain&quot;</span><span class="p">,</span> <span class="n">approval_chain</span><span class="p">)</span>
+</span><span data-line="282">            <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;last_approved_at&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="283">            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;recorded&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;chain&quot;</span><span class="p">:</span> <span class="n">approval_chain</span><span class="p">}</span>
+</span><span data-line="284">
+</span><span data-line="285">        <span class="k">elif</span> <span class="n">decision</span> <span class="o">==</span> <span class="s2">&quot;reject&quot;</span><span class="p">:</span>
+</span><span data-line="286">            <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;rejected&quot;</span><span class="p">)</span>
+</span><span data-line="287">            <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;rejected_at&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="288">            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;rejected&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+</span><span data-line="289">
+</span><span data-line="290">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="291">            <span class="c1"># Request info or defer - keep status as pending</span>
+</span><span data-line="292">            <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;awaiting_info&quot;</span><span class="p">)</span>
+</span><span data-line="293">            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;pending_info&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+</span><span data-line="294">
+</span><span data-line="295">
+</span><span data-line="296"><span class="k">class</span><span class="w"> </span><span class="nc">ProcessApproved</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="297"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Finalize approved expense.&quot;&quot;&quot;</span>
+</span><span data-line="298">
+</span><span data-line="299">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;process_approved&quot;</span>
+</span><span data-line="300">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Process fully approved expense&quot;</span>
+</span><span data-line="301">
+</span><span data-line="302">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span data-line="303"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Finalize the approved expense.&quot;&quot;&quot;</span>
+</span><span data-line="304">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;approved&quot;</span><span class="p">)</span>
+</span><span data-line="305">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;approved&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</span><span data-line="306">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;processed_at&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="307">
+</span><span data-line="308">        <span class="c1"># In a real app: trigger payment, update accounting system, etc.</span>
+</span><span data-line="309">        <span class="k">return</span> <span class="p">{</span>
+</span><span data-line="310">            <span class="s2">&quot;processed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span data-line="311">            <span class="s2">&quot;expense_id&quot;</span><span class="p">:</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;expense_id&quot;</span><span class="p">),</span>
+</span><span data-line="312">            <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">),</span>
+</span><span data-line="313">            <span class="s2">&quot;approval_chain&quot;</span><span class="p">:</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;approval_chain&quot;</span><span class="p">),</span>
+</span><span data-line="314">        <span class="p">}</span>
+</span><span data-line="315">
+</span><span data-line="316">
+</span><span data-line="317"><span class="k">class</span><span class="w"> </span><span class="nc">ProcessRejected</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="318"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle rejected expense.&quot;&quot;&quot;</span>
+</span><span data-line="319">
+</span><span data-line="320">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;process_rejected&quot;</span>
+</span><span data-line="321">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Process rejected expense&quot;</span>
+</span><span data-line="322">
+</span><span data-line="323">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span data-line="324"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle rejection and notify requester.&quot;&quot;&quot;</span>
+</span><span data-line="325">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;rejected&quot;</span><span class="p">)</span>
+</span><span data-line="326">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;processed_at&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="327">
+</span><span data-line="328">        <span class="c1"># In a real app: send notification email to requester</span>
+</span><span data-line="329">        <span class="k">return</span> <span class="p">{</span>
+</span><span data-line="330">            <span class="s2">&quot;processed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span data-line="331">            <span class="s2">&quot;rejected&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span data-line="332">            <span class="s2">&quot;reason&quot;</span><span class="p">:</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comments&quot;</span><span class="p">),</span>
+</span><span data-line="333">        <span class="p">}</span>
+</span><span data-line="334">
+</span><span data-line="335">
+</span><span data-line="336"><span class="c1"># =============================================================================</span>
+</span><span data-line="337"><span class="c1"># Workflow Definition</span>
+</span><span data-line="338"><span class="c1"># =============================================================================</span>
+</span><span data-line="339">
+</span><span data-line="340"><span class="n">expense_approval_workflow</span> <span class="o">=</span> <span class="n">WorkflowDefinition</span><span class="p">(</span>
+</span><span data-line="341">    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;expense_approval&quot;</span><span class="p">,</span>
+</span><span data-line="342">    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+</span><span data-line="343">    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Multi-level expense approval with conditional routing&quot;</span><span class="p">,</span>
+</span><span data-line="344">    <span class="n">steps</span><span class="o">=</span><span class="p">{</span>
+</span><span data-line="345">        <span class="s2">&quot;submit_expense&quot;</span><span class="p">:</span> <span class="n">SubmitExpense</span><span class="p">(),</span>
+</span><span data-line="346">        <span class="s2">&quot;amount_router&quot;</span><span class="p">:</span> <span class="n">AmountRouter</span><span class="p">(),</span>
+</span><span data-line="347">        <span class="s2">&quot;auto_approve&quot;</span><span class="p">:</span> <span class="n">AutoApprove</span><span class="p">(),</span>
+</span><span data-line="348">        <span class="s2">&quot;manager_approval&quot;</span><span class="p">:</span> <span class="n">ManagerApproval</span><span class="p">(),</span>
+</span><span data-line="349">        <span class="s2">&quot;finance_approval&quot;</span><span class="p">:</span> <span class="n">FinanceApproval</span><span class="p">(),</span>
+</span><span data-line="350">        <span class="s2">&quot;cfo_approval&quot;</span><span class="p">:</span> <span class="n">CFOApproval</span><span class="p">(),</span>
+</span><span data-line="351">        <span class="s2">&quot;record_approval&quot;</span><span class="p">:</span> <span class="n">RecordApproval</span><span class="p">(),</span>
+</span><span data-line="352">        <span class="s2">&quot;process_approved&quot;</span><span class="p">:</span> <span class="n">ProcessApproved</span><span class="p">(),</span>
+</span><span data-line="353">        <span class="s2">&quot;process_rejected&quot;</span><span class="p">:</span> <span class="n">ProcessRejected</span><span class="p">(),</span>
+</span><span data-line="354">    <span class="p">},</span>
+</span><span data-line="355">    <span class="n">edges</span><span class="o">=</span><span class="p">[</span>
+</span><span data-line="356">        <span class="c1"># Initial submission and routing</span>
+</span><span data-line="357">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;submit_expense&quot;</span><span class="p">,</span> <span class="s2">&quot;amount_router&quot;</span><span class="p">),</span>
+</span><span data-line="358">
+</span><span data-line="359">        <span class="c1"># Auto-approve path for small expenses</span>
+</span><span data-line="360">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="361">            <span class="s2">&quot;amount_router&quot;</span><span class="p">,</span>
+</span><span data-line="362">            <span class="s2">&quot;auto_approve&quot;</span><span class="p">,</span>
+</span><span data-line="363">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;amount&#39;, 0) &lt; 1000&quot;</span>
+</span><span data-line="364">        <span class="p">),</span>
+</span><span data-line="365">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;auto_approve&quot;</span><span class="p">,</span> <span class="s2">&quot;process_approved&quot;</span><span class="p">),</span>
+</span><span data-line="366">
+</span><span data-line="367">        <span class="c1"># Manager approval path</span>
+</span><span data-line="368">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="369">            <span class="s2">&quot;amount_router&quot;</span><span class="p">,</span>
+</span><span data-line="370">            <span class="s2">&quot;manager_approval&quot;</span><span class="p">,</span>
+</span><span data-line="371">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;amount&#39;, 0) &gt;= 1000 and &#39;manager&#39; not in context.get(&#39;approval_chain&#39;, [])&quot;</span>
+</span><span data-line="372">        <span class="p">),</span>
+</span><span data-line="373">
+</span><span data-line="374">        <span class="c1"># Finance approval path</span>
+</span><span data-line="375">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="376">            <span class="s2">&quot;amount_router&quot;</span><span class="p">,</span>
+</span><span data-line="377">            <span class="s2">&quot;finance_approval&quot;</span><span class="p">,</span>
+</span><span data-line="378">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;amount&#39;, 0) &gt;= 5000 and &#39;manager&#39; in context.get(&#39;approval_chain&#39;, []) and &#39;finance&#39; not in context.get(&#39;approval_chain&#39;, [])&quot;</span>
+</span><span data-line="379">        <span class="p">),</span>
+</span><span data-line="380">
+</span><span data-line="381">        <span class="c1"># CFO approval path</span>
+</span><span data-line="382">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="383">            <span class="s2">&quot;amount_router&quot;</span><span class="p">,</span>
+</span><span data-line="384">            <span class="s2">&quot;cfo_approval&quot;</span><span class="p">,</span>
+</span><span data-line="385">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;amount&#39;, 0) &gt;= 10000 and &#39;finance&#39; in context.get(&#39;approval_chain&#39;, []) and &#39;cfo&#39; not in context.get(&#39;approval_chain&#39;, [])&quot;</span>
+</span><span data-line="386">        <span class="p">),</span>
+</span><span data-line="387">
+</span><span data-line="388">        <span class="c1"># After any human approval, record and re-route</span>
+</span><span data-line="389">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="390">            <span class="s2">&quot;manager_approval&quot;</span><span class="p">,</span>
+</span><span data-line="391">            <span class="s2">&quot;record_approval&quot;</span><span class="p">,</span>
+</span><span data-line="392">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;decision&#39;) == &#39;approve&#39;&quot;</span>
+</span><span data-line="393">        <span class="p">),</span>
+</span><span data-line="394">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="395">            <span class="s2">&quot;manager_approval&quot;</span><span class="p">,</span>
+</span><span data-line="396">            <span class="s2">&quot;process_rejected&quot;</span><span class="p">,</span>
+</span><span data-line="397">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;decision&#39;) == &#39;reject&#39;&quot;</span>
+</span><span data-line="398">        <span class="p">),</span>
+</span><span data-line="399">
+</span><span data-line="400">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="401">            <span class="s2">&quot;finance_approval&quot;</span><span class="p">,</span>
+</span><span data-line="402">            <span class="s2">&quot;record_approval&quot;</span><span class="p">,</span>
+</span><span data-line="403">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;decision&#39;) == &#39;approve&#39;&quot;</span>
+</span><span data-line="404">        <span class="p">),</span>
+</span><span data-line="405">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="406">            <span class="s2">&quot;finance_approval&quot;</span><span class="p">,</span>
+</span><span data-line="407">            <span class="s2">&quot;process_rejected&quot;</span><span class="p">,</span>
+</span><span data-line="408">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;decision&#39;) == &#39;reject&#39;&quot;</span>
+</span><span data-line="409">        <span class="p">),</span>
+</span><span data-line="410">
+</span><span data-line="411">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="412">            <span class="s2">&quot;cfo_approval&quot;</span><span class="p">,</span>
+</span><span data-line="413">            <span class="s2">&quot;record_approval&quot;</span><span class="p">,</span>
+</span><span data-line="414">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;decision&#39;) == &#39;approve&#39;&quot;</span>
+</span><span data-line="415">        <span class="p">),</span>
+</span><span data-line="416">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="417">            <span class="s2">&quot;cfo_approval&quot;</span><span class="p">,</span>
+</span><span data-line="418">            <span class="s2">&quot;process_rejected&quot;</span><span class="p">,</span>
+</span><span data-line="419">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;decision&#39;) == &#39;reject&#39;&quot;</span>
+</span><span data-line="420">        <span class="p">),</span>
+</span><span data-line="421">
+</span><span data-line="422">        <span class="c1"># After recording, check if more approvals needed</span>
+</span><span data-line="423">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;record_approval&quot;</span><span class="p">,</span> <span class="s2">&quot;amount_router&quot;</span><span class="p">),</span>
+</span><span data-line="424">
+</span><span data-line="425">        <span class="c1"># Final approval when all required approvals obtained</span>
+</span><span data-line="426">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="427">            <span class="s2">&quot;amount_router&quot;</span><span class="p">,</span>
+</span><span data-line="428">            <span class="s2">&quot;process_approved&quot;</span><span class="p">,</span>
+</span><span data-line="429">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;len([a for a in context.get(&#39;approval_chain&#39;, []) if a in [&#39;manager&#39;, &#39;finance&#39;, &#39;cfo&#39;]]) &gt;= len([a for a in [&#39;manager&#39;, &#39;finance&#39;, &#39;cfo&#39;][:max(0, (context.get(&#39;amount&#39;, 0) &gt;= 10000 and 3) or (context.get(&#39;amount&#39;, 0) &gt;= 5000 and 2) or (context.get(&#39;amount&#39;, 0) &gt;= 1000 and 1) or 0)]])&quot;</span>
+</span><span data-line="430">        <span class="p">),</span>
+</span><span data-line="431">    <span class="p">],</span>
+</span><span data-line="432">    <span class="n">initial_step</span><span class="o">=</span><span class="s2">&quot;submit_expense&quot;</span><span class="p">,</span>
+</span><span data-line="433">    <span class="n">terminal_steps</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;process_approved&quot;</span><span class="p">,</span> <span class="s2">&quot;process_rejected&quot;</span><span class="p">},</span>
+</span><span data-line="434"><span class="p">)</span>
+</span><span data-line="435">
+</span><span data-line="436">
+</span><span data-line="437"><span class="c1"># =============================================================================</span>
+</span><span data-line="438"><span class="c1"># Application Setup</span>
+</span><span data-line="439"><span class="c1"># =============================================================================</span>
+</span><span data-line="440">
+</span><span data-line="441"><span class="k">def</span><span class="w"> </span><span class="nf">create_app</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Litestar</span><span class="p">:</span>
+</span><span data-line="442"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the Litestar application with expense workflow.&quot;&quot;&quot;</span>
+</span><span data-line="443">    <span class="c1"># Database setup</span>
+</span><span data-line="444">    <span class="n">db_engine</span> <span class="o">=</span> <span class="n">create_async_engine</span><span class="p">(</span>
+</span><span data-line="445">        <span class="s2">&quot;sqlite+aiosqlite:///expenses.db&quot;</span><span class="p">,</span>
+</span><span data-line="446">        <span class="n">echo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span data-line="447">    <span class="p">)</span>
+</span><span data-line="448">    <span class="n">session_factory</span> <span class="o">=</span> <span class="n">async_sessionmaker</span><span class="p">(</span><span class="n">db_engine</span><span class="p">,</span> <span class="n">expire_on_commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span data-line="449">
+</span><span data-line="450">    <span class="c1"># Workflow registry</span>
+</span><span data-line="451">    <span class="n">registry</span> <span class="o">=</span> <span class="n">WorkflowRegistry</span><span class="p">()</span>
+</span><span data-line="452">    <span class="n">registry</span><span class="o">.</span><span class="n">register_definition</span><span class="p">(</span><span class="n">expense_approval_workflow</span><span class="p">)</span>
+</span><span data-line="453">
+</span><span data-line="454">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">provide_session</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">AsyncSession</span><span class="p">:</span>
+</span><span data-line="455">        <span class="k">async</span> <span class="k">with</span> <span class="n">session_factory</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+</span><span data-line="456">            <span class="k">yield</span> <span class="n">session</span>
+</span><span data-line="457">
+</span><span data-line="458">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">provide_engine</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PersistentExecutionEngine</span><span class="p">:</span>
+</span><span data-line="459">        <span class="k">return</span> <span class="n">PersistentExecutionEngine</span><span class="p">(</span><span class="n">registry</span><span class="o">=</span><span class="n">registry</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
+</span><span data-line="460">
+</span><span data-line="461">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">provide_registry</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">WorkflowRegistry</span><span class="p">:</span>
+</span><span data-line="462">        <span class="k">return</span> <span class="n">registry</span>
+</span><span data-line="463">
+</span><span data-line="464">    <span class="nd">@get</span><span class="p">(</span><span class="s2">&quot;/health&quot;</span><span class="p">)</span>
+</span><span data-line="465">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">health</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+</span><span data-line="466">        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;healthy&quot;</span><span class="p">}</span>
+</span><span data-line="467">
+</span><span data-line="468">    <span class="k">return</span> <span class="n">Litestar</span><span class="p">(</span>
+</span><span data-line="469">        <span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">health</span><span class="p">],</span>
+</span><span data-line="470">        <span class="n">plugins</span><span class="o">=</span><span class="p">[</span>
+</span><span data-line="471">            <span class="n">WorkflowPlugin</span><span class="p">(</span>
+</span><span data-line="472">                <span class="n">config</span><span class="o">=</span><span class="n">WorkflowPluginConfig</span><span class="p">(</span>
+</span><span data-line="473">                    <span class="n">enable_api</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span data-line="474">                    <span class="n">api_path_prefix</span><span class="o">=</span><span class="s2">&quot;/api/workflows&quot;</span><span class="p">,</span>
+</span><span data-line="475">                <span class="p">)</span>
+</span><span data-line="476">            <span class="p">),</span>
+</span><span data-line="477">        <span class="p">],</span>
+</span><span data-line="478">        <span class="n">dependencies</span><span class="o">=</span><span class="p">{</span>
+</span><span data-line="479">            <span class="s2">&quot;session&quot;</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span><span class="n">provide_session</span><span class="p">),</span>
+</span><span data-line="480">            <span class="s2">&quot;workflow_engine&quot;</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span><span class="n">provide_engine</span><span class="p">),</span>
+</span><span data-line="481">            <span class="s2">&quot;workflow_registry&quot;</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span><span class="n">provide_registry</span><span class="p">),</span>
+</span><span data-line="482">        <span class="p">},</span>
+</span><span data-line="483">    <span class="p">)</span>
+</span><span data-line="484">
+</span><span data-line="485">
+</span><span data-line="486"><span class="n">app</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">()</span>
+</span><span data-line="487">
+</span><span data-line="488">
+</span><span data-line="489"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span data-line="490">    <span class="kn">import</span><span class="w"> </span><span class="nn">uvicorn</span>
+</span><span data-line="491">    <span class="n">uvicorn</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8000</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="key-concepts">
+<h2>Key Concepts<a class="headerlink" href="#key-concepts" title="Link to this heading">¶</a></h2>
+<section id="multi-level-approval-chain">
+<h3>Multi-Level Approval Chain<a class="headerlink" href="#multi-level-approval-chain" title="Link to this heading">¶</a></h3>
+<p>The workflow tracks completed approvals in the <code class="docutils literal notranslate"><span class="pre">approval_chain</span></code> context variable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># Check which approvals have been obtained</span>
+</span><span data-line="2"><span class="n">approval_chain</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;approval_chain&quot;</span><span class="p">,</span> <span class="p">[])</span>  <span class="c1"># [&quot;manager&quot;, &quot;finance&quot;]</span>
+</span><span data-line="3">
+</span><span data-line="4"><span class="c1"># Add a new approval</span>
+</span><span data-line="5"><span class="n">approval_chain</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;cfo&quot;</span><span class="p">)</span>
+</span><span data-line="6"><span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;approval_chain&quot;</span><span class="p">,</span> <span class="n">approval_chain</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>This pattern allows the gateway to determine which approval is needed next.</p>
+</section>
+<section id="conditional-routing">
+<h3>Conditional Routing<a class="headerlink" href="#conditional-routing" title="Link to this heading">¶</a></h3>
+<p>Edges use conditions to route based on amount thresholds:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="2">    <span class="s2">&quot;amount_router&quot;</span><span class="p">,</span>
+</span><span data-line="3">    <span class="s2">&quot;finance_approval&quot;</span><span class="p">,</span>
+</span><span data-line="4">    <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;amount&#39;, 0) &gt;= 5000 and &#39;manager&#39; in context.get(&#39;approval_chain&#39;, [])&quot;</span>
+</span><span data-line="5"><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>The condition checks both the amount and the current approval state.</p>
+</section>
+<section id="json-schema-forms">
+<h3>JSON Schema Forms<a class="headerlink" href="#json-schema-forms" title="Link to this heading">¶</a></h3>
+<p>Human steps define form schemas with validation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="2">    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="3">    <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="4">        <span class="s2">&quot;decision&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="5">            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="6">            <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;approve&quot;</span><span class="p">,</span> <span class="s2">&quot;reject&quot;</span><span class="p">],</span>
+</span><span data-line="7">        <span class="p">},</span>
+</span><span data-line="8">        <span class="s2">&quot;budget_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="9">            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="10">            <span class="s2">&quot;pattern&quot;</span><span class="p">:</span> <span class="s2">&quot;^BUD-[0-9]</span><span class="si">{6}</span><span class="s2">$&quot;</span><span class="p">,</span>  <span class="c1"># Regex validation</span>
+</span><span data-line="11">        <span class="p">},</span>
+</span><span data-line="12">    <span class="p">},</span>
+</span><span data-line="13">    <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;decision&quot;</span><span class="p">,</span> <span class="s2">&quot;budget_code&quot;</span><span class="p">],</span>
+</span><span data-line="14"><span class="p">}</span>
+</span></pre></div>
+</div>
+</section>
+</section>
+<section id="customization-points">
+<h2>Customization Points<a class="headerlink" href="#customization-points" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><strong>Approval Thresholds</strong></dt><dd><p>Modify the <code class="docutils literal notranslate"><span class="pre">_get_required_approvals</span></code> method in <code class="docutils literal notranslate"><span class="pre">AmountRouter</span></code></p>
+</dd>
+<dt><strong>Form Fields</strong></dt><dd><p>Update the <code class="docutils literal notranslate"><span class="pre">form_schema</span></code> in each human step</p>
+</dd>
+<dt><strong>Assignee Logic</strong></dt><dd><p>Override <code class="docutils literal notranslate"><span class="pre">get_assignee</span></code> or <code class="docutils literal notranslate"><span class="pre">get_assignee_group</span></code> methods</p>
+</dd>
+<dt><strong>Notifications</strong></dt><dd><p>Add email/Slack integration in <code class="docutils literal notranslate"><span class="pre">ProcessApproved</span></code> and <code class="docutils literal notranslate"><span class="pre">ProcessRejected</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="testing-the-workflow">
+<h2>Testing the Workflow<a class="headerlink" href="#testing-the-workflow" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="sd">&quot;&quot;&quot;Test the expense approval workflow.&quot;&quot;&quot;</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+</span><span data-line="4"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar.testing</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncTestClient</span>
+</span><span data-line="5">
+</span><span data-line="6"><span class="kn">from</span><span class="w"> </span><span class="nn">expense_approval</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">expense_approval_workflow</span>
+</span><span data-line="7">
+</span><span data-line="8">
+</span><span data-line="9"><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+</span><span data-line="10"><span class="k">def</span><span class="w"> </span><span class="nf">test_client</span><span class="p">():</span>
+</span><span data-line="11">    <span class="k">return</span> <span class="n">AsyncTestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</span><span data-line="12">
+</span><span data-line="13">
+</span><span data-line="14"><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">asyncio</span>
+</span><span data-line="15"><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_small_expense_auto_approved</span><span class="p">(</span><span class="n">test_client</span><span class="p">):</span>
+</span><span data-line="16"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Expenses under $1,000 should be auto-approved.&quot;&quot;&quot;</span>
+</span><span data-line="17">    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">test_client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span><span data-line="18">        <span class="s2">&quot;/api/workflows/instances&quot;</span><span class="p">,</span>
+</span><span data-line="19">        <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+</span><span data-line="20">            <span class="s2">&quot;definition_name&quot;</span><span class="p">:</span> <span class="s2">&quot;expense_approval&quot;</span><span class="p">,</span>
+</span><span data-line="21">            <span class="s2">&quot;input_data&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="22">                <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+</span><span data-line="23">                <span class="s2">&quot;requester&quot;</span><span class="p">:</span> <span class="s2">&quot;alice@example.com&quot;</span><span class="p">,</span>
+</span><span data-line="24">                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Office supplies&quot;</span><span class="p">,</span>
+</span><span data-line="25">            <span class="p">},</span>
+</span><span data-line="26">        <span class="p">},</span>
+</span><span data-line="27">    <span class="p">)</span>
+</span><span data-line="28">    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+</span><span data-line="29">    <span class="n">instance</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</span><span data-line="30">
+</span><span data-line="31">    <span class="c1"># Should be completed immediately (auto-approved)</span>
+</span><span data-line="32">    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">test_client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span><span data-line="33">        <span class="sa">f</span><span class="s2">&quot;/api/workflows/instances/</span><span class="si">{</span><span class="n">instance</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span data-line="34">    <span class="p">)</span>
+</span><span data-line="35">    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;completed&quot;</span>
+</span><span data-line="36">
+</span><span data-line="37">
+</span><span data-line="38"><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">asyncio</span>
+</span><span data-line="39"><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_medium_expense_requires_manager</span><span class="p">(</span><span class="n">test_client</span><span class="p">):</span>
+</span><span data-line="40"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Expenses $1,000-$4,999 require manager approval.&quot;&quot;&quot;</span>
+</span><span data-line="41">    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">test_client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span><span data-line="42">        <span class="s2">&quot;/api/workflows/instances&quot;</span><span class="p">,</span>
+</span><span data-line="43">        <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+</span><span data-line="44">            <span class="s2">&quot;definition_name&quot;</span><span class="p">:</span> <span class="s2">&quot;expense_approval&quot;</span><span class="p">,</span>
+</span><span data-line="45">            <span class="s2">&quot;input_data&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="46">                <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="mi">2500</span><span class="p">,</span>
+</span><span data-line="47">                <span class="s2">&quot;requester&quot;</span><span class="p">:</span> <span class="s2">&quot;bob@example.com&quot;</span><span class="p">,</span>
+</span><span data-line="48">                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Conference registration&quot;</span><span class="p">,</span>
+</span><span data-line="49">            <span class="p">},</span>
+</span><span data-line="50">        <span class="p">},</span>
+</span><span data-line="51">    <span class="p">)</span>
+</span><span data-line="52">    <span class="n">instance</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</span><span data-line="53">
+</span><span data-line="54">    <span class="c1"># Should be waiting for manager approval</span>
+</span><span data-line="55">    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">test_client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span><span data-line="56">        <span class="sa">f</span><span class="s2">&quot;/api/workflows/instances/</span><span class="si">{</span><span class="n">instance</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span data-line="57">    <span class="p">)</span>
+</span><span data-line="58">    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;waiting&quot;</span>
+</span><span data-line="59">    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;current_step&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;manager_approval&quot;</span>
+</span></pre></div>
+</div>
+</section>
+<section id="common-variations">
+<h2>Common Variations<a class="headerlink" href="#common-variations" title="Link to this heading">¶</a></h2>
+<p><strong>Add Email Notifications</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">ProcessApproved</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="2">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span data-line="3">        <span class="c1"># Existing logic...</span>
+</span><span data-line="4">
+</span><span data-line="5">        <span class="c1"># Send notification</span>
+</span><span data-line="6">        <span class="k">await</span> <span class="n">email_service</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+</span><span data-line="7">            <span class="n">to</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requester&quot;</span><span class="p">),</span>
+</span><span data-line="8">            <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;Expense Approved&quot;</span><span class="p">,</span>
+</span><span data-line="9">            <span class="n">body</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Your expense request for $</span><span class="si">{</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">)</span><span class="si">:</span><span class="s2">,.2f</span><span class="si">}</span><span class="s2"> has been approved.&quot;</span><span class="p">,</span>
+</span><span data-line="10">        <span class="p">)</span>
+</span><span data-line="11">
+</span><span data-line="12">        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;processed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+</span></pre></div>
+</div>
+<p><strong>Parallel Finance Review</strong></p>
+<p>For higher amounts, require multiple finance approvers in parallel.
+See <a class="reference internal" href="../guides/parallel-execution.html"><span class="doc">Parallel Execution</span></a> for the pattern.</p>
+<p><strong>Delegation Support</strong></p>
+<p>Allow approvers to delegate to others:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">DelegableApproval</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="2">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="3">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="4">            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="5">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="6">                <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;approve&quot;</span><span class="p">,</span> <span class="s2">&quot;reject&quot;</span><span class="p">,</span> <span class="s2">&quot;delegate&quot;</span><span class="p">],</span>
+</span><span data-line="7">            <span class="p">},</span>
+</span><span data-line="8">            <span class="s2">&quot;delegate_to&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="9">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="10">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Delegate To&quot;</span><span class="p">,</span>
+</span><span data-line="11">                <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span>
+</span><span data-line="12">            <span class="p">},</span>
+</span><span data-line="13">        <span class="p">},</span>
+</span><span data-line="14">    <span class="p">}</span>
+</span></pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../guides/human-tasks.html"><span class="doc">Working with Human Tasks</span></a> - Human task patterns</p></li>
+<li><p><a class="reference internal" href="../guides/conditional-logic.html"><span class="doc">Conditional Logic and Gateways</span></a> - Gateway and routing patterns</p></li>
+<li><p><a class="reference internal" href="../guides/persistence.html"><span class="doc">Database Persistence</span></a> - Database persistence setup</p></li>
+<li><p><a class="reference internal" href="../guides/web-plugin.html"><span class="doc">Web Plugin (REST API)</span></a> - REST API configuration</p></li>
+</ul>
+</section>
+</section>
+
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-prev">
+    <a href="index.html">
+      <i class="i-lucide chevron-left"></i>
+      <div class="page-info">
+        <span>Previous</span><div class="title">Cookbook</div></div>
+    </a>
+  </div><div class="navigation-next">
+    <a href="document-review.html">
+      <div class="page-info">
+        <span>Next</span>
+        <div class="title">Document Review Workflow</div>
+      </div>
+      <i class="i-lucide chevron-right"></i>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2025, Jacob Coffee</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+<a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+  <iconify-icon icon="simple-icons:github"></iconify-icon>
+</a></div>
+    </div>
+  </div>
+</footer>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=30646c52"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/shibuya.js?v=c1cf1a6b"></script></body>
+</html>
