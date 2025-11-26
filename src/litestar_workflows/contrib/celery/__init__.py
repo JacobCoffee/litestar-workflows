@@ -35,7 +35,7 @@ from __future__ import annotations
 __all__ = ["CeleryExecutionEngine"]
 
 
-class CeleryExecutionEngine:
+class CeleryExecutionEngine:  # pragma: no cover
     """Celery-based distributed execution engine (stub).
 
     This engine delegates step execution to Celery workers, enabling horizontal

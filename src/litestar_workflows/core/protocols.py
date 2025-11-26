@@ -10,7 +10,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Protocol, TypeVar, runtime_checkable
 from uuid import UUID
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from datetime import timedelta
 
     from litestar_workflows.core.context import WorkflowContext
@@ -78,7 +78,7 @@ class Step(Protocol[T]):
             Exception: Any exception raised will trigger the on_failure hook and
                 potentially fail the workflow.
         """
-        ...
+        ...  # pragma: no cover
 
     async def can_execute(self, context: WorkflowContext) -> bool:
         """Determine if the step is eligible to execute.
@@ -96,7 +96,7 @@ class Step(Protocol[T]):
             >>> async def can_execute(self, context: WorkflowContext) -> bool:
             ...     return context.get("prerequisites_met", False)
         """
-        ...
+        ...  # pragma: no cover
 
     async def on_success(self, context: WorkflowContext, result: T) -> None:
         """Hook called after successful step execution.
@@ -113,7 +113,7 @@ class Step(Protocol[T]):
             ...     context.set("last_result", result)
             ...     await send_notification(f"Step {self.name} completed")
         """
-        ...
+        ...  # pragma: no cover
 
     async def on_failure(self, context: WorkflowContext, error: Exception) -> None:
         """Hook called after failed step execution.
@@ -130,7 +130,7 @@ class Step(Protocol[T]):
             ...     context.set("error", str(error))
             ...     await log_error(f"Step {self.name} failed: {error}")
         """
-        ...
+        ...  # pragma: no cover
 
 
 @runtime_checkable
@@ -173,7 +173,7 @@ class Workflow(Protocol):
         Returns:
             A WorkflowDefinition instance containing steps, edges, and metadata.
         """
-        ...
+        ...  # pragma: no cover
 
 
 class WorkflowInstance(Protocol):
@@ -238,7 +238,7 @@ class ExecutionEngine(Protocol):
             ...     ApprovalWorkflow, initial_data={"document_id": "doc_123"}
             ... )
         """
-        ...
+        ...  # pragma: no cover
 
     async def execute_step(
         self,
@@ -259,7 +259,7 @@ class ExecutionEngine(Protocol):
         Raises:
             Exception: If step execution fails and error handling doesn't compensate.
         """
-        ...
+        ...  # pragma: no cover
 
     async def schedule_step(
         self,
@@ -280,7 +280,7 @@ class ExecutionEngine(Protocol):
             ...     instance_id=instance.id, step_name="reminder", delay=timedelta(hours=24)
             ... )
         """
-        ...
+        ...  # pragma: no cover
 
     async def complete_human_task(
         self,
@@ -305,7 +305,7 @@ class ExecutionEngine(Protocol):
             ...     data={"approved": True, "comments": "Looks good"},
             ... )
         """
-        ...
+        ...  # pragma: no cover
 
     async def cancel_workflow(self, instance_id: UUID, reason: str) -> None:
         """Cancel a running workflow instance.
@@ -319,4 +319,4 @@ class ExecutionEngine(Protocol):
             ...     instance_id=instance.id, reason="Request withdrawn by submitter"
             ... )
         """
-        ...
+        ...  # pragma: no cover

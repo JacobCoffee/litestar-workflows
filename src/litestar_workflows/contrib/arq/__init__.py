@@ -38,7 +38,7 @@ from __future__ import annotations
 __all__ = ["ARQExecutionEngine"]
 
 
-class ARQExecutionEngine:
+class ARQExecutionEngine:  # pragma: no cover
     """ARQ-based distributed execution engine (stub).
 
     This engine delegates step execution to ARQ workers, enabling async-native

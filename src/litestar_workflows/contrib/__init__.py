@@ -26,4 +26,4 @@ Note:
 
 from __future__ import annotations
 
-__all__: list[str] = []
+__all__: list[str] = []  # pragma: no cover

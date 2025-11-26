@@ -37,7 +37,7 @@ from __future__ import annotations
 __all__ = ["SAQExecutionEngine"]
 
 
-class SAQExecutionEngine:
+class SAQExecutionEngine:  # pragma: no cover
     """SAQ-based distributed execution engine (stub).
 
     This engine delegates step execution to SAQ workers, enabling async-native
