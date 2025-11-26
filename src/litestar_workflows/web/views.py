@@ -124,18 +124,18 @@ class WorkflowUIController(Controller):
             },
         )
 
-    @get("/workflows/{name:str}", name="workflow_ui:workflow_detail")
+    @get("/workflows/{workflow_name:str}", name="workflow_ui:workflow_detail")
     async def workflow_detail(
         self,
         request: Request,
-        name: str,
+        workflow_name: str,
         workflow_registry: WorkflowRegistry,
     ) -> Template:
         """Show workflow definition details with graph visualization."""
         try:
-            definition = workflow_registry.get_definition(name)
+            definition = workflow_registry.get_definition(workflow_name)
         except KeyError as e:
-            raise NotFoundException(detail=f"Workflow '{name}' not found") from e
+            raise NotFoundException(detail=f"Workflow '{workflow_name}' not found") from e
 
         # Generate graph
         mermaid_source = generate_mermaid_graph(definition)
@@ -167,18 +167,18 @@ class WorkflowUIController(Controller):
             },
         )
 
-    @get("/workflows/{name:str}/start", name="workflow_ui:start_workflow_form")
+    @get("/workflows/{workflow_name:str}/start", name="workflow_ui:start_workflow_form")
     async def start_workflow_form(
         self,
         request: Request,
-        name: str,
+        workflow_name: str,
         workflow_registry: WorkflowRegistry,
     ) -> Template:
         """Show form to start a new workflow instance."""
         try:
-            definition = workflow_registry.get_definition(name)
+            definition = workflow_registry.get_definition(workflow_name)
         except KeyError as e:
-            raise NotFoundException(detail=f"Workflow '{name}' not found") from e
+            raise NotFoundException(detail=f"Workflow '{workflow_name}' not found") from e
 
         workflow = {
             "name": definition.name,
@@ -198,19 +198,19 @@ class WorkflowUIController(Controller):
             },
         )
 
-    @post("/workflows/{name:str}/start", name="workflow_ui:start_workflow")
+    @post("/workflows/{workflow_name:str}/start", name="workflow_ui:start_workflow")
     async def start_workflow(
         self,
         request: Request,
-        name: str,
+        workflow_name: str,
         workflow_engine: LocalExecutionEngine,
         workflow_registry: WorkflowRegistry,
     ) -> Redirect:
         """Start a new workflow instance from form submission."""
         try:
-            workflow_class = workflow_registry.get_workflow_class(name)
+            workflow_class = workflow_registry.get_workflow_class(workflow_name)
         except KeyError as e:
-            raise NotFoundException(detail=f"Workflow '{name}' not found") from e
+            raise NotFoundException(detail=f"Workflow '{workflow_name}' not found") from e
 
         # Parse form data
         form_data = await request.form()

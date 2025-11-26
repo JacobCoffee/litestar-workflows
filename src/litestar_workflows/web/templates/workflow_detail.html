@@ -36,7 +36,7 @@
                 <p class="mt-1 max-w-2xl text-sm text-gray-500">Configuration and metadata</p>
             </div>
             <div class="flex space-x-3">
-                <a href="{{ url_for('workflow_ui:start_workflow_form', name=workflow.name) }}"
+                <a href="{{ url_for('workflow_ui:start_workflow_form', workflow_name=workflow.name) }}"
                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                     <svg class="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />

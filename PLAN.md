@@ -120,15 +120,16 @@ Documentation improvements coordinated to enhance developer experience:
   - Stub implementations for SAQExecutionEngine
   - Stub implementations for ARQExecutionEngine
 
-#### Phase 4: UI Extra (v0.5.0)
+#### Phase 4: UI Extra (v0.3.0)
 
-- [ ] Tailwind CSS styling
+- [x] Tailwind CSS styling (CDN)
+- [x] Workflow list/detail views
+- [x] Human task forms (JSON Schema rendering)
+- [x] Instance graph visualization (MermaidJS live)
 - [ ] Drag-and-drop workflow builder
-- [ ] Human task forms (JSON Schema rendering)
-- [ ] Instance graph visualization (MermaidJS live)
 - [ ] Real-time updates (WebSocket/SSE)
 
-#### Phase 5: Advanced Features (v0.6.0)
+#### Phase 5: Advanced Features (v0.4.0)
 
 - [ ] Workflow signals (pause, resume, escalate)
 - [ ] Retry policies with exponential backoff
@@ -137,7 +138,7 @@ Documentation improvements coordinated to enhance developer experience:
 - [ ] Bulk operations (cancel all, retry failed)
 - [ ] Audit logging
 
-#### Phase 6: Distributed Execution (v0.7.0)
+#### Phase 6: Distributed Execution (v0.5.0)
 
 - [ ] `CeleryExecutionEngine` in `contrib/celery/`
 - [ ] `SAQExecutionEngine` in `contrib/saq/`
@@ -1563,21 +1564,23 @@ all = [
 - [x] Update `examples/full/app.py` to use built-in REST API with persistence
 - [ ] Clean up stale local feature branches
 
-### Phase 4: UI Extra (v0.5.0)
+### Phase 4: UI Extra (v0.3.0)
 
 **Goal**: Modern web UI for workflow management (`[ui]` extra)
 
 **Deliverables**:
-- [ ] Tailwind CSS styling
+- [x] Tailwind CSS styling (CDN)
+- [x] Base template with Alpine.js
+- [x] Workflow list/detail views
+- [x] Human task list/detail/form views
+- [x] Instance list/detail views
+- [x] Instance graph visualization (MermaidJS live)
+- [x] Start workflow form
 - [ ] Drag-and-drop workflow builder
-- [ ] Composable UI components
-- [ ] Workflow list/detail views
-- [ ] Human task forms (JSON Schema rendering)
-- [ ] Instance graph visualization (MermaidJS live)
 - [ ] Admin dashboard with metrics
 - [ ] Real-time updates (WebSocket/SSE)
 
-### Phase 5: Advanced Features (v0.6.0)
+### Phase 5: Advanced Features (v0.4.0)
 
 **Goal**: Production-ready workflow features
 
@@ -1589,7 +1592,7 @@ all = [
 - [ ] Bulk operations (cancel all, retry failed)
 - [ ] Audit logging
 
-### Phase 6: Distributed Execution (v0.7.0)
+### Phase 6: Distributed Execution (v0.5.0)
 
 **Goal**: Task queue integration
 

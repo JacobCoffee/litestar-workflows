@@ -7,10 +7,14 @@ This guide covers how to install litestar-workflows and its optional dependencie
 Basic Installation
 ------------------
 
-Install the core package using pip:
+Install the core package using uv (recommended) or pip:
 
 .. code-block:: bash
 
+   # Using uv (recommended)
+   uv add litestar-workflows
+
+   # Using pip
    pip install litestar-workflows
 
 This installs the core library with:
@@ -102,7 +106,7 @@ Install everything at once:
 Development Installation
 ------------------------
 
-For contributing to litestar-workflows:
+For contributing to litestar-workflows, we recommend using `uv <https://docs.astral.sh/uv/>`_:
 
 .. code-block:: bash
 
@@ -110,15 +114,36 @@ For contributing to litestar-workflows:
    git clone https://github.com/JacobCoffee/litestar-workflows.git
    cd litestar-workflows
 
-   # Create a virtual environment (recommended)
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   # Install with all development dependencies using uv
+   uv sync --all-groups
 
-   # Install with development dependencies
-   pip install -e ".[dev-lint,dev-test]"
+   # Run tests
+   uv run pytest
 
-   # Install pre-commit hooks
-   pre-commit install
+   # Run linters
+   uv run ruff check .
+   uv run ty
+
+   # Or use make targets
+   make ci  # Run all CI checks (lint + fmt + test)
+
+Version Bumping (uv 0.7+)
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If using uv 0.7+, you can easily manage package versions:
+
+.. code-block:: bash
+
+   # Show current version
+   uv version                 # e.g., "litestar-workflows 0.2.0"
+
+   # Bump versions
+   uv version --bump patch    # 0.2.0 => 0.2.1
+   uv version --bump minor    # 0.2.1 => 0.3.0
+   uv version --bump major    # 0.3.0 => 1.0.0
+
+   # Show uv version
+   uv self version
 
 
 Verify Installation

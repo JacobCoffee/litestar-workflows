@@ -12,7 +12,7 @@
     <ul role="list" class="divide-y divide-gray-200">
         {% for workflow in workflows %}
         <li>
-            <a href="{{ url_for('workflow_ui:workflow_detail', name=workflow.name) }}" class="block hover:bg-gray-50">
+            <a href="{{ url_for('workflow_ui:workflow_detail', workflow_name=workflow.name) }}" class="block hover:bg-gray-50">
                 <div class="px-4 py-4 sm:px-6">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">

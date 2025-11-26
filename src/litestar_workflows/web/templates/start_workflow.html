@@ -15,7 +15,7 @@
             <p class="mt-1 text-sm text-gray-500">Provide the initial context data for this workflow</p>
         </div>
         <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-            <form method="post" action="{{ url_for('workflow_ui:start_workflow', name=workflow.name) }}" id="start-form">
+            <form method="post" action="{{ url_for('workflow_ui:start_workflow', workflow_name=workflow.name) }}" id="start-form">
                 <div class="space-y-6">
                     <!-- JSON Input -->
                     <div>
@@ -63,7 +63,7 @@
 
                 <!-- Submit -->
                 <div class="mt-6 flex justify-end space-x-3">
-                    <a href="{{ url_for('workflow_ui:workflow_detail', name=workflow.name) }}"
+                    <a href="{{ url_for('workflow_ui:workflow_detail', workflow_name=workflow.name) }}"
                        class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                         Cancel
                     </a>
