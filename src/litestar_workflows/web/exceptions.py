@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Any
 from litestar import Response
 from litestar.status_codes import HTTP_501_NOT_IMPLEMENTED
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from litestar import Request
 
 __all__ = [
@@ -36,7 +36,7 @@ class DatabaseRequiredError(Exception):
         Args:
             message: Optional custom error message.
         """
-        if message is None:
+        if message is None:  # pragma: no cover
             message = "This endpoint requires database persistence.\nInstall with: pip install litestar-workflows[db]"
         super().__init__(message)
 
@@ -68,7 +68,7 @@ def require_db() -> None:
     """
     try:
         from litestar_workflows.db import PersistentExecutionEngine  # noqa: F401
-    except ImportError as e:
+    except ImportError as e:  # pragma: no cover
         raise DatabaseRequiredError(
             "This endpoint requires database persistence.\nInstall with: pip install litestar-workflows[db]"
         ) from e
@@ -88,14 +88,14 @@ async def provide_workflow_instance_repository() -> Any:
     """
     import importlib.util
 
-    if importlib.util.find_spec("litestar_workflows.db") is None:
+    if importlib.util.find_spec("litestar_workflows.db") is None:  # pragma: no cover
         raise DatabaseRequiredError(
             "This endpoint requires database persistence.\nInstall with: pip install litestar-workflows[db]"
         )
 
     # DB module is available - raise error as we need proper session management
     # This will be replaced by actual repository instance in real setup
-    raise DatabaseRequiredError(
+    raise DatabaseRequiredError(  # pragma: no cover
         "This endpoint requires database persistence.\nInstall with: pip install litestar-workflows[db]"
     )
 
@@ -114,14 +114,14 @@ async def provide_human_task_repository() -> Any:
     """
     import importlib.util
 
-    if importlib.util.find_spec("litestar_workflows.db") is None:
+    if importlib.util.find_spec("litestar_workflows.db") is None:  # pragma: no cover
         raise DatabaseRequiredError(
             "This endpoint requires database persistence.\nInstall with: pip install litestar-workflows[db]"
         )
 
     # DB module is available - raise error as we need proper session management
     # This will be replaced by actual repository instance in real setup
-    raise DatabaseRequiredError(
+    raise DatabaseRequiredError(  # pragma: no cover
         "This endpoint requires database persistence.\nInstall with: pip install litestar-workflows[db]"
     )
 

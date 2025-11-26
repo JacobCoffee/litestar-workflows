@@ -8,23 +8,34 @@
 
 **Version**: 0.4.0 (Alpha)
 **Phase**: 3 - Web Plugin (Complete)
-**Last Updated**: 2025-11-25
+**Last Updated**: 2025-11-26
 
 ### Test Coverage
 
 | Metric | Value |
 |--------|-------|
-| Total Tests | 439 |
-| Coverage | 89% |
+| Total Tests | 465 |
+| Coverage | 94% |
 | Target | 96% |
 
-### Branch Status (Cascading PRs)
+### Coverage Gaps
 
-| Branch | Base | Status | Commits |
-|--------|------|--------|---------|
-| `feat/phase1-core-foundation` | main | Ready for PR | 1 |
-| `feat/phase2-persistence` | phase1 | Ready for PR | 9 |
-| `feat/phase3-web-plugin` | phase2 | Ready for PR | 11 |
+| Module | Coverage | Priority | Notes |
+|--------|----------|----------|-------|
+| `web/controllers.py` | 86% | Low | Remaining: some error handlers |
+| `engine/graph.py` | 95% | Low | Edge case error paths |
+| `engine/local.py` | 97% | Low | Near target |
+| `steps/base.py` | 89% | Low | Near target |
+
+**Note**: Coverage exclusion patterns configured in `pyproject.toml` exclude untestable paths
+(Protocol methods, TYPE_CHECKING blocks, NotImplementedError stubs).
+
+### Branch Status
+
+All phase branches have been merged to `main`. Local feature branches can be cleaned up:
+- `feat/phase1-core-foundation` - Merged
+- `feat/phase2-persistence-paused` - Merged
+- `feat/phase3-web-plugin` - Merged
 
 ### Completed
 
@@ -68,9 +79,71 @@
 
 ### Next Up
 
-- [ ] Phase 4: Advanced Features (signals, retries, timeouts)
-- [ ] Phase 5: UI Extra (Tailwind drag-and-drop workflow management)
-- [ ] Phase 6: Distributed Execution (Celery, SAQ, ARQ integrations)
+#### Immediate Priorities (Pre-Phase 4)
+
+- [ ] **Boost test coverage to 96%** - Focus on `web/controllers.py` (51%) and `core/protocols.py` (73%)
+- [x] **Create `contrib/` directory** - Stub implementations for future task queue integrations
+- [x] **Documentation Enhancement** - Comprehensive documentation improvements (see below)
+
+##### Documentation Enhancement Sprint ✅
+
+Documentation improvements coordinated to enhance developer experience:
+
+- [x] **Persistence Guide** (`docs/guides/persistence.rst`)
+  - Database setup with Alembic migrations
+  - PersistentExecutionEngine usage
+  - Repository API documentation
+  - Human task management
+  - Multi-tenancy support
+  - Database schema reference
+
+- [x] **REST API Guide** (`docs/guides/web-plugin.rst`)
+  - Full endpoint reference with examples
+  - Authentication and authorization patterns
+  - OpenAPI schema customization
+  - MermaidJS graph visualization
+  - Frontend integration examples
+  - Error handling guide
+
+- [x] **Cookbook Examples** (`docs/cookbook/`)
+  - End-to-end example applications (expense approval, document review, onboarding)
+  - Common workflow patterns
+  - Integration recipes (external APIs, error handling, testing)
+
+- [x] **API Reference Enhancement** (`docs/api/`)
+  - Auto-generated module documentation for all packages
+  - Cross-references between modules
+  - Type annotation documentation
+
+- [x] **Contrib Directory** (`src/litestar_workflows/contrib/`)
+  - Stub implementations for CeleryExecutionEngine
+  - Stub implementations for SAQExecutionEngine
+  - Stub implementations for ARQExecutionEngine
+
+#### Phase 4: Advanced Features (v0.5.0)
+
+- [ ] Workflow signals (pause, resume, escalate)
+- [ ] Retry policies with exponential backoff
+- [ ] Step timeouts and deadlines
+- [ ] Workflow versioning and migration
+- [ ] Bulk operations (cancel all, retry failed)
+- [ ] Audit logging
+
+#### Phase 5: UI Extra (v0.6.0)
+
+- [ ] Tailwind CSS styling
+- [ ] Drag-and-drop workflow builder
+- [ ] Human task forms (JSON Schema rendering)
+- [ ] Instance graph visualization (MermaidJS live)
+- [ ] Real-time updates (WebSocket/SSE)
+
+#### Phase 6: Distributed Execution (v0.7.0)
+
+- [ ] `CeleryExecutionEngine` in `contrib/celery/`
+- [ ] `SAQExecutionEngine` in `contrib/saq/`
+- [ ] `ARQExecutionEngine` in `contrib/arq/`
+- [ ] Delayed step execution
+- [ ] Dead letter handling
 
 ### CI/CD Infrastructure
 
@@ -1318,68 +1391,75 @@ class DocumentApprovalWorkflow:
 
 ## Package Structure
 
+> **Note**: ✅ = Implemented, 🔜 = Planned
+
 ```
 src/litestar_workflows/
-├── __init__.py              # Public API exports
-├── __metadata__.py          # Version info
-├── py.typed                 # PEP 561 marker
+├── __init__.py              # Public API exports ✅
+├── __metadata__.py          # Version info ✅
+├── py.typed                 # PEP 561 marker ✅
+├── plugin.py                # WorkflowPlugin (Litestar integration) ✅
+├── exceptions.py            # Exception hierarchy ✅
 │
-├── core/                    # Core domain (no dependencies)
+├── core/                    # Core domain (no dependencies) ✅
 │   ├── __init__.py
 │   ├── protocols.py         # Step, Workflow protocols
 │   ├── types.py             # Type definitions, enums
 │   ├── context.py           # WorkflowContext
 │   ├── definition.py        # WorkflowDefinition, Edge
-│   ├── graph.py             # Graph operations
+│   ├── models.py            # WorkflowInstanceData (in-memory)
 │   └── events.py            # Domain events
 │
-├── engine/                  # Execution engines
+├── engine/                  # Execution engines ✅
 │   ├── __init__.py
 │   ├── base.py              # ExecutionEngine protocol
 │   ├── local.py             # LocalExecutionEngine
+│   ├── graph.py             # WorkflowGraph
+│   ├── instance.py          # WorkflowInstance
 │   └── registry.py          # WorkflowRegistry
 │
-├── steps/                   # Built-in step implementations
+├── steps/                   # Built-in step implementations ✅
 │   ├── __init__.py
 │   ├── base.py              # BaseStep, BaseMachineStep, BaseHumanStep
 │   ├── groups.py            # SequentialGroup, ParallelGroup
 │   ├── gateway.py           # Decision gateways
-│   └── timer.py             # Timer/delay steps
+│   ├── timer.py             # Timer/delay steps
+│   └── webhook.py           # WebhookStep
 │
-├── decorators/              # Decorator-based definition
+├── decorators/              # Decorator-based definition 🔜
 │   ├── __init__.py
 │   └── workflow.py          # @workflow, @step, @human_task
 │
-├── exceptions.py            # Exception hierarchy
-│
-├── db/                      # Database extra [db]
+├── db/                      # Database extra [db] ✅
 │   ├── __init__.py
 │   ├── models.py            # SQLAlchemy models
+│   ├── engine.py            # PersistentExecutionEngine
 │   ├── repositories.py      # Repository implementations
 │   └── migrations/          # Alembic migrations
 │       └── versions/
 │
-├── web/                     # Web extra [web]
+├── web/                     # Web routes (merged into core) ✅
 │   ├── __init__.py
-│   ├── plugin.py            # WorkflowWebPlugin
+│   ├── config.py            # WebConfig
 │   ├── controllers.py       # REST API controllers
 │   ├── dto.py               # Data transfer objects
-│   ├── openapi.py           # OpenAPI enhancements
-│   └── templates/           # Jinja templates (optional UI)
+│   ├── exceptions.py        # HTTP exception handlers
+│   ├── graph.py             # MermaidJS generation
+│   └── templates/           # Jinja templates (Phase 5 - UI) 🔜
 │       ├── base.html
 │       ├── workflow_list.html
 │       ├── workflow_detail.html
 │       └── task_form.html
 │
-└── contrib/                 # Optional integrations
+└── contrib/                 # Optional integrations 🔜
     ├── __init__.py
-    ├── celery/              # Celery engine [celery]
+    ├── celery/              # Celery engine [celery] 🔜
     │   ├── __init__.py
     │   └── engine.py
-    ├── saq/                 # SAQ engine [saq]
+    ├── saq/                 # SAQ engine [saq] 🔜
     │   ├── __init__.py
     │   └── engine.py
-    └── arq/                 # ARQ engine [arq]
+    └── arq/                 # ARQ engine [arq] 🔜
         ├── __init__.py
         └── engine.py
 ```
@@ -1468,6 +1548,19 @@ all = [
 - Auto-enabled by default (`enable_api=True`)
 - Core endpoints work without `[db]`: GET /definitions, POST /instances
 - DB-dependent endpoints require `[db]`: GET /instances, GET /tasks, etc.
+
+### Pre-Phase 4: Stabilization
+
+**Goal**: Reach 96% test coverage and prepare codebase for advanced features
+
+**Deliverables**:
+- [ ] Increase `web/controllers.py` coverage from 51% to 90%+
+- [ ] Increase `core/protocols.py` coverage from 73% to 90%+
+- [ ] Add migration tests for `db/migrations/env.py`
+- [ ] Create `contrib/` directory structure with `__init__.py` stubs
+- [ ] Add persistence layer usage examples to documentation
+- [ ] Add REST API usage examples to documentation
+- [ ] Clean up stale local feature branches
 
 ### Phase 4: Advanced Features (v0.5.0)
 
@@ -1667,7 +1760,7 @@ from litestar_workflows.contrib.saq import SAQExecutionEngine
 
 ---
 
-*Document Version: 1.2.0*
-*Last Updated: 2025-11-25*
+*Document Version: 1.3.0*
+*Last Updated: 2025-11-26*
 *Author: Claude (Architecture Review)*
-*Status: Phase 3 complete, preparing cascading PRs for merge*
+*Status: Phase 3 complete, all phases merged to main, preparing Pre-Phase 4 stabilization*

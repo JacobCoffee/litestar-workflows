@@ -22,16 +22,38 @@ litestar_workflows
 Core Module
 -----------
 
-.. note::
+The core module provides fundamental building blocks for workflow automation.
 
-   The core module will be documented once the Phase 1 implementation is complete.
-   See ``PLAN.md`` for the planned API surface.
+.. automodule:: litestar_workflows.core
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.core.types
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.core.context
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.core.definition
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.core.events
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
-Planned Public API
-~~~~~~~~~~~~~~~~~~
+Public API
+~~~~~~~~~~
 
-The following will be available from the top-level package:
+The following is available from the top-level package:
 
 .. code-block:: python
 
@@ -71,16 +93,91 @@ The following will be available from the top-level package:
    )
 
 
+Engine Module
+-------------
+
+Execution engines and workflow registry.
+
+.. automodule:: litestar_workflows.engine
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.engine.local
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.engine.registry
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.engine.graph
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Steps Module
+------------
+
+Built-in step implementations.
+
+.. automodule:: litestar_workflows.steps
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.steps.base
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.steps.groups
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.steps.gateway
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.steps.timer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
 Database Module
 ---------------
 
-.. note::
+Available with the ``[db]`` extra: ``pip install litestar-workflows[db]``
 
-   The database module will be available with the ``[db]`` extra in Phase 2.
+.. automodule:: litestar_workflows.db
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.db.models
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.db.repositories
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.db.engine
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
-Planned Database API
-~~~~~~~~~~~~~~~~~~~~
+Database API
+~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -96,10 +193,28 @@ Planned Database API
 Web Module
 ----------
 
-.. note::
+The web module provides REST API controllers and DTOs. The REST API is built into
+the main ``WorkflowPlugin`` and enabled by default.
 
-   The web module is available with the ``[web]`` extra. The REST API is built into
-   the main ``WorkflowPlugin`` and enabled by default.
+.. automodule:: litestar_workflows.web
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.web.controllers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.web.dto
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.web.graph
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
 Web API
@@ -134,13 +249,35 @@ Web API
 Contrib Modules
 ---------------
 
+Optional integration modules for distributed execution (stub implementations for Phase 6).
+
+.. automodule:: litestar_workflows.contrib
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.contrib.celery
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.contrib.saq
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: litestar_workflows.contrib.arq
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. note::
 
-   Contrib modules for distributed execution will be available in Phase 6.
+   The contrib engines are stub implementations. Full implementations are planned for Phase 6 (v0.7.0).
 
 
-Planned Contrib API
-~~~~~~~~~~~~~~~~~~~
+Contrib API
+~~~~~~~~~~~
 
 .. code-block:: python
 

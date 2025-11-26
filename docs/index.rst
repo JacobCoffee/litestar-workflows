@@ -40,6 +40,12 @@ approval checkpoints.
 
       Complete API documentation for all public classes and functions.
 
+   .. grid-item-card:: Cookbook
+      :link: cookbook/index
+      :link-type: doc
+
+      Real-world workflow recipes: expense approval, document review, onboarding, and more.
+
 
 Key Features
 ------------
@@ -113,6 +119,7 @@ Installation
    getting-started/index
    concepts/index
    guides/index
+   cookbook/index
 
 .. toctree::
    :maxdepth: 2

@@ -99,7 +99,14 @@ Twitter = "https://twitter.com/_scriptr"
 skip = "uv.lock"
 
 [tool.coverage.report]
-exclude_lines = []
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "\\.\\.\\.",  # Ellipsis for protocol abstract methods
+    "@abstractmethod",
+    "class .*(Protocol):",
+]
 fail_under = 0
 
 [tool.coverage.run]

@@ -41,7 +41,7 @@ try:
         HumanTaskRepository,
         WorkflowInstanceRepository,
     )
-except ImportError:
+except ImportError:  # pragma: no cover
     HumanTaskRepository = Any  # type: ignore[misc, assignment]
     WorkflowInstanceRepository = Any  # type: ignore[misc, assignment]
 
