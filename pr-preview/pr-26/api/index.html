@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="violet" data-content_root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>API Reference - litestar-workflows</title><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Module Reference" href="modules.html" /><link rel="prev" title="Integration Patterns" href="../cookbook/integration-patterns.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=14737038" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=8975404a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    <meta property="og:type" content="website"/><meta property="og:title" content="API Reference"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../index.html">
+      
+      
+      <strong>litestar-workflows</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"><ul><li class="link">
+          <a href="https://litestar.dev/">
+            <span>Litestar</span></a>
+        </li><li class="link">
+          <a href="https://pypi.org/project/litestar-workflows/">
+            <span>PyPI</span></a>
+        </li></ul></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Learn</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/quickstart.html">Quickstart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Core Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/workflows.html">Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/steps.html">Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/context.html">Workflow Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/execution.html">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/index.html">How-To Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../guides/simple-workflow.html">Building a Simple Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/human-tasks.html">Working with Human Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/parallel-execution.html">Parallel Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/conditional-logic.html">Conditional Logic and Gateways</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/persistence.html">Database Persistence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/web-plugin.html">Web Plugin (REST API)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/index.html">Cookbook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/expense-approval.html">Expense Approval Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/document-review.html">Document Review Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/onboarding.html">Employee Onboarding Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/integration-patterns.html">Integration Patterns</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Module Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="web.html">Web Plugin API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architecture Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../architecture/phase3-web.html">Phase 3: Web Plugin Architecture</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/litestar-919193495116337154">Discord</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#core-api">Core API</a><ul>
+<li><a class="reference internal" href="#workflow-definition">Workflow Definition</a><ul>
+<li><a class="reference internal" href="#WorkflowDefinition"><code class="docutils literal notranslate"><span class="pre">WorkflowDefinition</span></code></a><ul>
+<li><a class="reference internal" href="#WorkflowDefinition.get_graph"><code class="docutils literal notranslate">get_graph()</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowDefinition.to_mermaid"><code class="docutils literal notranslate">to_mermaid()</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowDefinition.validate"><code class="docutils literal notranslate">validate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Edge"><code class="docutils literal notranslate"><span class="pre">Edge</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#workflow-context">Workflow Context</a><ul>
+<li><a class="reference internal" href="#WorkflowContext"><code class="docutils literal notranslate"><span class="pre">WorkflowContext</span></code></a><ul>
+<li><a class="reference internal" href="#WorkflowContext.get"><code class="docutils literal notranslate">get()</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowContext.set"><code class="docutils literal notranslate">set()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#step-types">Step Types</a><ul>
+<li><a class="reference internal" href="#Step"><code class="docutils literal notranslate"><span class="pre">Step</span></code></a><ul>
+<li><a class="reference internal" href="#Step.execute"><code class="docutils literal notranslate">execute()</span></code></a></li>
+<li><a class="reference internal" href="#Step.can_execute"><code class="docutils literal notranslate">can_execute()</span></code></a></li>
+<li><a class="reference internal" href="#Step.on_success"><code class="docutils literal notranslate">on_success()</span></code></a></li>
+<li><a class="reference internal" href="#Step.on_failure"><code class="docutils literal notranslate">on_failure()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#BaseMachineStep"><code class="docutils literal notranslate"><span class="pre">BaseMachineStep</span></code></a></li>
+<li><a class="reference internal" href="#BaseHumanStep"><code class="docutils literal notranslate"><span class="pre">BaseHumanStep</span></code></a></li>
+<li><a class="reference internal" href="#BaseGateway"><code class="docutils literal notranslate"><span class="pre">BaseGateway</span></code></a><ul>
+<li><a class="reference internal" href="#BaseGateway.evaluate"><code class="docutils literal notranslate">evaluate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#step-groups">Step Groups</a><ul>
+<li><a class="reference internal" href="#SequentialGroup"><code class="docutils literal notranslate"><span class="pre">SequentialGroup</span></code></a></li>
+<li><a class="reference internal" href="#ParallelGroup"><code class="docutils literal notranslate"><span class="pre">ParallelGroup</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#enums">Enums</a><ul>
+<li><a class="reference internal" href="#StepType"><code class="docutils literal notranslate"><span class="pre">StepType</span></code></a><ul>
+<li><a class="reference internal" href="#StepType.MACHINE"><code class="docutils literal notranslate">MACHINE</span></code></a></li>
+<li><a class="reference internal" href="#StepType.HUMAN"><code class="docutils literal notranslate">HUMAN</span></code></a></li>
+<li><a class="reference internal" href="#StepType.WEBHOOK"><code class="docutils literal notranslate">WEBHOOK</span></code></a></li>
+<li><a class="reference internal" href="#StepType.TIMER"><code class="docutils literal notranslate">TIMER</span></code></a></li>
+<li><a class="reference internal" href="#StepType.GATEWAY"><code class="docutils literal notranslate">GATEWAY</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#StepStatus"><code class="docutils literal notranslate"><span class="pre">StepStatus</span></code></a><ul>
+<li><a class="reference internal" href="#StepStatus.PENDING"><code class="docutils literal notranslate">PENDING</span></code></a></li>
+<li><a class="reference internal" href="#StepStatus.SCHEDULED"><code class="docutils literal notranslate">SCHEDULED</span></code></a></li>
+<li><a class="reference internal" href="#StepStatus.RUNNING"><code class="docutils literal notranslate">RUNNING</span></code></a></li>
+<li><a class="reference internal" href="#StepStatus.WAITING"><code class="docutils literal notranslate">WAITING</span></code></a></li>
+<li><a class="reference internal" href="#StepStatus.SUCCEEDED"><code class="docutils literal notranslate">SUCCEEDED</span></code></a></li>
+<li><a class="reference internal" href="#StepStatus.FAILED"><code class="docutils literal notranslate">FAILED</span></code></a></li>
+<li><a class="reference internal" href="#StepStatus.CANCELED"><code class="docutils literal notranslate">CANCELED</span></code></a></li>
+<li><a class="reference internal" href="#StepStatus.SKIPPED"><code class="docutils literal notranslate">SKIPPED</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#WorkflowStatus"><code class="docutils literal notranslate"><span class="pre">WorkflowStatus</span></code></a><ul>
+<li><a class="reference internal" href="#WorkflowStatus.PENDING"><code class="docutils literal notranslate">PENDING</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowStatus.RUNNING"><code class="docutils literal notranslate">RUNNING</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowStatus.WAITING"><code class="docutils literal notranslate">WAITING</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowStatus.COMPLETED"><code class="docutils literal notranslate">COMPLETED</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowStatus.FAILED"><code class="docutils literal notranslate">FAILED</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowStatus.CANCELED"><code class="docutils literal notranslate">CANCELED</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#execution-engine">Execution Engine</a><ul>
+<li><a class="reference internal" href="#ExecutionEngine"><code class="docutils literal notranslate"><span class="pre">ExecutionEngine</span></code></a><ul>
+<li><a class="reference internal" href="#ExecutionEngine.start_workflow"><code class="docutils literal notranslate">start_workflow()</span></code></a></li>
+<li><a class="reference internal" href="#ExecutionEngine.execute_step"><code class="docutils literal notranslate">execute_step()</span></code></a></li>
+<li><a class="reference internal" href="#ExecutionEngine.complete_human_task"><code class="docutils literal notranslate">complete_human_task()</span></code></a></li>
+<li><a class="reference internal" href="#ExecutionEngine.cancel_workflow"><code class="docutils literal notranslate">cancel_workflow()</span></code></a></li>
+<li><a class="reference internal" href="#ExecutionEngine.retry"><code class="docutils literal notranslate">retry()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#LocalExecutionEngine"><code class="docutils literal notranslate"><span class="pre">LocalExecutionEngine</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#registry">Registry</a><ul>
+<li><a class="reference internal" href="#WorkflowRegistry"><code class="docutils literal notranslate"><span class="pre">WorkflowRegistry</span></code></a><ul>
+<li><a class="reference internal" href="#WorkflowRegistry.register_definition"><code class="docutils literal notranslate">register_definition()</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowRegistry.get_definition"><code class="docutils literal notranslate">get_definition()</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowRegistry.list_definitions"><code class="docutils literal notranslate">list_definitions()</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowRegistry.has_definition"><code class="docutils literal notranslate">has_definition()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#exceptions">Exceptions</a><ul>
+<li><a class="reference internal" href="#WorkflowsError"><code class="docutils literal notranslate"><span class="pre">WorkflowsError</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowNotFoundError"><code class="docutils literal notranslate"><span class="pre">WorkflowNotFoundError</span></code></a></li>
+<li><a class="reference internal" href="#StepExecutionError"><code class="docutils literal notranslate"><span class="pre">StepExecutionError</span></code></a></li>
+<li><a class="reference internal" href="#InvalidTransitionError"><code class="docutils literal notranslate"><span class="pre">InvalidTransitionError</span></code></a></li>
+<li><a class="reference internal" href="#ValidationError"><code class="docutils literal notranslate"><span class="pre">ValidationError</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#database-models-optional">Database Models (Optional)</a><ul>
+<li><a class="reference internal" href="#persistentexecutionengine">PersistentExecutionEngine</a><ul>
+<li><a class="reference internal" href="#PersistentExecutionEngine"><code class="docutils literal notranslate"><span class="pre">PersistentExecutionEngine</span></code></a><ul>
+<li><a class="reference internal" href="#PersistentExecutionEngine.start_workflow"><code class="docutils literal notranslate">start_workflow()</span></code></a></li>
+<li><a class="reference internal" href="#PersistentExecutionEngine.complete_human_task"><code class="docutils literal notranslate">complete_human_task()</span></code></a></li>
+<li><a class="reference internal" href="#PersistentExecutionEngine.cancel_workflow"><code class="docutils literal notranslate">cancel_workflow()</span></code></a></li>
+<li><a class="reference internal" href="#PersistentExecutionEngine.get_instance"><code class="docutils literal notranslate">get_instance()</span></code></a></li>
+<li><a class="reference internal" href="#PersistentExecutionEngine.get_running_instances"><code class="docutils literal notranslate">get_running_instances()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sqlalchemy-models">SQLAlchemy Models</a><ul>
+<li><a class="reference internal" href="#WorkflowDefinitionModel"><code class="docutils literal notranslate"><span class="pre">WorkflowDefinitionModel</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowInstanceModel"><code class="docutils literal notranslate"><span class="pre">WorkflowInstanceModel</span></code></a></li>
+<li><a class="reference internal" href="#StepExecutionModel"><code class="docutils literal notranslate"><span class="pre">StepExecutionModel</span></code></a></li>
+<li><a class="reference internal" href="#HumanTaskModel"><code class="docutils literal notranslate"><span class="pre">HumanTaskModel</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#repository-classes">Repository Classes</a><ul>
+<li><a class="reference internal" href="#WorkflowDefinitionRepository"><code class="docutils literal notranslate"><span class="pre">WorkflowDefinitionRepository</span></code></a><ul>
+<li><a class="reference internal" href="#WorkflowDefinitionRepository.get_by_name"><code class="docutils literal notranslate">get_by_name()</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowDefinitionRepository.get_latest_version"><code class="docutils literal notranslate">get_latest_version()</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowDefinitionRepository.list_active"><code class="docutils literal notranslate">list_active()</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowDefinitionRepository.deactivate_version"><code class="docutils literal notranslate">deactivate_version()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#WorkflowInstanceRepository"><code class="docutils literal notranslate"><span class="pre">WorkflowInstanceRepository</span></code></a><ul>
+<li><a class="reference internal" href="#WorkflowInstanceRepository.find_by_workflow"><code class="docutils literal notranslate">find_by_workflow()</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowInstanceRepository.find_by_user"><code class="docutils literal notranslate">find_by_user()</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowInstanceRepository.find_by_tenant"><code class="docutils literal notranslate">find_by_tenant()</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowInstanceRepository.find_running"><code class="docutils literal notranslate">find_running()</span></code></a></li>
+<li><a class="reference internal" href="#WorkflowInstanceRepository.update_status"><code class="docutils literal notranslate">update_status()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#StepExecutionRepository"><code class="docutils literal notranslate"><span class="pre">StepExecutionRepository</span></code></a><ul>
+<li><a class="reference internal" href="#StepExecutionRepository.find_by_instance"><code class="docutils literal notranslate">find_by_instance()</span></code></a></li>
+<li><a class="reference internal" href="#StepExecutionRepository.find_by_step_name"><code class="docutils literal notranslate">find_by_step_name()</span></code></a></li>
+<li><a class="reference internal" href="#StepExecutionRepository.find_failed"><code class="docutils literal notranslate">find_failed()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#HumanTaskRepository"><code class="docutils literal notranslate"><span class="pre">HumanTaskRepository</span></code></a><ul>
+<li><a class="reference internal" href="#HumanTaskRepository.find_pending"><code class="docutils literal notranslate">find_pending()</span></code></a></li>
+<li><a class="reference internal" href="#HumanTaskRepository.find_by_instance"><code class="docutils literal notranslate">find_by_instance()</span></code></a></li>
+<li><a class="reference internal" href="#HumanTaskRepository.find_overdue"><code class="docutils literal notranslate">find_overdue()</span></code></a></li>
+<li><a class="reference internal" href="#HumanTaskRepository.complete_task"><code class="docutils literal notranslate">complete_task()</span></code></a></li>
+<li><a class="reference internal" href="#HumanTaskRepository.cancel_task"><code class="docutils literal notranslate">cancel_task()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#web-plugin-optional">Web Plugin (Optional)</a></li>
+<li><a class="reference internal" href="#contrib-modules-planned">Contrib Modules (Planned)</a><ul>
+<li><a class="reference internal" href="#CeleryExecutionEngine"><code class="docutils literal notranslate"><span class="pre">CeleryExecutionEngine</span></code></a></li>
+<li><a class="reference internal" href="#SAQExecutionEngine"><code class="docutils literal notranslate"><span class="pre">SAQExecutionEngine</span></code></a></li>
+<li><a class="reference internal" href="#ARQExecutionEngine"><code class="docutils literal notranslate"><span class="pre">ARQExecutionEngine</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#full-module-reference">Full Module Reference</a></li>
+<li><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">litestar-workflows</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">API Reference</strong>
+        <meta itemprop="position" content="2" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+        <article class="yue" role="main">
+          <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">¶</a></h1>
+<p>Complete API documentation for litestar-workflows.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#core-api" id="id1">Core API</a></p>
+<ul>
+<li><p><a class="reference internal" href="#workflow-definition" id="id2">Workflow Definition</a></p></li>
+<li><p><a class="reference internal" href="#workflow-context" id="id3">Workflow Context</a></p></li>
+<li><p><a class="reference internal" href="#step-types" id="id4">Step Types</a></p></li>
+<li><p><a class="reference internal" href="#step-groups" id="id5">Step Groups</a></p></li>
+<li><p><a class="reference internal" href="#enums" id="id6">Enums</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#execution-engine" id="id7">Execution Engine</a></p></li>
+<li><p><a class="reference internal" href="#registry" id="id8">Registry</a></p></li>
+<li><p><a class="reference internal" href="#exceptions" id="id9">Exceptions</a></p></li>
+<li><p><a class="reference internal" href="#database-models-optional" id="id10">Database Models (Optional)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#persistentexecutionengine" id="id11">PersistentExecutionEngine</a></p></li>
+<li><p><a class="reference internal" href="#sqlalchemy-models" id="id12">SQLAlchemy Models</a></p></li>
+<li><p><a class="reference internal" href="#repository-classes" id="id13">Repository Classes</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#web-plugin-optional" id="id14">Web Plugin (Optional)</a></p></li>
+<li><p><a class="reference internal" href="#contrib-modules-planned" id="id15">Contrib Modules (Planned)</a></p></li>
+<li><p><a class="reference internal" href="#full-module-reference" id="id16">Full Module Reference</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id17">See Also</a></p></li>
+</ul>
+</nav>
+<section id="core-api">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Core API</a><a class="headerlink" href="#core-api" title="Link to this heading">¶</a></h2>
+<p>The core API provides the fundamental building blocks for workflows.</p>
+<section id="workflow-definition">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">Workflow Definition</a><a class="headerlink" href="#workflow-definition" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="WorkflowDefinition">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WorkflowDefinition</span></span><a class="headerlink" href="#WorkflowDefinition" title="Link to this definition">¶</a></dt>
+<dd><p>Declarative workflow structure defining steps and their connections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Unique identifier for the workflow</p></li>
+<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Semantic version string (e.g., “1.0.0”)</p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Human-readable description</p></li>
+<li><p><strong>steps</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference internal" href="#Step" title="Step"><em>Step</em></a><em>]</em>) – Dictionary mapping step names to step instances</p></li>
+<li><p><strong>edges</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="#Edge" title="Edge"><em>Edge</em></a><em>]</em>) – List of Edge objects defining transitions</p></li>
+<li><p><strong>initial_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the first step to execute</p></li>
+<li><p><strong>terminal_steps</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.14)"><em>set</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – Set of step names that end the workflow</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">definition</span> <span class="o">=</span> <span class="n">WorkflowDefinition</span><span class="p">(</span>
+</span><span data-line="2">    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;approval&quot;</span><span class="p">,</span>
+</span><span data-line="3">    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+</span><span data-line="4">    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Simple approval workflow&quot;</span><span class="p">,</span>
+</span><span data-line="5">    <span class="n">steps</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;submit&quot;</span><span class="p">:</span> <span class="n">SubmitStep</span><span class="p">(),</span> <span class="s2">&quot;review&quot;</span><span class="p">:</span> <span class="n">ReviewStep</span><span class="p">()},</span>
+</span><span data-line="6">    <span class="n">edges</span><span class="o">=</span><span class="p">[</span><span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;submit&quot;</span><span class="p">,</span> <span class="s2">&quot;review&quot;</span><span class="p">)],</span>
+</span><span data-line="7">    <span class="n">initial_step</span><span class="o">=</span><span class="s2">&quot;submit&quot;</span><span class="p">,</span>
+</span><span data-line="8">    <span class="n">terminal_steps</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;review&quot;</span><span class="p">},</span>
+</span><span data-line="9"><span class="p">)</span>
+</span></pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowDefinition.get_graph">
+<span class="sig-name descname"><span class="pre">get_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="modules.html#litestar_workflows.engine.WorkflowGraph" title="litestar_workflows.engine.WorkflowGraph"><span class="pre">WorkflowGraph</span></a></span></span><a class="headerlink" href="#WorkflowDefinition.get_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Build and return the graph representation of the workflow.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowDefinition.to_mermaid">
+<span class="sig-name descname"><span class="pre">to_mermaid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#WorkflowDefinition.to_mermaid" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a MermaidJS diagram of the workflow.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowDefinition.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#WorkflowDefinition.validate" title="Link to this definition">¶</a></dt>
+<dd><p>Validate the workflow definition and return any errors.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Edge">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Edge</span></span><a class="headerlink" href="#Edge" title="Link to this definition">¶</a></dt>
+<dd><p>Defines a transition between steps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The step to transition from</p></li>
+<li><p><strong>target</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The step to transition to</p></li>
+<li><p><strong>condition</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Optional condition expression for this edge</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># Simple edge</span>
+</span><span data-line="2"><span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;step_a&quot;</span><span class="p">,</span> <span class="s2">&quot;step_b&quot;</span><span class="p">)</span>
+</span><span data-line="3">
+</span><span data-line="4"><span class="c1"># Conditional edge</span>
+</span><span data-line="5"><span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;review&quot;</span><span class="p">,</span> <span class="s2">&quot;approve&quot;</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;score&#39;) &gt;= 80&quot;</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="workflow-context">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Workflow Context</a><a class="headerlink" href="#workflow-context" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="WorkflowContext">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WorkflowContext</span></span><a class="headerlink" href="#WorkflowContext" title="Link to this definition">¶</a></dt>
+<dd><p>Execution context passed between steps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>workflow_id</strong> (<em>UUID</em>) – UUID of the workflow definition</p></li>
+<li><p><strong>instance_id</strong> (<em>UUID</em>) – UUID of this specific execution</p></li>
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Any</em><em>]</em>) – Mutable workflow data dictionary</p></li>
+<li><p><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Any</em><em>]</em>) – Immutable metadata dictionary</p></li>
+<li><p><strong>current_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the currently executing step</p></li>
+<li><p><strong>step_history</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="modules.html#litestar_workflows.core.StepExecution" title="litestar_workflows.core.StepExecution"><em>StepExecution</em></a><em>]</em>) – List of completed step executions</p></li>
+<li><p><strong>started_at</strong> (<em>datetime</em>) – Workflow start timestamp</p></li>
+<li><p><strong>user_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Current user ID (for human tasks)</p></li>
+<li><p><strong>tenant_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Tenant ID for multi-tenancy</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowContext.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#WorkflowContext.get" title="Link to this definition">¶</a></dt>
+<dd><p>Get a value from the data dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – The key to look up</p></li>
+<li><p><strong>default</strong> – Default value if key not found</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value or default</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowContext.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#WorkflowContext.set" title="Link to this definition">¶</a></dt>
+<dd><p>Set a value in the data dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – The key to set</p></li>
+<li><p><strong>value</strong> – The value to store</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="step-types">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Step Types</a><a class="headerlink" href="#step-types" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="Step">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Step</span></span><a class="headerlink" href="#Step" title="Link to this definition">¶</a></dt>
+<dd><p>Protocol defining a workflow step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Unique identifier for the step</p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Human-readable description</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="Step.execute">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#WorkflowContext" title="WorkflowContext"><span class="pre">WorkflowContext</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#Step.execute" title="Link to this definition">¶</a></dt>
+<dd><p>Execute the step with the given context.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Step.can_execute">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">can_execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#WorkflowContext" title="WorkflowContext"><span class="pre">WorkflowContext</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#Step.can_execute" title="Link to this definition">¶</a></dt>
+<dd><p>Check if step can execute (guards/validators).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Step.on_success">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#WorkflowContext" title="WorkflowContext"><span class="pre">WorkflowContext</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#Step.on_success" title="Link to this definition">¶</a></dt>
+<dd><p>Hook called after successful execution.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Step.on_failure">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#WorkflowContext" title="WorkflowContext"><span class="pre">WorkflowContext</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><span class="pre">Exception</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#Step.on_failure" title="Link to this definition">¶</a></dt>
+<dd><p>Hook called after failed execution.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="BaseMachineStep">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BaseMachineStep</span></span><a class="headerlink" href="#BaseMachineStep" title="Link to this definition">¶</a></dt>
+<dd><p>Base class for automated (machine) steps.</p>
+<p>Inherits from <a class="reference internal" href="#Step" title="Step"><code class="xref py py-class docutils literal notranslate"><span class="pre">Step</span></code></a> with <code class="docutils literal notranslate"><span class="pre">step_type</span> <span class="pre">=</span> <span class="pre">StepType.MACHINE</span></code>.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">ProcessData</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="2">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;process_data&quot;</span>
+</span><span data-line="3">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Process incoming data&quot;</span>
+</span><span data-line="4">
+</span><span data-line="5">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="6">        <span class="n">data</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">)</span>
+</span><span data-line="7">        <span class="n">result</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span><span data-line="8">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="BaseHumanStep">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BaseHumanStep</span></span><a class="headerlink" href="#BaseHumanStep" title="Link to this definition">¶</a></dt>
+<dd><p>Base class for human interaction steps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Display title for the task</p></li>
+<li><p><strong>form_schema</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Any</em><em>]</em>) – JSON Schema for the input form</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">ApprovalStep</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="2">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;approval&quot;</span>
+</span><span data-line="3">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Approval Required&quot;</span>
+</span><span data-line="4">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="5">        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="6">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="7">            <span class="s2">&quot;approved&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">},</span>
+</span><span data-line="8">        <span class="p">},</span>
+</span><span data-line="9">    <span class="p">}</span>
+</span></pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="BaseGateway">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BaseGateway</span></span><a class="headerlink" href="#BaseGateway" title="Link to this definition">¶</a></dt>
+<dd><p>Base class for decision/branching steps.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="BaseGateway.evaluate">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#WorkflowContext" title="WorkflowContext"><span class="pre">WorkflowContext</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#BaseGateway.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate conditions and return the next step name(s).</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="step-groups">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Step Groups</a><a class="headerlink" href="#step-groups" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="SequentialGroup">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SequentialGroup</span></span><a class="headerlink" href="#SequentialGroup" title="Link to this definition">¶</a></dt>
+<dd><p>Execute steps in sequence, passing results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>steps</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference internal" href="#Step" title="Step"><em>Step</em></a><em> | </em><a class="reference internal" href="modules.html#litestar_workflows.steps.StepGroup" title="litestar_workflows.steps.StepGroup"><em>StepGroup</em></a><em>, </em><em>...</em><em>]</em>) – Steps to execute in order</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">validation</span> <span class="o">=</span> <span class="n">SequentialGroup</span><span class="p">(</span>
+</span><span data-line="2">    <span class="n">ValidateFormat</span><span class="p">(),</span>
+</span><span data-line="3">    <span class="n">ValidateContent</span><span class="p">(),</span>
+</span><span data-line="4">    <span class="n">ValidatePermissions</span><span class="p">(),</span>
+</span><span data-line="5"><span class="p">)</span>
+</span></pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ParallelGroup">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ParallelGroup</span></span><a class="headerlink" href="#ParallelGroup" title="Link to this definition">¶</a></dt>
+<dd><p>Execute steps in parallel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>steps</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference internal" href="#Step" title="Step"><em>Step</em></a><em> | </em><a class="reference internal" href="modules.html#litestar_workflows.steps.StepGroup" title="litestar_workflows.steps.StepGroup"><em>StepGroup</em></a><em>, </em><em>...</em><em>]</em>) – Steps to execute simultaneously</p></li>
+<li><p><strong>callback</strong> (<a class="reference internal" href="#Step" title="Step"><em>Step</em></a><em> | </em><em>None</em>) – Optional step to run after all complete</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">notifications</span> <span class="o">=</span> <span class="n">ParallelGroup</span><span class="p">(</span>
+</span><span data-line="2">    <span class="n">SendEmail</span><span class="p">(),</span>
+</span><span data-line="3">    <span class="n">SendSlack</span><span class="p">(),</span>
+</span><span data-line="4">    <span class="n">callback</span><span class="o">=</span><span class="n">LogNotifications</span><span class="p">(),</span>
+</span><span data-line="5"><span class="p">)</span>
+</span></pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="enums">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Enums</a><a class="headerlink" href="#enums" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="StepType">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StepType</span></span><a class="headerlink" href="#StepType" title="Link to this definition">¶</a></dt>
+<dd><p>Classification of step types.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="StepType.MACHINE">
+<span class="sig-name descname"><span class="pre">MACHINE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;machine&quot;</span></em><a class="headerlink" href="#StepType.MACHINE" title="Link to this definition">¶</a></dt>
+<dd><p>Automated execution</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="StepType.HUMAN">
+<span class="sig-name descname"><span class="pre">HUMAN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;human&quot;</span></em><a class="headerlink" href="#StepType.HUMAN" title="Link to this definition">¶</a></dt>
+<dd><p>Requires user interaction</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="StepType.WEBHOOK">
+<span class="sig-name descname"><span class="pre">WEBHOOK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;webhook&quot;</span></em><a class="headerlink" href="#StepType.WEBHOOK" title="Link to this definition">¶</a></dt>
+<dd><p>Waits for external callback</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="StepType.TIMER">
+<span class="sig-name descname"><span class="pre">TIMER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;timer&quot;</span></em><a class="headerlink" href="#StepType.TIMER" title="Link to this definition">¶</a></dt>
+<dd><p>Waits for time condition</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="StepType.GATEWAY">
+<span class="sig-name descname"><span class="pre">GATEWAY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;gateway&quot;</span></em><a class="headerlink" href="#StepType.GATEWAY" title="Link to this definition">¶</a></dt>
+<dd><p>Decision/branching point</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="StepStatus">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StepStatus</span></span><a class="headerlink" href="#StepStatus" title="Link to this definition">¶</a></dt>
+<dd><p>Step execution status.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="StepStatus.PENDING">
+<span class="sig-name descname"><span class="pre">PENDING</span></span><a class="headerlink" href="#StepStatus.PENDING" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="StepStatus.SCHEDULED">
+<span class="sig-name descname"><span class="pre">SCHEDULED</span></span><a class="headerlink" href="#StepStatus.SCHEDULED" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="StepStatus.RUNNING">
+<span class="sig-name descname"><span class="pre">RUNNING</span></span><a class="headerlink" href="#StepStatus.RUNNING" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="StepStatus.WAITING">
+<span class="sig-name descname"><span class="pre">WAITING</span></span><a class="headerlink" href="#StepStatus.WAITING" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="StepStatus.SUCCEEDED">
+<span class="sig-name descname"><span class="pre">SUCCEEDED</span></span><a class="headerlink" href="#StepStatus.SUCCEEDED" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="StepStatus.FAILED">
+<span class="sig-name descname"><span class="pre">FAILED</span></span><a class="headerlink" href="#StepStatus.FAILED" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="StepStatus.CANCELED">
+<span class="sig-name descname"><span class="pre">CANCELED</span></span><a class="headerlink" href="#StepStatus.CANCELED" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="StepStatus.SKIPPED">
+<span class="sig-name descname"><span class="pre">SKIPPED</span></span><a class="headerlink" href="#StepStatus.SKIPPED" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="WorkflowStatus">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WorkflowStatus</span></span><a class="headerlink" href="#WorkflowStatus" title="Link to this definition">¶</a></dt>
+<dd><p>Workflow instance status.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="WorkflowStatus.PENDING">
+<span class="sig-name descname"><span class="pre">PENDING</span></span><a class="headerlink" href="#WorkflowStatus.PENDING" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="WorkflowStatus.RUNNING">
+<span class="sig-name descname"><span class="pre">RUNNING</span></span><a class="headerlink" href="#WorkflowStatus.RUNNING" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="WorkflowStatus.WAITING">
+<span class="sig-name descname"><span class="pre">WAITING</span></span><a class="headerlink" href="#WorkflowStatus.WAITING" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="WorkflowStatus.COMPLETED">
+<span class="sig-name descname"><span class="pre">COMPLETED</span></span><a class="headerlink" href="#WorkflowStatus.COMPLETED" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="WorkflowStatus.FAILED">
+<span class="sig-name descname"><span class="pre">FAILED</span></span><a class="headerlink" href="#WorkflowStatus.FAILED" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="WorkflowStatus.CANCELED">
+<span class="sig-name descname"><span class="pre">CANCELED</span></span><a class="headerlink" href="#WorkflowStatus.CANCELED" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="execution-engine">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Execution Engine</a><a class="headerlink" href="#execution-engine" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ExecutionEngine">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ExecutionEngine</span></span><a class="headerlink" href="#ExecutionEngine" title="Link to this definition">¶</a></dt>
+<dd><p>Protocol for workflow execution engines.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ExecutionEngine.start_workflow">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="modules.html#litestar_workflows.core.WorkflowInstance" title="litestar_workflows.core.WorkflowInstance"><span class="pre">WorkflowInstance</span></a></span></span><a class="headerlink" href="#ExecutionEngine.start_workflow" title="Link to this definition">¶</a></dt>
+<dd><p>Start a new workflow instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>workflow_name</strong> – Name of the workflow to start</p></li>
+<li><p><strong>initial_data</strong> – Initial data for the workflow context</p></li>
+<li><p><strong>version</strong> – Specific version to use (latest if None)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The created workflow instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ExecutionEngine.execute_step">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">execute_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#Step" title="Step"><span class="pre">Step</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#WorkflowContext" title="WorkflowContext"><span class="pre">WorkflowContext</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">previous_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#ExecutionEngine.execute_step" title="Link to this definition">¶</a></dt>
+<dd><p>Execute a single step.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ExecutionEngine.complete_human_task">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">complete_human_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#ExecutionEngine.complete_human_task" title="Link to this definition">¶</a></dt>
+<dd><p>Complete a human task with user input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instance_id</strong> – The workflow instance ID</p></li>
+<li><p><strong>step_name</strong> – Name of the human step</p></li>
+<li><p><strong>user_id</strong> – ID of the user completing the task</p></li>
+<li><p><strong>data</strong> – Form data submitted by the user</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ExecutionEngine.cancel_workflow">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cancel_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#ExecutionEngine.cancel_workflow" title="Link to this definition">¶</a></dt>
+<dd><p>Cancel a running workflow.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ExecutionEngine.retry">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">retry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#ExecutionEngine.retry" title="Link to this definition">¶</a></dt>
+<dd><p>Retry a failed workflow from a specific step.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="LocalExecutionEngine">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LocalExecutionEngine</span></span><a class="headerlink" href="#LocalExecutionEngine" title="Link to this definition">¶</a></dt>
+<dd><p>In-process async execution engine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>registry</strong> (<a class="reference internal" href="#WorkflowRegistry" title="WorkflowRegistry"><em>WorkflowRegistry</em></a>) – Workflow registry containing definitions</p></li>
+<li><p><strong>persistence</strong> (<em>WorkflowPersistence</em><em> | </em><em>None</em>) – Optional persistence layer</p></li>
+<li><p><strong>event_bus</strong> (<em>EventBus</em><em> | </em><em>None</em>) – Optional event bus for notifications</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">registry</span> <span class="o">=</span> <span class="n">WorkflowRegistry</span><span class="p">()</span>
+</span><span data-line="2"><span class="n">registry</span><span class="o">.</span><span class="n">register_definition</span><span class="p">(</span><span class="n">my_workflow</span><span class="p">)</span>
+</span><span data-line="3">
+</span><span data-line="4"><span class="n">engine</span> <span class="o">=</span> <span class="n">LocalExecutionEngine</span><span class="p">(</span><span class="n">registry</span><span class="p">)</span>
+</span><span data-line="5"><span class="n">instance</span> <span class="o">=</span> <span class="k">await</span> <span class="n">engine</span><span class="o">.</span><span class="n">start_workflow</span><span class="p">(</span><span class="s2">&quot;my_workflow&quot;</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="registry">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Registry</a><a class="headerlink" href="#registry" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="WorkflowRegistry">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WorkflowRegistry</span></span><a class="headerlink" href="#WorkflowRegistry" title="Link to this definition">¶</a></dt>
+<dd><p>Registry for managing workflow definitions.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowRegistry.register_definition">
+<span class="sig-name descname"><span class="pre">register_definition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#WorkflowDefinition" title="WorkflowDefinition"><span class="pre">WorkflowDefinition</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#WorkflowRegistry.register_definition" title="Link to this definition">¶</a></dt>
+<dd><p>Register a workflow definition.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowRegistry.get_definition">
+<span class="sig-name descname"><span class="pre">get_definition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#WorkflowDefinition" title="WorkflowDefinition"><span class="pre">WorkflowDefinition</span></a></span></span><a class="headerlink" href="#WorkflowRegistry.get_definition" title="Link to this definition">¶</a></dt>
+<dd><p>Get a workflow definition by name and optional version.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowRegistry.list_definitions">
+<span class="sig-name descname"><span class="pre">list_definitions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">active_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#WorkflowDefinition" title="WorkflowDefinition"><span class="pre">WorkflowDefinition</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#WorkflowRegistry.list_definitions" title="Link to this definition">¶</a></dt>
+<dd><p>List all registered workflow definitions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowRegistry.has_definition">
+<span class="sig-name descname"><span class="pre">has_definition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#WorkflowRegistry.has_definition" title="Link to this definition">¶</a></dt>
+<dd><p>Check if a workflow definition exists.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="exceptions">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Exceptions</a><a class="headerlink" href="#exceptions" title="Link to this heading">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="WorkflowsError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WorkflowsError</span></span><a class="headerlink" href="#WorkflowsError" title="Link to this definition">¶</a></dt>
+<dd><p>Base exception for all litestar-workflows errors.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="WorkflowNotFoundError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WorkflowNotFoundError</span></span><a class="headerlink" href="#WorkflowNotFoundError" title="Link to this definition">¶</a></dt>
+<dd><p>Raised when a requested workflow definition is not found.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="StepExecutionError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StepExecutionError</span></span><a class="headerlink" href="#StepExecutionError" title="Link to this definition">¶</a></dt>
+<dd><p>Raised when a step fails during execution.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="InvalidTransitionError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InvalidTransitionError</span></span><a class="headerlink" href="#InvalidTransitionError" title="Link to this definition">¶</a></dt>
+<dd><p>Raised when an invalid state transition is attempted.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="ValidationError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ValidationError</span></span><a class="headerlink" href="#ValidationError" title="Link to this definition">¶</a></dt>
+<dd><p>Raised when workflow or step validation fails.</p>
+</dd></dl>
+
+</section>
+<section id="database-models-optional">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Database Models (Optional)</a><a class="headerlink" href="#database-models-optional" title="Link to this heading">¶</a></h2>
+<p>Available with the <code class="docutils literal notranslate"><span class="pre">[db]</span></code> extra. Install with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">pip<span class="w"> </span>install<span class="w"> </span>litestar-workflows<span class="o">[</span>db<span class="o">]</span>
+</span></pre></div>
+</div>
+<section id="persistentexecutionengine">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">PersistentExecutionEngine</a><a class="headerlink" href="#persistentexecutionengine" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="PersistentExecutionEngine">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PersistentExecutionEngine</span></span><a class="headerlink" href="#PersistentExecutionEngine" title="Link to this definition">¶</a></dt>
+<dd><p>Execution engine with database persistence.</p>
+<p>A drop-in replacement for <code class="docutils literal notranslate"><span class="pre">LocalExecutionEngine</span></code> that persists all workflow
+state to a database, enabling durability, recovery, and querying.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>registry</strong> (<a class="reference internal" href="#WorkflowRegistry" title="WorkflowRegistry"><em>WorkflowRegistry</em></a>) – The workflow registry containing definitions</p></li>
+<li><p><strong>session</strong> (<em>AsyncSession</em>) – SQLAlchemy async session for database operations</p></li>
+<li><p><strong>event_bus</strong> (<em>Any</em><em> | </em><em>None</em>) – Optional event bus for emitting workflow events</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.ext.asyncio</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_async_engine</span><span class="p">,</span> <span class="n">async_sessionmaker</span>
+</span><span data-line="2"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkflowRegistry</span>
+</span><span data-line="3"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">PersistentExecutionEngine</span>
+</span><span data-line="4">
+</span><span data-line="5"><span class="n">engine</span> <span class="o">=</span> <span class="n">create_async_engine</span><span class="p">(</span><span class="s2">&quot;postgresql+asyncpg://localhost/db&quot;</span><span class="p">)</span>
+</span><span data-line="6"><span class="n">session_factory</span> <span class="o">=</span> <span class="n">async_sessionmaker</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">expire_on_commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span data-line="7">
+</span><span data-line="8"><span class="n">registry</span> <span class="o">=</span> <span class="n">WorkflowRegistry</span><span class="p">()</span>
+</span><span data-line="9"><span class="n">registry</span><span class="o">.</span><span class="n">register_definition</span><span class="p">(</span><span class="n">MyWorkflow</span><span class="o">.</span><span class="n">get_definition</span><span class="p">())</span>
+</span><span data-line="10"><span class="n">registry</span><span class="o">.</span><span class="n">register_workflow_class</span><span class="p">(</span><span class="n">MyWorkflow</span><span class="p">)</span>
+</span><span data-line="11">
+</span><span data-line="12"><span class="k">async</span> <span class="k">with</span> <span class="n">session_factory</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+</span><span data-line="13">    <span class="n">engine</span> <span class="o">=</span> <span class="n">PersistentExecutionEngine</span><span class="p">(</span><span class="n">registry</span><span class="o">=</span><span class="n">registry</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
+</span><span data-line="14">    <span class="n">instance</span> <span class="o">=</span> <span class="k">await</span> <span class="n">engine</span><span class="o">.</span><span class="n">start_workflow</span><span class="p">(</span><span class="n">MyWorkflow</span><span class="p">,</span> <span class="n">initial_data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">})</span>
+</span></pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="PersistentExecutionEngine.start_workflow">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">tenant_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">created_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">WorkflowInstanceData</span></span></span><a class="headerlink" href="#PersistentExecutionEngine.start_workflow" title="Link to this definition">¶</a></dt>
+<dd><p>Start a new workflow instance with persistence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>workflow</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.14)"><em>type</em></a><em>[</em><a class="reference internal" href="modules.html#litestar_workflows.core.Workflow" title="litestar_workflows.core.Workflow"><em>Workflow</em></a><em>]</em>) – The workflow class to execute</p></li>
+<li><p><strong>initial_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – Optional initial data for the workflow context</p></li>
+<li><p><strong>tenant_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Optional tenant ID for multi-tenancy support</p></li>
+<li><p><strong>created_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Optional user ID who started the workflow</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The created workflow instance data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PersistentExecutionEngine.complete_human_task">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">complete_human_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#PersistentExecutionEngine.complete_human_task" title="Link to this definition">¶</a></dt>
+<dd><p>Complete a human task with user-provided data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instance_id</strong> (<em>UUID</em>) – The workflow instance ID</p></li>
+<li><p><strong>step_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the human task step</p></li>
+<li><p><strong>user_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – ID of the user completing the task</p></li>
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Any</em><em>]</em>) – User-provided data to merge into context</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If instance not found or not in WAITING status</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PersistentExecutionEngine.cancel_workflow">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cancel_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#PersistentExecutionEngine.cancel_workflow" title="Link to this definition">¶</a></dt>
+<dd><p>Cancel a running workflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instance_id</strong> (<em>UUID</em>) – The workflow instance ID</p></li>
+<li><p><strong>reason</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Reason for cancellation</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PersistentExecutionEngine.get_instance">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_id</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">WorkflowInstanceData</span></span></span><a class="headerlink" href="#PersistentExecutionEngine.get_instance" title="Link to this definition">¶</a></dt>
+<dd><p>Get a workflow instance by ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>instance_id</strong> (<em>UUID</em>) – The workflow instance ID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The workflow instance data</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.14)"><strong>KeyError</strong></a> – If instance not found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PersistentExecutionEngine.get_running_instances">
+<span class="sig-name descname"><span class="pre">get_running_instances</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">UUID</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PersistentExecutionEngine.get_running_instances" title="Link to this definition">¶</a></dt>
+<dd><p>Get IDs of currently running instances (in-memory tracking).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of running instance IDs</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="sqlalchemy-models">
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">SQLAlchemy Models</a><a class="headerlink" href="#sqlalchemy-models" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="WorkflowDefinitionModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WorkflowDefinitionModel</span></span><a class="headerlink" href="#WorkflowDefinitionModel" title="Link to this definition">¶</a></dt>
+<dd><p>SQLAlchemy model for persisted workflow definitions.</p>
+<p>Stores the serialized workflow definition along with metadata for
+querying and managing workflow versions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Unique name identifier for the workflow (indexed)</p></li>
+<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Semantic version string (e.g., “1.0.0”)</p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Human-readable description</p></li>
+<li><p><strong>definition_json</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Any</em><em>]</em>) – Serialized WorkflowDefinition as JSON</p></li>
+<li><p><strong>is_active</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Whether this version is active for new instances</p></li>
+<li><p><strong>instances</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="#WorkflowInstanceModel" title="WorkflowInstanceModel"><em>WorkflowInstanceModel</em></a><em>]</em>) – Related workflow instances (relationship)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="WorkflowInstanceModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WorkflowInstanceModel</span></span><a class="headerlink" href="#WorkflowInstanceModel" title="Link to this definition">¶</a></dt>
+<dd><p>SQLAlchemy model for workflow instances.</p>
+<p>Stores the current state of a workflow execution including context data,
+current step, and execution history.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>definition_id</strong> (<em>UUID</em>) – Foreign key to the workflow definition</p></li>
+<li><p><strong>workflow_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Denormalized workflow name for quick queries</p></li>
+<li><p><strong>workflow_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Denormalized workflow version</p></li>
+<li><p><strong>status</strong> (<a class="reference internal" href="#WorkflowStatus" title="WorkflowStatus"><em>WorkflowStatus</em></a>) – Current execution status</p></li>
+<li><p><strong>current_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Name of the currently executing step</p></li>
+<li><p><strong>context_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Any</em><em>]</em>) – Mutable workflow context data as JSON</p></li>
+<li><p><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Any</em><em>]</em>) – Immutable metadata about the execution</p></li>
+<li><p><strong>error</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Error message if workflow failed</p></li>
+<li><p><strong>started_at</strong> (<em>datetime</em>) – Timestamp when execution began</p></li>
+<li><p><strong>completed_at</strong> (<em>datetime</em><em> | </em><em>None</em>) – Timestamp when execution finished</p></li>
+<li><p><strong>tenant_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Optional tenant identifier for multi-tenancy (indexed)</p></li>
+<li><p><strong>created_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Optional user who started the workflow (indexed)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="StepExecutionModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StepExecutionModel</span></span><a class="headerlink" href="#StepExecutionModel" title="Link to this definition">¶</a></dt>
+<dd><p>SQLAlchemy model for step execution records.</p>
+<p>Tracks the execution of each step including timing, status, and
+input/output data for debugging and audit purposes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instance_id</strong> (<em>UUID</em>) – Foreign key to the workflow instance</p></li>
+<li><p><strong>step_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the executed step (indexed)</p></li>
+<li><p><strong>step_type</strong> (<a class="reference internal" href="#StepType" title="StepType"><em>StepType</em></a>) – Type of step (MACHINE, HUMAN, etc.)</p></li>
+<li><p><strong>status</strong> (<a class="reference internal" href="#StepStatus" title="StepStatus"><em>StepStatus</em></a>) – Execution status of the step (indexed)</p></li>
+<li><p><strong>input_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – Input data passed to the step</p></li>
+<li><p><strong>output_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – Output data produced by the step</p></li>
+<li><p><strong>error</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Error message if step failed</p></li>
+<li><p><strong>started_at</strong> (<em>datetime</em>) – Timestamp when step execution began</p></li>
+<li><p><strong>completed_at</strong> (<em>datetime</em><em> | </em><em>None</em>) – Timestamp when step execution finished</p></li>
+<li><p><strong>assigned_to</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – User ID assigned to human tasks</p></li>
+<li><p><strong>completed_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – User ID who completed human tasks</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="HumanTaskModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HumanTaskModel</span></span><a class="headerlink" href="#HumanTaskModel" title="Link to this definition">¶</a></dt>
+<dd><p>SQLAlchemy model for pending human tasks.</p>
+<p>Provides a denormalized view of pending human approval tasks for
+efficient querying by assignee, due date, and status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instance_id</strong> (<em>UUID</em>) – Foreign key to the workflow instance</p></li>
+<li><p><strong>step_execution_id</strong> (<em>UUID</em>) – Foreign key to the step execution</p></li>
+<li><p><strong>step_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the human task step</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Display title for the task</p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Detailed description of the task</p></li>
+<li><p><strong>form_schema</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – JSON Schema defining the task form</p></li>
+<li><p><strong>assignee_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – User ID assigned to complete the task (indexed)</p></li>
+<li><p><strong>assignee_group</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Group/role that can complete the task (indexed)</p></li>
+<li><p><strong>due_at</strong> (<em>datetime</em><em> | </em><em>None</em>) – Deadline for task completion (indexed)</p></li>
+<li><p><strong>reminder_at</strong> (<em>datetime</em><em> | </em><em>None</em>) – When to send a reminder</p></li>
+<li><p><strong>status</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Current task status (pending, completed, canceled)</p></li>
+<li><p><strong>completed_at</strong> (<em>datetime</em><em> | </em><em>None</em>) – When the task was completed</p></li>
+<li><p><strong>completed_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – User who completed the task</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="repository-classes">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Repository Classes</a><a class="headerlink" href="#repository-classes" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="WorkflowDefinitionRepository">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WorkflowDefinitionRepository</span></span><a class="headerlink" href="#WorkflowDefinitionRepository" title="Link to this definition">¶</a></dt>
+<dd><p>Repository for workflow definition CRUD operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>AsyncSession</em>) – SQLAlchemy async session</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowDefinitionRepository.get_by_name">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#WorkflowDefinitionModel" title="WorkflowDefinitionModel"><span class="pre">WorkflowDefinitionModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#WorkflowDefinitionRepository.get_by_name" title="Link to this definition">¶</a></dt>
+<dd><p>Get a workflow definition by name and optional version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The workflow name</p></li>
+<li><p><strong>version</strong> – Optional specific version. If None, returns the latest active version.</p></li>
+<li><p><strong>active_only</strong> – If True, only return active definitions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The workflow definition or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowDefinitionRepository.get_latest_version">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_latest_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#WorkflowDefinitionModel" title="WorkflowDefinitionModel"><span class="pre">WorkflowDefinitionModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#WorkflowDefinitionRepository.get_latest_version" title="Link to this definition">¶</a></dt>
+<dd><p>Get the latest active version of a workflow definition.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowDefinitionRepository.list_active">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_active</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#WorkflowDefinitionModel" title="WorkflowDefinitionModel"><span class="pre">WorkflowDefinitionModel</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#WorkflowDefinitionRepository.list_active" title="Link to this definition">¶</a></dt>
+<dd><p>List all active workflow definitions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowDefinitionRepository.deactivate_version">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deactivate_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#WorkflowDefinitionRepository.deactivate_version" title="Link to this definition">¶</a></dt>
+<dd><p>Deactivate a specific workflow version.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="WorkflowInstanceRepository">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WorkflowInstanceRepository</span></span><a class="headerlink" href="#WorkflowInstanceRepository" title="Link to this definition">¶</a></dt>
+<dd><p>Repository for workflow instance CRUD operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>AsyncSession</em>) – SQLAlchemy async session</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowInstanceRepository.find_by_workflow">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_by_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#WorkflowInstanceModel" title="WorkflowInstanceModel"><span class="pre">WorkflowInstanceModel</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#WorkflowInstanceRepository.find_by_workflow" title="Link to this definition">¶</a></dt>
+<dd><p>Find instances by workflow name with optional status filter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple of (instances, total_count)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowInstanceRepository.find_by_user">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_by_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#WorkflowInstanceModel" title="WorkflowInstanceModel"><span class="pre">WorkflowInstanceModel</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#WorkflowInstanceRepository.find_by_user" title="Link to this definition">¶</a></dt>
+<dd><p>Find instances created by a specific user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowInstanceRepository.find_by_tenant">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_by_tenant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tenant_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#WorkflowInstanceModel" title="WorkflowInstanceModel"><span class="pre">WorkflowInstanceModel</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#WorkflowInstanceRepository.find_by_tenant" title="Link to this definition">¶</a></dt>
+<dd><p>Find instances by tenant ID for multi-tenancy support.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowInstanceRepository.find_running">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_running</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#WorkflowInstanceModel" title="WorkflowInstanceModel"><span class="pre">WorkflowInstanceModel</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#WorkflowInstanceRepository.find_running" title="Link to this definition">¶</a></dt>
+<dd><p>Find all running or waiting workflow instances.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="WorkflowInstanceRepository.update_status">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#WorkflowInstanceModel" title="WorkflowInstanceModel"><span class="pre">WorkflowInstanceModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#WorkflowInstanceRepository.update_status" title="Link to this definition">¶</a></dt>
+<dd><p>Update the status of a workflow instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="StepExecutionRepository">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StepExecutionRepository</span></span><a class="headerlink" href="#StepExecutionRepository" title="Link to this definition">¶</a></dt>
+<dd><p>Repository for step execution record CRUD operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>AsyncSession</em>) – SQLAlchemy async session</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="StepExecutionRepository.find_by_instance">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_by_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_id</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#StepExecutionModel" title="StepExecutionModel"><span class="pre">StepExecutionModel</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#StepExecutionRepository.find_by_instance" title="Link to this definition">¶</a></dt>
+<dd><p>Find all step executions for an instance, ordered by start time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="StepExecutionRepository.find_by_step_name">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_by_step_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#StepExecutionModel" title="StepExecutionModel"><span class="pre">StepExecutionModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#StepExecutionRepository.find_by_step_name" title="Link to this definition">¶</a></dt>
+<dd><p>Find the most recent execution record for a specific step.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="StepExecutionRepository.find_failed">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_failed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#StepExecutionModel" title="StepExecutionModel"><span class="pre">StepExecutionModel</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#StepExecutionRepository.find_failed" title="Link to this definition">¶</a></dt>
+<dd><p>Find failed step executions, optionally filtered by instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="HumanTaskRepository">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HumanTaskRepository</span></span><a class="headerlink" href="#HumanTaskRepository" title="Link to this definition">¶</a></dt>
+<dd><p>Repository for human task CRUD operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>AsyncSession</em>) – SQLAlchemy async session</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="HumanTaskRepository.find_pending">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_pending</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assignee_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assignee_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#HumanTaskModel" title="HumanTaskModel"><span class="pre">HumanTaskModel</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#HumanTaskRepository.find_pending" title="Link to this definition">¶</a></dt>
+<dd><p>Find pending human tasks, optionally filtered by assignee or group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>assignee_id</strong> – If provided, includes tasks assigned to this user or unassigned</p></li>
+<li><p><strong>assignee_group</strong> – If provided, includes tasks for this group or unassigned</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HumanTaskRepository.find_by_instance">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_by_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance_id</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#HumanTaskModel" title="HumanTaskModel"><span class="pre">HumanTaskModel</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#HumanTaskRepository.find_by_instance" title="Link to this definition">¶</a></dt>
+<dd><p>Find all human tasks for an instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HumanTaskRepository.find_overdue">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_overdue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#HumanTaskModel" title="HumanTaskModel"><span class="pre">HumanTaskModel</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#HumanTaskRepository.find_overdue" title="Link to this definition">¶</a></dt>
+<dd><p>Find overdue pending human tasks (due_at &lt; now).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HumanTaskRepository.complete_task">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">complete_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">completed_by</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#HumanTaskModel" title="HumanTaskModel"><span class="pre">HumanTaskModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#HumanTaskRepository.complete_task" title="Link to this definition">¶</a></dt>
+<dd><p>Mark a human task as completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>task_id</strong> – The task ID</p></li>
+<li><p><strong>completed_by</strong> – User ID who completed the task</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="HumanTaskRepository.cancel_task">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cancel_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#HumanTaskModel" title="HumanTaskModel"><span class="pre">HumanTaskModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#HumanTaskRepository.cancel_task" title="Link to this definition">¶</a></dt>
+<dd><p>Cancel a pending human task</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="web-plugin-optional">
+<h2><a class="toc-backref" href="#id14" role="doc-backlink">Web Plugin (Optional)</a><a class="headerlink" href="#web-plugin-optional" title="Link to this heading">¶</a></h2>
+<p>Available with the <code class="docutils literal notranslate"><span class="pre">[web]</span></code> extra. The REST API is built into the main <code class="docutils literal notranslate"><span class="pre">WorkflowPlugin</span></code>
+and enabled by default via <code class="docutils literal notranslate"><span class="pre">enable_api=True</span></code>.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar</span><span class="w"> </span><span class="kn">import</span> <span class="n">Litestar</span>
+</span><span data-line="2"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkflowPlugin</span><span class="p">,</span> <span class="n">WorkflowPluginConfig</span>
+</span><span data-line="3">
+</span><span data-line="4"><span class="n">app</span> <span class="o">=</span> <span class="n">Litestar</span><span class="p">(</span>
+</span><span data-line="5">    <span class="n">plugins</span><span class="o">=</span><span class="p">[</span>
+</span><span data-line="6">        <span class="n">WorkflowPlugin</span><span class="p">(</span>
+</span><span data-line="7">            <span class="n">config</span><span class="o">=</span><span class="n">WorkflowPluginConfig</span><span class="p">(</span>
+</span><span data-line="8">                <span class="n">enable_api</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Default - API auto-enabled</span>
+</span><span data-line="9">                <span class="n">api_path_prefix</span><span class="o">=</span><span class="s2">&quot;/workflows&quot;</span><span class="p">,</span>
+</span><span data-line="10">                <span class="n">api_guards</span><span class="o">=</span><span class="p">[],</span>
+</span><span data-line="11">            <span class="p">)</span>
+</span><span data-line="12">        <span class="p">),</span>
+</span><span data-line="13">    <span class="p">],</span>
+</span><span data-line="14"><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>See <a class="reference internal" href="web.html"><span class="doc">Web Plugin API Reference</span></a> for complete API reference.</p>
+</section>
+<section id="contrib-modules-planned">
+<h2><a class="toc-backref" href="#id15" role="doc-backlink">Contrib Modules (Planned)</a><a class="headerlink" href="#contrib-modules-planned" title="Link to this heading">¶</a></h2>
+<p>Optional execution engines for distributed workflow execution.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These are stub implementations for Phase 6 (v0.7.0). Installing the extras
+provides the stub classes which raise <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code>.</p>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="CeleryExecutionEngine">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CeleryExecutionEngine</span></span><a class="headerlink" href="#CeleryExecutionEngine" title="Link to this definition">¶</a></dt>
+<dd><p>Celery-based distributed execution engine (stub).</p>
+<p>Install with: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">litestar-workflows[celery]</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SAQExecutionEngine">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SAQExecutionEngine</span></span><a class="headerlink" href="#SAQExecutionEngine" title="Link to this definition">¶</a></dt>
+<dd><p>SAQ (Simple Async Queue) execution engine (stub).</p>
+<p>Install with: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">litestar-workflows[saq]</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ARQExecutionEngine">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ARQExecutionEngine</span></span><a class="headerlink" href="#ARQExecutionEngine" title="Link to this definition">¶</a></dt>
+<dd><p>ARQ (Async Redis Queue) execution engine (stub).</p>
+<p>Install with: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">litestar-workflows[arq]</span></code></p>
+</dd></dl>
+
+</section>
+<section id="full-module-reference">
+<h2><a class="toc-backref" href="#id16" role="doc-backlink">Full Module Reference</a><a class="headerlink" href="#full-module-reference" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Module Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">Web Plugin API Reference</a></li>
+</ul>
+</div>
+</section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id17" role="doc-backlink">See Also</a><a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../concepts/index.html"><span class="doc">Core Concepts</span></a> - Core concepts explained</p></li>
+<li><p><a class="reference internal" href="../guides/index.html"><span class="doc">How-To Guides</span></a> - Practical how-to guides</p></li>
+</ul>
+</section>
+</section>
+
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-prev">
+    <a href="../cookbook/integration-patterns.html">
+      <i class="i-lucide chevron-left"></i>
+      <div class="page-info">
+        <span>Previous</span><div class="title">Integration Patterns</div></div>
+    </a>
+  </div><div class="navigation-next">
+    <a href="modules.html">
+      <div class="page-info">
+        <span>Next</span>
+        <div class="title">Module Reference</div>
+      </div>
+      <i class="i-lucide chevron-right"></i>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2025, Jacob Coffee</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+<a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+  <iconify-icon icon="simple-icons:github"></iconify-icon>
+</a></div>
+    </div>
+  </div>
+</footer>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=30646c52"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/shibuya.js?v=c1cf1a6b"></script></body>
+</html>
