@@ -1,11 +1,17 @@
 """Web plugin for litestar-workflows.
 
-This module provides REST API controllers for managing workflows through HTTP
-endpoints. The REST API is automatically enabled when using WorkflowPlugin with
-enable_api=True (the default).
+This module provides REST API controllers and HTML UI views for managing workflows
+through HTTP endpoints. The REST API is automatically enabled when using
+WorkflowPlugin with enable_api=True (the default).
 
 The API includes controllers for workflow definitions, instances, and human tasks,
 along with graph visualization utilities.
+
+The UI views (optional, requires [ui] extra) provide:
+- Dashboard with workflow statistics
+- Workflow definition list and detail views
+- Instance list and detail views with MermaidJS graphs
+- Human task forms with JSON Schema rendering
 
 Example:
     Basic usage with WorkflowPlugin (API enabled by default)::
@@ -22,6 +28,18 @@ Example:
                     )
                 ),
             ],
+        )
+
+    With UI enabled (requires [ui] extra)::
+
+        from litestar import Litestar
+        from litestar_workflows import WorkflowPlugin, WorkflowPluginConfig
+        from litestar_workflows.web.views import WorkflowUIController, get_template_config
+
+        app = Litestar(
+            plugins=[WorkflowPlugin(config=WorkflowPluginConfig())],
+            route_handlers=[WorkflowUIController],
+            template_config=get_template_config(),
         )
 
     With authentication guards::

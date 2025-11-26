@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}{{ task.title }}{% endblock %}
+
+{% block head %}
+<!-- JSON Schema Form -->
+<script src="https://cdn.jsdelivr.net/npm/@rjsf/core@5/dist/index.umd.min.js"></script>
+{% endblock %}
+
+{% block page_title %}{{ task.title }}{% endblock %}
+{% block page_subtitle %}
+<p class="mt-1 text-sm text-gray-500">{{ task.description or 'Complete this task to continue the workflow' }}</p>
+{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Task Info -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Task Details</h3>
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+            <dl class="sm:divide-y sm:divide-gray-200">
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Workflow</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <a href="{{ url_for('workflow_ui:instance_detail', instance_id=task.instance_id) }}" class="text-primary-600 hover:text-primary-500">
+                            {{ task.workflow_name }}
+                        </a>
+                    </dd>
+                </div>
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Step</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ task.step_name }}</dd>
+                </div>
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Status</dt>
+                    <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2">
+                        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800">
+                            {{ task.status }}
+                        </span>
+                    </dd>
+                </div>
+                {% if task.assignee %}
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Assigned To</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ task.assignee }}</dd>
+                </div>
+                {% endif %}
+                {% if task.due_date %}
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Due Date</dt>
+                    <dd class="mt-1 text-sm sm:mt-0 sm:col-span-2 {% if task.is_overdue %}text-red-600{% else %}text-gray-900{% endif %}">
+                        {{ task.due_date.strftime('%Y-%m-%d %H:%M') }}
+                        {% if task.is_overdue %}
+                        <span class="ml-2 inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">
+                            Overdue
+                        </span>
+                        {% endif %}
+                    </dd>
+                </div>
+                {% endif %}
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Created At</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {{ task.created_at.strftime('%Y-%m-%d %H:%M:%S') if task.created_at else 'N/A' }}
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Task Form -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Complete Task</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">Fill out the form below to complete this task</p>
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+            <form method="post" action="{{ url_for('workflow_ui:complete_task', task_id=task.id) }}" id="task-form" x-data="taskForm()">
+                {% if task.form_schema %}
+                <!-- Dynamic form fields based on JSON Schema -->
+                <div class="space-y-6">
+                    {% for prop_name, prop_config in task.form_schema.get('properties', {}).items() %}
+                    <div>
+                        <label for="{{ prop_name }}" class="block text-sm font-medium text-gray-700">
+                            {{ prop_config.get('title', prop_name) }}
+                            {% if prop_name in task.form_schema.get('required', []) %}
+                            <span class="text-red-500">*</span>
+                            {% endif %}
+                        </label>
+                        {% if prop_config.get('description') %}
+                        <p class="mt-1 text-sm text-gray-500">{{ prop_config.get('description') }}</p>
+                        {% endif %}
+
+                        {% if prop_config.get('enum') %}
+                        <!-- Select/Dropdown -->
+                        <select id="{{ prop_name }}" name="{{ prop_name }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                {% if prop_name in task.form_schema.get('required', []) %}required{% endif %}>
+                            <option value="">Select an option</option>
+                            {% for option in prop_config.get('enum', []) %}
+                            <option value="{{ option }}">
+                                {{ prop_config.get('enumNames', [])[loop.index0] if prop_config.get('enumNames') and loop.index0 < prop_config.get('enumNames')|length else option }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        {% elif prop_config.get('type') == 'boolean' %}
+                        <!-- Checkbox -->
+                        <div class="mt-1">
+                            <input type="checkbox" id="{{ prop_name }}" name="{{ prop_name }}" value="true"
+                                   class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                        </div>
+                        {% elif prop_config.get('type') == 'integer' or prop_config.get('type') == 'number' %}
+                        <!-- Number input -->
+                        <input type="number" id="{{ prop_name }}" name="{{ prop_name }}"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                               {% if prop_config.get('minimum') is not none %}min="{{ prop_config.get('minimum') }}"{% endif %}
+                               {% if prop_config.get('maximum') is not none %}max="{{ prop_config.get('maximum') }}"{% endif %}
+                               {% if prop_name in task.form_schema.get('required', []) %}required{% endif %}>
+                        {% elif prop_config.get('format') == 'textarea' or (prop_config.get('type') == 'string' and prop_config.get('maxLength', 0) > 200) %}
+                        <!-- Textarea -->
+                        <textarea id="{{ prop_name }}" name="{{ prop_name }}" rows="3"
+                                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                                  {% if prop_name in task.form_schema.get('required', []) %}required{% endif %}></textarea>
+                        {% else %}
+                        <!-- Text input (default) -->
+                        <input type="text" id="{{ prop_name }}" name="{{ prop_name }}"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                               {% if prop_name in task.form_schema.get('required', []) %}required{% endif %}>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <!-- No form schema - simple confirmation -->
+                <div class="text-center py-6">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p class="mt-2 text-sm text-gray-500">No additional input required. Click "Complete Task" to proceed.</p>
+                </div>
+                {% endif %}
+
+                <!-- Hidden field for completed_by -->
+                <input type="hidden" name="completed_by" value="{{ current_user or 'anonymous' }}">
+
+                <!-- Submit buttons -->
+                <div class="mt-6 flex justify-end space-x-3">
+                    <a href="{{ url_for('workflow_ui:task_list') }}"
+                       class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        Cancel
+                    </a>
+                    <button type="submit"
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        <svg class="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+                        Complete Task
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reassign Task -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Reassign Task</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">Assign this task to someone else</p>
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+            <form method="post" action="{{ url_for('workflow_ui:reassign_task', task_id=task.id) }}" class="flex items-end space-x-4">
+                <div class="flex-1">
+                    <label for="new_assignee" class="block text-sm font-medium text-gray-700">New Assignee</label>
+                    <input type="text" id="new_assignee" name="new_assignee" required
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                           placeholder="Enter user ID or email">
+                </div>
+                <button type="submit"
+                        class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    Reassign
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function taskForm() {
+    return {
+        // Add any Alpine.js reactive logic here
+    }
+}
+</script>
+{% endblock %}

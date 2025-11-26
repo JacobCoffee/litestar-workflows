@@ -260,7 +260,24 @@ class WorkflowDefinition:
             target = edge.get_target_name()
             label = ""
             if edge.condition is not None:
-                label = f"|{edge.condition}|" if isinstance(edge.condition, str) else "|conditional|"
+                if isinstance(edge.condition, str):
+                    # Sanitize for mermaid: remove special characters that break syntax
+                    safe_condition = (
+                        edge.condition.replace("'", "")
+                        .replace('"', "")
+                        .replace("(", "")
+                        .replace(")", "")
+                        .replace("<", "")
+                        .replace(">", "")
+                        .replace("|", "")
+                        .replace("[", "")
+                        .replace("]", "")
+                        .replace("{", "")
+                        .replace("}", "")
+                    )
+                    label = f"|{safe_condition}|"
+                else:
+                    label = "|conditional|"
             lines.append(f"    {source} -->{label} {target}")
 
         return "\n".join(lines)

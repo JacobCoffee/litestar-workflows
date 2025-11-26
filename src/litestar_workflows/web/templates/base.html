@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Workflows{% endblock %} - Litestar Workflows</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Litestar brand colors
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        accent: {
+                            50: '#fdf4ff',
+                            100: '#fae8ff',
+                            200: '#f5d0fe',
+                            300: '#f0abfc',
+                            400: '#e879f9',
+                            500: '#d946ef',
+                            600: '#c026d3',
+                            700: '#a21caf',
+                            800: '#86198f',
+                            900: '#701a75',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Alpine.js for interactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Custom styles -->
+    <style>
+        [x-cloak] { display: none !important; }
+
+        /* Status badge colors */
+        .status-running { @apply bg-blue-100 text-blue-800; }
+        .status-completed { @apply bg-green-100 text-green-800; }
+        .status-failed { @apply bg-red-100 text-red-800; }
+        .status-waiting { @apply bg-yellow-100 text-yellow-800; }
+        .status-canceled { @apply bg-gray-100 text-gray-800; }
+        .status-pending { @apply bg-purple-100 text-purple-800; }
+    </style>
+
+    {% block head %}{% endblock %}
+</head>
+<body class="h-full bg-gray-50">
+    <div class="min-h-full">
+        <!-- Navigation -->
+        <nav class="bg-primary-700 shadow-lg">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex h-16 items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <a href="{{ url_for('workflow_ui:index') }}" class="text-white font-bold text-xl">
+                                Litestar Workflows
+                            </a>
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <a href="{{ url_for('workflow_ui:workflow_list') }}"
+                                   class="{% if request.url.path.startswith('/ui/workflows') and '/instances' not in request.url.path and '/tasks' not in request.url.path %}bg-primary-800 text-white{% else %}text-primary-100 hover:bg-primary-600 hover:text-white{% endif %} rounded-md px-3 py-2 text-sm font-medium">
+                                    Workflows
+                                </a>
+                                <a href="{{ url_for('workflow_ui:instance_list') }}"
+                                   class="{% if '/instances' in request.url.path %}bg-primary-800 text-white{% else %}text-primary-100 hover:bg-primary-600 hover:text-white{% endif %} rounded-md px-3 py-2 text-sm font-medium">
+                                    Instances
+                                </a>
+                                <a href="{{ url_for('workflow_ui:task_list') }}"
+                                   class="{% if '/tasks' in request.url.path %}bg-primary-800 text-white{% else %}text-primary-100 hover:bg-primary-600 hover:text-white{% endif %} rounded-md px-3 py-2 text-sm font-medium">
+                                    Tasks
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-4 flex items-center md:ml-6">
+                            <a href="{{ api_base_url }}/schema" target="_blank" rel="noopener noreferrer"
+                               class="text-primary-100 hover:text-white text-sm">
+                                API Docs
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Mobile menu button -->
+                    <div class="-mr-2 flex md:hidden" x-data="{ open: false }">
+                        <button @click="open = !open" type="button"
+                                class="inline-flex items-center justify-center rounded-md bg-primary-600 p-2 text-primary-200 hover:bg-primary-500 hover:text-white">
+                            <span class="sr-only">Open main menu</span>
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                            </svg>
+                        </button>
+                        <!-- Mobile menu panel -->
+                        <div x-show="open" @click.away="open = false" x-cloak
+                             class="absolute top-16 right-0 w-48 bg-primary-700 rounded-md shadow-lg z-50" id="mobile-menu">
+                            <div class="space-y-1 px-2 py-3">
+                                <a href="{{ url_for('workflow_ui:workflow_list') }}" class="block rounded-md px-3 py-2 text-base font-medium text-primary-100 hover:bg-primary-500 hover:text-white">Workflows</a>
+                                <a href="{{ url_for('workflow_ui:instance_list') }}" class="block rounded-md px-3 py-2 text-base font-medium text-primary-100 hover:bg-primary-500 hover:text-white">Instances</a>
+                                <a href="{{ url_for('workflow_ui:task_list') }}" class="block rounded-md px-3 py-2 text-base font-medium text-primary-100 hover:bg-primary-500 hover:text-white">Tasks</a>
+                                <a href="{{ api_base_url }}/schema" target="_blank" rel="noopener noreferrer" class="block rounded-md px-3 py-2 text-base font-medium text-primary-100 hover:bg-primary-500 hover:text-white">API Docs</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Page header -->
+        {% block header %}
+        <header class="bg-white shadow">
+            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <h1 class="text-3xl font-bold tracking-tight text-gray-900">
+                    {% block page_title %}Dashboard{% endblock %}
+                </h1>
+                {% block page_subtitle %}{% endblock %}
+            </div>
+        </header>
+        {% endblock %}
+
+        <!-- Main content -->
+        <main aria-label="Main content">
+            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200 mt-auto">
+            <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+                <p class="text-center text-sm text-gray-500">
+                    Powered by <a href="https://litestar.dev" class="text-primary-600 hover:text-primary-700">Litestar</a>
+                    &bull;
+                    <a href="https://github.com/JacobCoffee/litestar-workflows" class="text-primary-600 hover:text-primary-700">litestar-workflows</a>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
