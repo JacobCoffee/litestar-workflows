@@ -12,6 +12,8 @@ focus on achieving specific goals.
    human-tasks
    parallel-execution
    conditional-logic
+   persistence
+   web-plugin
 
 
 Guide Overview
@@ -31,6 +33,10 @@ Guide Overview
      - Run multiple steps simultaneously
    * - :doc:`conditional-logic`
      - Add branching and decision points with gateways
+   * - :doc:`persistence`
+     - Store workflow state in a database for durability
+   * - :doc:`web-plugin`
+     - Add REST API for workflow management
 
 
 Choosing a Pattern
@@ -52,6 +58,11 @@ Use this decision tree to find the right pattern:
 
 - Yes: See :doc:`conditional-logic`
 - No: See :doc:`simple-workflow`
+
+**Do you need a REST API for external access?**
+
+- Yes: See :doc:`web-plugin`
+- No: Use the engine directly
 
 
 Common Patterns Quick Reference

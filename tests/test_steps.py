@@ -254,3 +254,139 @@ class TestStepCustomization:
 
         result = await step.execute(sample_context)
         assert result["result"] == 21
+
+
+@pytest.mark.unit
+class TestWebhookStep:
+    """Tests for WebhookStep."""
+
+    def test_webhook_step_creation(self) -> None:
+        """Test creating a WebhookStep instance."""
+        from litestar_workflows.core.types import StepType
+        from litestar_workflows.steps.webhook import WebhookStep
+
+        step = WebhookStep(
+            name="webhook_step",
+            callback_key="payment_data",
+            description="Wait for payment callback",
+        )
+
+        assert step.name == "webhook_step"
+        assert step.callback_key == "payment_data"
+        assert step.description == "Wait for payment callback"
+        assert step.step_type == StepType.WEBHOOK
+
+    def test_webhook_step_default_callback_key(self) -> None:
+        """Test WebhookStep with default callback_key."""
+        from litestar_workflows.steps.webhook import WebhookStep
+
+        step = WebhookStep(name="webhook_step")
+
+        assert step.callback_key == "webhook_data"
+
+    def test_webhook_step_default_description(self) -> None:
+        """Test WebhookStep with default description."""
+        from litestar_workflows.steps.webhook import WebhookStep
+
+        step = WebhookStep(name="webhook_step", callback_key="data")
+
+        assert step.description == ""
+
+
+@pytest.mark.unit
+@pytest.mark.asyncio
+class TestWebhookStepExecution:
+    """Tests for WebhookStep execution."""
+
+    async def test_webhook_step_execute_with_data(self, sample_context: WorkflowContext) -> None:
+        """Test webhook step execution retrieves callback data."""
+        from litestar_workflows.steps.webhook import WebhookStep
+
+        step = WebhookStep(name="webhook_step", callback_key="payment_data")
+
+        # Simulate webhook data being set in context
+        payment_data = {
+            "transaction_id": "txn_123456",
+            "amount": 99.99,
+            "status": "completed",
+        }
+        sample_context.set("payment_data", payment_data)
+
+        # Execute step
+        result = await step.execute(sample_context)
+
+        # Should return the webhook data
+        assert result == payment_data
+        assert result["transaction_id"] == "txn_123456"
+        assert result["amount"] == 99.99
+
+    async def test_webhook_step_execute_with_no_data(self, sample_context: WorkflowContext) -> None:
+        """Test webhook step execution when no callback data is present."""
+        from litestar_workflows.steps.webhook import WebhookStep
+
+        step = WebhookStep(name="webhook_step", callback_key="missing_data")
+
+        # Execute step without setting callback data
+        result = await step.execute(sample_context)
+
+        # Should return None
+        assert result is None
+
+    async def test_webhook_step_custom_callback_key(self, sample_context: WorkflowContext) -> None:
+        """Test webhook step with custom callback key."""
+        from litestar_workflows.steps.webhook import WebhookStep
+
+        step = WebhookStep(name="webhook_step", callback_key="custom_key")
+
+        custom_data = {"custom": "value", "count": 42}
+        sample_context.set("custom_key", custom_data)
+
+        result = await step.execute(sample_context)
+
+        assert result == custom_data
+        assert result["custom"] == "value"
+
+    async def test_webhook_step_multiple_callbacks(self, sample_context: WorkflowContext) -> None:
+        """Test multiple webhook steps with different callback keys."""
+        from litestar_workflows.steps.webhook import WebhookStep
+
+        webhook1 = WebhookStep(name="webhook1", callback_key="callback1")
+        webhook2 = WebhookStep(name="webhook2", callback_key="callback2")
+
+        # Set different data for each callback
+        sample_context.set("callback1", {"data": "from_webhook1"})
+        sample_context.set("callback2", {"data": "from_webhook2"})
+
+        result1 = await webhook1.execute(sample_context)
+        result2 = await webhook2.execute(sample_context)
+
+        assert result1["data"] == "from_webhook1"
+        assert result2["data"] == "from_webhook2"
+
+    async def test_webhook_step_integration_scenario(self, sample_context: WorkflowContext) -> None:
+        """Test webhook step in a realistic integration scenario."""
+        from litestar_workflows.steps.webhook import WebhookStep
+
+        # Create webhook step for external API callback
+        webhook = WebhookStep(
+            name="wait_for_verification",
+            callback_key="verification_result",
+            description="Wait for identity verification service",
+        )
+
+        # Simulate external service callback data
+        verification_result = {
+            "verified": True,
+            "confidence": 0.95,
+            "verified_at": "2024-01-15T10:30:00Z",
+            "document_type": "passport",
+        }
+        sample_context.set("verification_result", verification_result)
+
+        # Execute webhook step
+        result = await webhook.execute(sample_context)
+
+        # Verify the result
+        assert result["verified"] is True
+        assert result["confidence"] == 0.95
+        assert result["document_type"] == "passport"

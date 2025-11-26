@@ -1,6 +1,6 @@
 [build-system]
-build-backend = "hatchling.build"
-requires = ["hatchling"]
+build-backend = "uv_build"
+requires = ["uv_build>=0.9.11,<0.10.0"]
 
 [dependency-groups]
 dev = [
@@ -12,6 +12,10 @@ dev = [
   "pytest-cov>=4.1.0",
   "pytest-asyncio>=0.23.6",
   "pytest-sugar>=1.1.1",
+  "aiosqlite>=0.19.0",
+  "advanced-alchemy>=0.20.0",
+  "alembic>=1.13.0",
+  "uvicorn>=0.30.0",
 ]
 docs = [
   "sphinx>=7.0.0",
@@ -19,6 +23,7 @@ docs = [
   "sphinx-copybutton>=0.5.0",
   "sphinx-design>=0.5.0",
   "myst-parser>=2.0.0",
+  "linkify-it-py>=2.0.0",
   "sphinx-autobuild>=2024.0.0",
   "sphinx-autodoc-typehints>=2.0.0",
 ]
@@ -32,6 +37,7 @@ test = [
   "pytest>=8.1.1",
   "pytest-cov>=4.1.0",
   "pytest-asyncio>=0.23.6",
+  "aiosqlite>=0.19.0",
 ]
 
 [project]
@@ -73,8 +79,17 @@ requires-python = ">=3.10"
 version = "0.1.0"
 
 [project.optional-dependencies]
-db = ["litestar[sqlalchemy]"]
-ui = ["litestar[jinja]"]
+db = [
+  "advanced-alchemy>=0.20.0",
+  "alembic>=1.13.0",
+]
+ui = [
+  "litestar[jinja]",
+  "litestar-workflows[db]",
+]
+all = [
+  "litestar-workflows[db,ui]",
+]
 
 [project.urls]
 Changelog = "https://github.com/JacobCoffee/litestar-workflows/releases/"
@@ -242,6 +257,22 @@ max-complexity = 12
   "PTH",      # Use pathlib
   "DTZ",      # Datetime timezone
 ]
+"examples/**/*.*" = [
+  "ANN",      # Type annotations
+  "D",        # Docstrings
+  "FBT003",   # Boolean positional value in function call
+  "INP001",   # Implicit namespace package
+  "RET504",   # Unnecessary assignment before return
+  "RUF012",   # Mutable class attributes
+  "S104",     # Possible binding to all interfaces
+  "T201",     # Print statements - acceptable in example apps
+  "TC001",    # Move import into TYPE_CHECKING block
+]
+"**/migrations/**/*.*" = [
+  "ANN",      # Type annotations
+  "D",        # Docstrings
+  "INP001",   # Implicit namespace package
+]
 "tests/**/*.*" = [
   "A",
   "ANN",
@@ -278,14 +309,11 @@ convention = "google"
 
 [tool.ty]
 
-[tool.ty.environment]
-python = ".venv"
-
 [tool.ty.rules]
 deprecated = "warn"
 
 [tool.ty.src]
-exclude = ["docs/conf.py", "tests/"]
+exclude = ["docs/conf.py", "tests/", "examples/"]
 
 [tool.uv]
 default-groups = ["dev"]

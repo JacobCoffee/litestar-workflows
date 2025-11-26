@@ -148,12 +148,6 @@ class LocalExecutionEngine:
         while instance.status == WorkflowStatus.RUNNING:
             current_step_name = instance.context.current_step
 
-            # Check if we've reached a terminal step
-            if graph.is_terminal(current_step_name):
-                instance.status = WorkflowStatus.COMPLETED
-                instance.completed_at = datetime.now(timezone.utc)
-                break
-
             # Get current step
             if current_step_name not in definition.steps:
                 instance.status = WorkflowStatus.FAILED
@@ -218,6 +212,12 @@ class LocalExecutionEngine:
                         completed_at=datetime.now(timezone.utc),
                     )
                 )
+                break
+
+            # Check if this was a terminal step (after executing it)
+            if graph.is_terminal(current_step_name):
+                instance.status = WorkflowStatus.COMPLETED
+                instance.completed_at = datetime.now(timezone.utc)
                 break
 
             # Find next steps
@@ -350,7 +350,7 @@ class LocalExecutionEngine:
         for i, step_name in enumerate(step_names):
             result = results[i]
 
-            if isinstance(result, Exception):
+            if isinstance(result, BaseException):
                 execution = StepExecution(
                     step_name=step_name,
                     status=StepStatus.FAILED,

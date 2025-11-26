@@ -11,10 +11,11 @@ UV     ?= uv $(UV_OPTS)
 .EXPORT_ALL_VARIABLES:
 
 .PHONY: help install dev clean lint fmt test docs
-.PHONY: fmt-fix fmt-check type-check ruff ruff-check
+.PHONY: fmt-fix fmt-check type-check ruff ruff-check security
 .PHONY: docs-serve docs-clean
 .PHONY: install-uv install-prek upgrade
 .PHONY: worktree worktree-list worktree-prune
+.PHONY: example-minimal example-full
 .PHONY: ci ci-install
 .PHONY: act act-ci act-docs act-list
 
@@ -83,6 +84,16 @@ ruff-check: ## Runs Ruff without changing files
 
 type-check: ## Run ty type checker
 	@$(UV) run --no-sync ty check
+
+# =============================================================================
+# Security
+# =============================================================================
+
+##@ Security
+
+security: ## Run zizmor GitHub Actions security scanner
+	@echo "=> Running zizmor security scan on GitHub Actions workflows"
+	@uvx zizmor .github/workflows/
 
 # =============================================================================
 # Testing
@@ -183,6 +194,20 @@ worktree-prune: ## Clean up stale git worktrees
 	@echo "=> Pruning stale git worktrees"
 	@git worktree prune -v
 	@echo "=> Stale worktrees pruned"
+
+# =============================================================================
+# Examples
+# =============================================================================
+
+##@ Examples
+
+example-minimal: ## Run the minimal example app (port 8000)
+	@echo "=> Running minimal example at http://127.0.0.1:8000"
+	@$(UV) run uvicorn examples.minimal.app:app --reload --port 8000
+
+example-full: ## Run the full example app (port 8001)
+	@echo "=> Running full example at http://127.0.0.1:8001"
+	@$(UV) run uvicorn examples.full.app:app --reload --port 8001
 
 # =============================================================================
 # CI Helpers
