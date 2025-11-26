@@ -14,15 +14,15 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Tests | 439 |
-| Coverage | 88% |
+| Total Tests | 461 |
+| Coverage | 91% |
 | Target | 96% |
 
 ### Coverage Gaps
 
 | Module | Coverage | Priority | Notes |
 |--------|----------|----------|-------|
-| `web/controllers.py` | 51% | High | DB-dependent endpoints need integration tests |
+| `web/controllers.py` | 82% | Medium | Some error paths need cleanup |
 | `core/protocols.py` | 73% | High | Protocol method implementations |
 | `db/migrations/env.py` | 0% | Low | Alembic env file, skip |
 | `web/exceptions.py` | 76% | Medium | Exception handlers |
