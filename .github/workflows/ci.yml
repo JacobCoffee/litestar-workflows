@@ -27,7 +27,7 @@ jobs:
           persist-credentials: false
 
       - name: Run zizmor
-        uses: woodruffw/zizmor-action@v1
+        uses: zizmorcore/zizmor-action@v1
         with:
           args: --format sarif --output results.sarif .github/workflows/
 

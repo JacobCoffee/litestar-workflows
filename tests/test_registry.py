@@ -115,7 +115,7 @@ class TestWorkflowRegistry:
         """Test getting non-existent version raises error."""
         workflow_registry.register(sample_workflow_class)
 
-        with pytest.raises(KeyError, match="9.9.9"):
+        with pytest.raises(KeyError, match=r"9\.9\.9"):
             workflow_registry.get_definition("test_workflow", version="9.9.9")
 
     def test_list_definitions(self, workflow_registry: WorkflowRegistry, sample_workflow_class: type) -> None:
