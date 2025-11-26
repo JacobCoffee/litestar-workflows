@@ -144,7 +144,7 @@ jobs:
               c.user.type === 'Bot' && c.body.includes('📚 Documentation Preview')
             );
 
-            const body = `📚 **Documentation Preview**\n\n🔗 Preview URL: ${previewUrl}\n\n_This preview will be available after the workflow completes._`;
+            const body = `📚 **Documentation Preview**\n\n🔗 Preview URL: ${previewUrl}\n\n_The preview is now available._`;
 
             if (botComment) {
               await github.rest.issues.updateComment({
