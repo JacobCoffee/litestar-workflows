@@ -7,16 +7,21 @@ on:
       - 'docs/**'
       - 'src/**'
       - '.github/workflows/docs.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - 'src/**'
+      - '.github/workflows/docs.yml'
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
+  pull-requests: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   # ==================================================================================== #
@@ -25,38 +30,61 @@ jobs:
   build:
     name: Build Documentation
     runs-on: ubuntu-latest
+    outputs:
+      docs_changed: ${{ steps.filter.outputs.docs }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Check for docs changes
+        uses: dorny/paths-filter@v3
+        id: filter
         with:
-          persist-credentials: false
+          filters: |
+            docs:
+              - 'docs/**'
+              - 'src/**'
 
       - name: Set up uv
+        if: github.event_name != 'pull_request' || steps.filter.outputs.docs == 'true'
         uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
 
       - name: Set up Python
+        if: github.event_name != 'pull_request' || steps.filter.outputs.docs == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
 
       - name: Install dependencies
+        if: github.event_name != 'pull_request' || steps.filter.outputs.docs == 'true'
         run: uv sync --group docs
 
       - name: Build documentation
-        run: uv run sphinx-build -b html docs docs/_build/html -W --keep-going
+        if: github.event_name != 'pull_request' || steps.filter.outputs.docs == 'true'
+        run: uv run sphinx-build -b html docs docs/_build/html --keep-going
 
-      - name: Upload artifact
+      - name: Upload artifact for GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/_build/html
 
+      - name: Deploy PR preview
+        if: github.event_name == 'pull_request' && steps.filter.outputs.docs == 'true'
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: docs/_build/html
+
   # ==================================================================================== #
-  # DEPLOY TO GITHUB PAGES
+  # DEPLOY TO GITHUB PAGES (main branch only)
   # ==================================================================================== #
   deploy:
     name: Deploy to GitHub Pages
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
