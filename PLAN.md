@@ -79,7 +79,7 @@ All phase branches have been merged to `main`. Local feature branches can be cle
 
 ### Next Up
 
-#### Immediate Priorities (Pre-Phase 4)
+#### Immediate Priorities (Pre-Phase 4: UI Extra)
 
 - [ ] **Boost test coverage to 96%** - Focus on `web/controllers.py` (51%) and `core/protocols.py` (73%)
 - [x] **Create `contrib/` directory** - Stub implementations for future task queue integrations
@@ -120,7 +120,15 @@ Documentation improvements coordinated to enhance developer experience:
   - Stub implementations for SAQExecutionEngine
   - Stub implementations for ARQExecutionEngine
 
-#### Phase 4: Advanced Features (v0.5.0)
+#### Phase 4: UI Extra (v0.5.0)
+
+- [ ] Tailwind CSS styling
+- [ ] Drag-and-drop workflow builder
+- [ ] Human task forms (JSON Schema rendering)
+- [ ] Instance graph visualization (MermaidJS live)
+- [ ] Real-time updates (WebSocket/SSE)
+
+#### Phase 5: Advanced Features (v0.6.0)
 
 - [ ] Workflow signals (pause, resume, escalate)
 - [ ] Retry policies with exponential backoff
@@ -128,14 +136,6 @@ Documentation improvements coordinated to enhance developer experience:
 - [ ] Workflow versioning and migration
 - [ ] Bulk operations (cancel all, retry failed)
 - [ ] Audit logging
-
-#### Phase 5: UI Extra (v0.6.0)
-
-- [ ] Tailwind CSS styling
-- [ ] Drag-and-drop workflow builder
-- [ ] Human task forms (JSON Schema rendering)
-- [ ] Instance graph visualization (MermaidJS live)
-- [ ] Real-time updates (WebSocket/SSE)
 
 #### Phase 6: Distributed Execution (v0.7.0)
 
@@ -1445,7 +1445,7 @@ src/litestar_workflows/
 │   ├── dto.py               # Data transfer objects
 │   ├── exceptions.py        # HTTP exception handlers
 │   ├── graph.py             # MermaidJS generation
-│   └── templates/           # Jinja templates (Phase 5 - UI) 🔜
+│   └── templates/           # Jinja templates (Phase 4 - UI) 🔜
 │       ├── base.html
 │       ├── workflow_list.html
 │       ├── workflow_detail.html
@@ -1551,30 +1551,19 @@ all = [
 
 ### Pre-Phase 4: Stabilization
 
-**Goal**: Reach 96% test coverage and prepare codebase for advanced features
+**Goal**: Reach 96% test coverage and prepare codebase for UI phase
 
 **Deliverables**:
-- [ ] Increase `web/controllers.py` coverage from 51% to 90%+
+- [ ] Increase `web/controllers.py` coverage from 86% to 90%+
 - [ ] Increase `core/protocols.py` coverage from 73% to 90%+
 - [ ] Add migration tests for `db/migrations/env.py`
-- [ ] Create `contrib/` directory structure with `__init__.py` stubs
-- [ ] Add persistence layer usage examples to documentation
-- [ ] Add REST API usage examples to documentation
+- [x] Create `contrib/` directory structure with `__init__.py` stubs
+- [x] Add persistence layer usage examples to documentation
+- [x] Add REST API usage examples to documentation
+- [x] Update `examples/full/app.py` to use built-in REST API with persistence
 - [ ] Clean up stale local feature branches
 
-### Phase 4: Advanced Features (v0.5.0)
-
-**Goal**: Production-ready workflow features
-
-**Deliverables**:
-- [ ] Workflow signals (pause, resume, escalate)
-- [ ] Retry policies with backoff
-- [ ] Step timeouts and deadlines
-- [ ] Workflow versioning and migration
-- [ ] Bulk operations (cancel all, retry failed)
-- [ ] Audit logging
-
-### Phase 5: UI Extra (v0.6.0)
+### Phase 4: UI Extra (v0.5.0)
 
 **Goal**: Modern web UI for workflow management (`[ui]` extra)
 
@@ -1587,6 +1576,18 @@ all = [
 - [ ] Instance graph visualization (MermaidJS live)
 - [ ] Admin dashboard with metrics
 - [ ] Real-time updates (WebSocket/SSE)
+
+### Phase 5: Advanced Features (v0.6.0)
+
+**Goal**: Production-ready workflow features
+
+**Deliverables**:
+- [ ] Workflow signals (pause, resume, escalate)
+- [ ] Retry policies with backoff
+- [ ] Step timeouts and deadlines
+- [ ] Workflow versioning and migration
+- [ ] Bulk operations (cancel all, retry failed)
+- [ ] Audit logging
 
 ### Phase 6: Distributed Execution (v0.7.0)
 
@@ -1763,4 +1764,4 @@ from litestar_workflows.contrib.saq import SAQExecutionEngine
 *Document Version: 1.3.0*
 *Last Updated: 2025-11-26*
 *Author: Claude (Architecture Review)*
-*Status: Phase 3 complete, all phases merged to main, preparing Pre-Phase 4 stabilization*
+*Status: Phase 3 complete, all phases merged to main, preparing for Phase 4 (UI Extra)*
