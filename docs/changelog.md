@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [0.3.0](https://github.com/JacobCoffee/litestar-workflows/compare/v0.1.0..v0.3.0) - 2025-11-26
 
 
 ### Bug Fixes
@@ -18,6 +18,10 @@ All notable changes to this project will be documented in this file.
 
 
 - add cookbook, contrib stubs, and improve test coverage (#23) - ([d225758](https://github.com/JacobCoffee/litestar-workflows/commit/d2257581ef1ac525aabf8d677d478d5ef96aec75)) - Jacob Coffee
+
+- regenerate changelog for v0.2.0 - ([5d66930](https://github.com/JacobCoffee/litestar-workflows/commit/5d669300d3d2ecacd370f3c2f00e02cd5cd9a294)) - github-actions[bot]
+
+- add UI screenshots for Phase 4 templates - ([ba3ed65](https://github.com/JacobCoffee/litestar-workflows/commit/ba3ed65dde1f50d04422b1cf6976bc0efaca136e)) - Jacob Coffee
 
 
 ### Features
@@ -53,6 +57,8 @@ All notable changes to this project will be documented in this file.
 - group dependabot updates (#21) - ([cb3f892](https://github.com/JacobCoffee/litestar-workflows/commit/cb3f892043098858c4e7dcd7e8f2826fb23002c2)) - Jacob Coffee
 
 - fix CD/release workflows + pin all actions to SHAs (#26) - ([54df4cf](https://github.com/JacobCoffee/litestar-workflows/commit/54df4cff4d72b3b980229206f847ef1d78b7405e)) - Jacob Coffee
+
+- simplify path filtering for CI workflow (#28) - ([4b3784a](https://github.com/JacobCoffee/litestar-workflows/commit/4b3784ade4b65241d9df5685d26757f68ba68813)) - Jacob Coffee
 ## [0.1.0] - 2024-03-24
 
 
