@@ -46,8 +46,8 @@ Complete Implementation
 
    """Expense approval workflow with multi-level approval chain.
 
-   Run with:
-       uv run python -m expense_approval
+   Save this file as ``expense_approval.py`` and run with:
+       uv run python expense_approval.py
    """
 
    from __future__ import annotations

@@ -45,8 +45,8 @@ Complete Implementation
 
    """Document review workflow with parallel reviewers and revision cycles.
 
-   Run with:
-       uv run python -m document_review
+   Save this file as ``document_review.py`` and run with:
+       uv run python document_review.py
    """
 
    from __future__ import annotations
