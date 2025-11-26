@@ -545,7 +545,7 @@ wheels = [
 
 [[package]]
 name = "litestar-workflows"
-version = "0.1.0"
+version = "0.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "litestar" },
@@ -574,12 +574,23 @@ dev = [
     { name = "aiosqlite" },
     { name = "alembic" },
     { name = "codespell" },
+    { name = "linkify-it-py" },
+    { name = "myst-parser" },
     { name = "prek" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
     { name = "pytest-sugar" },
     { name = "ruff" },
+    { name = "shibuya" },
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "sphinx", version = "8.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "sphinx-autobuild", version = "2024.10.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "sphinx-autobuild", version = "2025.8.25", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "sphinx-autodoc-typehints", version = "3.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "sphinx-autodoc-typehints", version = "3.5.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "sphinx-copybutton" },
+    { name = "sphinx-design" },
     { name = "ty" },
     { name = "uvicorn" },
 ]
@@ -603,10 +614,14 @@ lint = [
     { name = "ty" },
 ]
 test = [
+    { name = "advanced-alchemy" },
     { name = "aiosqlite" },
+    { name = "alembic" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
+    { name = "pytest-sugar" },
+    { name = "uvicorn" },
 ]
 
 [package.metadata]
@@ -627,12 +642,20 @@ dev = [
     { name = "aiosqlite", specifier = ">=0.19.0" },
     { name = "alembic", specifier = ">=1.13.0" },
     { name = "codespell", specifier = ">=2.2.6" },
+    { name = "linkify-it-py", specifier = ">=2.0.0" },
+    { name = "myst-parser", specifier = ">=2.0.0" },
     { name = "prek", specifier = ">=0.2.18" },
     { name = "pytest", specifier = ">=8.1.1" },
     { name = "pytest-asyncio", specifier = ">=0.23.6" },
     { name = "pytest-cov", specifier = ">=4.1.0" },
     { name = "pytest-sugar", specifier = ">=1.1.1" },
     { name = "ruff", specifier = ">=0.8.0" },
+    { name = "shibuya", specifier = ">=2024.8.0" },
+    { name = "sphinx", specifier = ">=7.0.0" },
+    { name = "sphinx-autobuild", specifier = ">=2024.0.0" },
+    { name = "sphinx-autodoc-typehints", specifier = ">=2.0.0" },
+    { name = "sphinx-copybutton", specifier = ">=0.5.0" },
+    { name = "sphinx-design", specifier = ">=0.5.0" },
     { name = "ty", specifier = ">=0.0.1a27" },
     { name = "uvicorn", specifier = ">=0.30.0" },
 ]
@@ -653,10 +676,14 @@ lint = [
     { name = "ty", specifier = ">=0.0.1a27" },
 ]
 test = [
+    { name = "advanced-alchemy", specifier = ">=0.20.0" },
     { name = "aiosqlite", specifier = ">=0.19.0" },
+    { name = "alembic", specifier = ">=1.13.0" },
     { name = "pytest", specifier = ">=8.1.1" },
     { name = "pytest-asyncio", specifier = ">=0.23.6" },
     { name = "pytest-cov", specifier = ">=4.1.0" },
+    { name = "pytest-sugar", specifier = ">=1.1.1" },
+    { name = "uvicorn", specifier = ">=0.30.0" },
 ]
 
 [[package]]
