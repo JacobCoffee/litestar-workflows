@@ -238,6 +238,6 @@ class WorkflowPlugin(InitPluginProtocol):
             app_config.route_handlers.append(workflow_router)
 
             # Register exception handler
-            app_config.exception_handlers[DatabaseRequiredError] = database_required_handler
+            app_config.exception_handlers[DatabaseRequiredError] = database_required_handler  # type: ignore[assignment]
 
         return app_config
