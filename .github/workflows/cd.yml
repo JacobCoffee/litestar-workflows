@@ -1,207 +1,58 @@
-name: Release
+name: Changelog
 
 on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to generate changelog for (e.g., v0.2.0)"
+        required: false
+        type: string
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   # ==================================================================================== #
-  # BUILD DISTRIBUTION
-  # ==================================================================================== #
-  build:
-    name: Build distribution
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@f0ec1fc3b38f5e7cd731bb6ce540c5af426746bb # v6.1.0
-        with:
-          enable-cache: true
-
-      - name: Build
-        run: uv build
-
-      - name: Upload dist
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
-        with:
-          name: dist
-          path: dist/
-          retention-days: 5
-
-  # ==================================================================================== #
-  # SIGN WITH SIGSTORE
-  # ==================================================================================== #
-  sign:
-    name: Sign distributions
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    steps:
-      - name: Download dist
-        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
-        with:
-          name: dist
-          path: dist/
-
-      - name: Sign with Sigstore
-        uses: sigstore/gh-action-sigstore-python@f514d46b907ebcd5bedc05145c03b69c1edd8b46 # v3.0.0
-        with:
-          inputs: |
-            dist/*.tar.gz
-            dist/*.whl
-
-      - name: Upload signed dist
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
-        with:
-          name: dist-signed
-          path: dist/
-          retention-days: 5
-
-  # ==================================================================================== #
-  # CREATE DRAFT RELEASE (before publishing - for immutable releases)
-  # ==================================================================================== #
-  draft-release:
-    name: Create draft release
-    needs: sign
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Download signed dist
-        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
-        with:
-          name: dist-signed
-          path: dist/
-
-      - name: Create draft release
-        run: |
-          gh release create "${{ github.ref_name }}" \
-            dist/** \
-            --repo "${{ github.repository }}" \
-            --draft \
-            --generate-notes \
-            --title "${{ github.ref_name }}"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # ==================================================================================== #
-  # PUBLISH TO PYPI
-  # ==================================================================================== #
-  pypi-publish:
-    name: Publish to PyPI
-    needs: draft-release
-    runs-on: ubuntu-latest
-    environment:
-      name: pypi
-      url: https://pypi.org/project/litestar-workflows/
-    permissions:
-      id-token: write
-    steps:
-      # Use unsigned dist - sigstore files are for GitHub release only, not PyPI
-      - name: Download distribution artifacts
-        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
-        with:
-          name: dist
-          path: dist/
-
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@15c56dba361d8335944d31a2ecd17d700fc7bcbc # v1.12.2
-        with:
-          attestations: true
-
-  # ==================================================================================== #
-  # PUBLISH RELEASE (remove draft status - after PyPI publish)
-  # ==================================================================================== #
-  publish-release:
-    name: Publish release
-    needs: pypi-publish
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Publish release
-        run: |
-          gh release edit "${{ github.ref_name }}" \
-            --draft=false \
-            --repo ${{ github.repository }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # ==================================================================================== #
-  # UPDATE CHANGELOG
+  # UPDATE CHANGELOG (direct commit to main)
   # ==================================================================================== #
   update-changelog:
-    name: Update changelog
-    needs: publish-release
+    name: Update Changelog
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+          token: ${{ secrets.CHANGELOG_PAT }}
+          persist-credentials: false
 
-      - name: Generate full changelog
-        uses: orhun/git-cliff-action@4a4a951bc43fc41d67b54e6f24958e7ec4141d37 # v4.4.2
+      - name: Generate changelog
+        uses: orhun/git-cliff-action@4a4a951bc43fafe41cd2348d067f62ce5f405afa # v4
         with:
           config: pyproject.toml
-          args: -vv
+          args: --verbose
         env:
           OUTPUT: docs/changelog.md
           GITHUB_REPO: ${{ github.repository }}
 
-      - name: Create PR with changelog updates
+      - name: Commit and push changelog
+        env:
+          TAG: ${{ inputs.tag || github.ref_name }}
+          GH_TOKEN: ${{ secrets.CHANGELOG_PAT }}
         run: |
-          # Check if there are changes
           if git diff --quiet docs/changelog.md; then
             echo "No changes to commit"
             exit 0
           fi
 
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          git checkout main
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
 
-          BRANCH_NAME="changelog/update-${{ github.ref_name }}"
-          git checkout -b "$BRANCH_NAME"
           git add docs/changelog.md
-          git commit -m "docs: update changelog for ${{ github.ref_name }}"
-          git push origin "$BRANCH_NAME"
-
-          gh pr create \
-            --base main \
-            --head "$BRANCH_NAME" \
-            --title "docs: update changelog for ${{ github.ref_name }}" \
-            --body "Automated changelog update for release ${{ github.ref_name }}."
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # ==================================================================================== #
-  # CLEANUP DRAFT ON FAILURE
-  # ==================================================================================== #
-  cleanup-draft:
-    name: Cleanup draft on failure
-    needs: pypi-publish
-    if: failure()
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Delete draft release
-        run: |
-          gh release delete "${{ github.ref_name }}" \
-            --repo "${{ github.repository }}" \
-            --yes
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git commit -m "docs: regenerate changelog for ${TAG}"
+          git push origin main

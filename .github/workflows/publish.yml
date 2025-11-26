@@ -1,90 +1,154 @@
 name: Publish
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
 
 jobs:
   # ==================================================================================== #
-  # BUILD
+  # BUILD DISTRIBUTION
   # ==================================================================================== #
   build:
-    name: Build distribution
+    name: Build Distribution
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
 
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v7
+      - name: Install uv
+        uses: astral-sh/setup-uv@f0ec1fc3b38f5e7cd731bb6ce540c5af426746bb # v6.1.0
         with:
-          enable-cache: true
+          enable-cache: false  # Disable cache for release builds to prevent cache poisoning
 
-      - name: Set up Python
-        run: uv python install 3.12
-
-      - name: Build package
+      - name: Build
         run: uv build
 
-      - name: Store distribution packages
-        uses: actions/upload-artifact@v5
+      - name: Upload dist
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
-          name: python-package-distributions
+          name: dist
           path: dist/
+          retention-days: 5
+
+  # ==================================================================================== #
+  # SIGN WITH SIGSTORE
+  # ==================================================================================== #
+  sign:
+    name: Sign Distributions
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - name: Download dist
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: dist
+          path: dist/
+
+      - name: Sign with Sigstore
+        uses: sigstore/gh-action-sigstore-python@f514d46b907ebcd5bedc05145c03b69c1edd8b46 # v3.0.0
+        with:
+          inputs: |
+            dist/*.tar.gz
+            dist/*.whl
+
+      - name: Upload signed dist
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: dist-signed
+          path: dist/
+          retention-days: 5
+
+  # ==================================================================================== #
+  # CREATE DRAFT RELEASE (before publishing - for immutable releases)
+  # ==================================================================================== #
+  draft-release:
+    name: Create Draft Release
+    needs: sign
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download signed dist
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: dist-signed
+          path: dist/
+
+      - name: Create draft release and upload assets
+        run: |
+          gh release create "${TAG_NAME}" dist/** \
+            --repo "${GITHUB_REPOSITORY}" \
+            --draft \
+            --generate-notes \
+            --title "${TAG_NAME}"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.ref_name }}
 
   # ==================================================================================== #
   # PUBLISH TO PYPI
   # ==================================================================================== #
-  publish-to-pypi:
+  publish-pypi:
     name: Publish to PyPI
-    needs: [build]
+    needs: draft-release
     runs-on: ubuntu-latest
-    environment:
-      name: release
     permissions:
       id-token: write
+    environment:
+      name: pypi
+      url: https://pypi.org/project/litestar-workflows/
     steps:
-      - name: Download distribution packages
-        uses: actions/download-artifact@v6
+      # IMPORTANT: Use unsigned dist - sigstore files break PyPI upload
+      - name: Download distribution artifacts
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
-          name: python-package-distributions
+          name: dist
           path: dist/
 
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@15c56dba361d8335944d31a2ecd17d700fc7bcbc # v1.12.2
+        with:
+          attestations: true
 
   # ==================================================================================== #
-  # GITHUB RELEASE ASSETS
+  # PUBLISH RELEASE (remove draft status - after PyPI publish)
   # ==================================================================================== #
-  github-release:
-    name: Upload to GitHub Release
-    needs: [publish-to-pypi]
+  publish-release:
+    name: Publish GitHub Release
+    needs: [draft-release, publish-pypi]
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      id-token: write
     steps:
-      - name: Download distribution packages
-        uses: actions/download-artifact@v6
-        with:
-          name: python-package-distributions
-          path: dist/
-
-      - name: Sign distributions with Sigstore
-        uses: sigstore/gh-action-sigstore-python@v3.1.0
-        with:
-          inputs: >-
-            ./dist/*.tar.gz
-            ./dist/*.whl
-
-      - name: Upload to GitHub Release
+      - name: Publish release (remove draft status)
+        run: |
+          gh release edit "${TAG_NAME}" --repo "${GITHUB_REPOSITORY}" --draft=false
         env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: >-
-          gh release upload
-          '${{ github.ref_name }}' dist/**
-          --repo '${{ github.repository }}'
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.ref_name }}
+
+  # ==================================================================================== #
+  # CLEANUP DRAFT ON FAILURE
+  # ==================================================================================== #
+  cleanup-draft:
+    name: Cleanup Draft Release on Failure
+    needs: [draft-release, publish-pypi]
+    if: failure() && needs.draft-release.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Delete draft release
+        run: |
+          gh release delete "${TAG_NAME}" --repo "${GITHUB_REPOSITORY}" --yes || true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.ref_name }}
