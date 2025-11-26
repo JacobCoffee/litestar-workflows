@@ -43,26 +43,28 @@ jobs:
           filters: |
             docs:
               - 'docs/**'
+              - '.github/workflows/docs.yml'
+            src:
               - 'src/**'
 
       - name: Set up uv
-        if: github.event_name != 'pull_request' || steps.filter.outputs.docs == 'true'
+        if: github.event_name != 'pull_request' || steps.filter.outputs.docs == 'true' || steps.filter.outputs.src == 'true'
         uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
 
       - name: Set up Python
-        if: github.event_name != 'pull_request' || steps.filter.outputs.docs == 'true'
+        if: github.event_name != 'pull_request' || steps.filter.outputs.docs == 'true' || steps.filter.outputs.src == 'true'
         uses: actions/setup-python@v6
         with:
           python-version: "3.13"
 
       - name: Install dependencies
-        if: github.event_name != 'pull_request' || steps.filter.outputs.docs == 'true'
+        if: github.event_name != 'pull_request' || steps.filter.outputs.docs == 'true' || steps.filter.outputs.src == 'true'
         run: uv sync --group docs
 
       - name: Build documentation
-        if: github.event_name != 'pull_request' || steps.filter.outputs.docs == 'true'
+        if: github.event_name != 'pull_request' || steps.filter.outputs.docs == 'true' || steps.filter.outputs.src == 'true'
         run: uv run sphinx-build -b html docs docs/_build/html --keep-going
 
       - name: Upload artifact for GitHub Pages
@@ -72,7 +74,7 @@ jobs:
           path: docs/_build/html
 
       - name: Deploy PR preview
-        if: github.event_name == 'pull_request' && steps.filter.outputs.docs == 'true'
+        if: github.event_name == 'pull_request' && (steps.filter.outputs.docs == 'true' || steps.filter.outputs.src == 'true')
         uses: rossjrw/pr-preview-action@v1
         with:
           source-dir: docs/_build/html
