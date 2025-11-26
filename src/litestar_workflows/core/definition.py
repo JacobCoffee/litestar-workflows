@@ -261,8 +261,20 @@ class WorkflowDefinition:
             label = ""
             if edge.condition is not None:
                 if isinstance(edge.condition, str):
-                    # Sanitize for mermaid: remove quotes and parentheses (they break syntax)
-                    safe_condition = edge.condition.replace("'", "").replace('"', "").replace("(", "").replace(")", "")
+                    # Sanitize for mermaid: remove special characters that break syntax
+                    safe_condition = (
+                        edge.condition.replace("'", "")
+                        .replace('"', "")
+                        .replace("(", "")
+                        .replace(")", "")
+                        .replace("<", "")
+                        .replace(">", "")
+                        .replace("|", "")
+                        .replace("[", "")
+                        .replace("]", "")
+                        .replace("{", "")
+                        .replace("}", "")
+                    )
                     label = f"|{safe_condition}|"
                 else:
                     label = "|conditional|"

@@ -307,7 +307,7 @@ class WorkflowUIController(Controller):
                 "completed_at": inst.completed_at,
                 "created_by": inst.created_by,
             }
-            for inst in instances[:per_page]
+            for inst in instances
         ]
 
         return Template(
