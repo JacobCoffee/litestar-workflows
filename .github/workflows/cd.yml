@@ -107,10 +107,11 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - name: Download signed dist
+      # Use unsigned dist - sigstore files are for GitHub release only, not PyPI
+      - name: Download distribution artifacts
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
-          name: dist-signed
+          name: dist
           path: dist/
 
       - name: Publish to PyPI
