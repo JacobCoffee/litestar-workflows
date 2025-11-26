@@ -34,6 +34,17 @@
 
 **litestar-workflows** is a flexible, async-first workflow automation framework built specifically for the [Litestar](https://litestar.dev) ecosystem. It enables you to define complex business processes as code, combining automated steps with human approval checkpoints.
 
+### Screenshots
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/JacobCoffee/litestar-workflows/main/docs/_static/screenshots/workflow-list.png" alt="Workflow List" width="45%">
+  <img src="https://raw.githubusercontent.com/JacobCoffee/litestar-workflows/main/docs/_static/screenshots/workflow-detail.png" alt="Workflow Detail" width="45%">
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/JacobCoffee/litestar-workflows/main/docs/_static/screenshots/instance-list.png" alt="Instance List" width="45%">
+  <img src="https://raw.githubusercontent.com/JacobCoffee/litestar-workflows/main/docs/_static/screenshots/tasks-list.png" alt="Tasks List" width="45%">
+</p>
+
 ### Key Features
 
 - **Async-First Design**: Native `async/await` throughout, leveraging Litestar's async foundation

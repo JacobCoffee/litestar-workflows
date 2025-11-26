@@ -6,6 +6,20 @@ for workflow management. The REST API is built into the main ``WorkflowPlugin``
 and enabled by default, automatically registering routes for workflow definitions,
 instances, and human tasks with full OpenAPI support.
 
+.. figure:: /_static/screenshots/workflow-list.png
+   :alt: Workflow List UI
+   :align: center
+   :width: 80%
+
+   The built-in web UI showing registered workflows
+
+.. figure:: /_static/screenshots/workflow-detail.png
+   :alt: Workflow Detail UI
+   :align: center
+   :width: 80%
+
+   Workflow detail view with step visualization
+
 
 Why Use the REST API?
 ---------------------
