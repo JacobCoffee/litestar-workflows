@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="violet" data-content_root="../../../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>litestar_workflows.db.repositories - litestar-workflows</title><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/shibuya.css?v=14737038" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link media="print" rel="stylesheet" type="text/css" href="../../../_static/print.css?v=20ff2c19" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=8975404a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    <meta property="og:type" content="website"/><meta property="og:title" content="litestar_workflows.db.repositories"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../../../index.html">
+      
+      
+      <strong>litestar-workflows</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"><ul><li class="link">
+          <a href="https://litestar.dev/">
+            <span>Litestar</span></a>
+        </li><li class="link">
+          <a href="https://pypi.org/project/litestar-workflows/">
+            <span>PyPI</span></a>
+        </li></ul></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../../../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Learn</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/quickstart.html">Quickstart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Core Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/workflows.html">Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/steps.html">Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/context.html">Workflow Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/execution.html">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">How-To Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/simple-workflow.html">Building a Simple Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/human-tasks.html">Working with Human Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/parallel-execution.html">Parallel Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/conditional-logic.html">Conditional Logic and Gateways</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/persistence.html">Database Persistence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/web-plugin.html">Web Plugin (REST API)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cookbook/index.html">Cookbook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../cookbook/expense-approval.html">Expense Approval Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cookbook/document-review.html">Document Review Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cookbook/onboarding.html">Employee Onboarding Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cookbook/integration-patterns.html">Integration Patterns</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/modules.html">Module Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/web.html">Web Plugin API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../architecture/index.html">Architecture Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../architecture/phase3-web.html">Phase 3: Web Plugin Architecture</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/litestar-919193495116337154">Discord</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../../../index.html"><span itemprop="name">litestar-workflows</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../../index.html"><span itemprop="name">Module code</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">litestar_workflows.db.repositories</strong>
+        <meta itemprop="position" content="3" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+        <article class="yue" role="main">
+          <h1>Source code for litestar_workflows.db.repositories</h1><div class="highlight"><pre>
+<span></span><span data-line="1"><span class="sd">&quot;&quot;&quot;Repository implementations for workflow persistence.</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="sd">This module provides async repositories for CRUD operations on workflow</span>
+</span><span data-line="4"><span class="sd">models using advanced-alchemy&#39;s repository pattern.</span>
+</span><span data-line="5"><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="6">
+</span><span data-line="7"><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+</span><span data-line="8">
+</span><span data-line="9"><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+</span><span data-line="10"><span class="kn">from</span><span class="w"> </span><span class="nn">uuid</span><span class="w"> </span><span class="kn">import</span> <span class="n">UUID</span>
+</span><span data-line="11">
+</span><span data-line="12"><span class="kn">from</span><span class="w"> </span><span class="nn">advanced_alchemy.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">LimitOffset</span><span class="p">,</span> <span class="n">OrderBy</span>
+</span><span data-line="13"><span class="kn">from</span><span class="w"> </span><span class="nn">advanced_alchemy.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">SQLAlchemyAsyncRepository</span>
+</span><span data-line="14"><span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">and_</span><span class="p">,</span> <span class="n">or_</span><span class="p">,</span> <span class="n">select</span>
+</span><span data-line="15">
+</span><span data-line="16"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows.core.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">StepStatus</span><span class="p">,</span> <span class="n">WorkflowStatus</span>
+</span><span data-line="17"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows.db.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span data-line="18">    <span class="n">HumanTaskModel</span><span class="p">,</span>
+</span><span data-line="19">    <span class="n">StepExecutionModel</span><span class="p">,</span>
+</span><span data-line="20">    <span class="n">WorkflowDefinitionModel</span><span class="p">,</span>
+</span><span data-line="21">    <span class="n">WorkflowInstanceModel</span><span class="p">,</span>
+</span><span data-line="22"><span class="p">)</span>
+</span><span data-line="23">
+</span><span data-line="24"><span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+</span><span data-line="25">    <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+</span><span data-line="26">
+</span><span data-line="27"><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+</span><span data-line="28">    <span class="s2">&quot;HumanTaskRepository&quot;</span><span class="p">,</span>
+</span><span data-line="29">    <span class="s2">&quot;StepExecutionRepository&quot;</span><span class="p">,</span>
+</span><span data-line="30">    <span class="s2">&quot;WorkflowDefinitionRepository&quot;</span><span class="p">,</span>
+</span><span data-line="31">    <span class="s2">&quot;WorkflowInstanceRepository&quot;</span><span class="p">,</span>
+</span><span data-line="32"><span class="p">]</span>
+</span><span data-line="33">
+</span><span data-line="34">
+<div class="viewcode-block" id="WorkflowDefinitionRepository">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.WorkflowDefinitionRepository">[docs]</a>
+</span><span data-line="35"><span class="k">class</span><span class="w"> </span><span class="nc">WorkflowDefinitionRepository</span><span class="p">(</span><span class="n">SQLAlchemyAsyncRepository</span><span class="p">[</span><span class="n">WorkflowDefinitionModel</span><span class="p">]):</span>
+</span><span data-line="36"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Repository for workflow definition CRUD operations.</span>
+</span><span data-line="37">
+</span><span data-line="38"><span class="sd">    Provides methods for managing workflow definitions including</span>
+</span><span data-line="39"><span class="sd">    version management and activation status.</span>
+</span><span data-line="40"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="41">
+</span><span data-line="42">    <span class="n">model_type</span> <span class="o">=</span> <span class="n">WorkflowDefinitionModel</span>
+</span><span data-line="43">
+<div class="viewcode-block" id="WorkflowDefinitionRepository.get_by_name">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.WorkflowDefinitionRepository.get_by_name">[docs]</a>
+</span><span data-line="44">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_by_name</span><span class="p">(</span>
+</span><span data-line="45">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="46">        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span data-line="47">        <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="48">        <span class="o">*</span><span class="p">,</span>
+</span><span data-line="49">        <span class="n">active_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+</span><span data-line="50">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkflowDefinitionModel</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="51"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a workflow definition by name and optional version.</span>
+</span><span data-line="52">
+</span><span data-line="53"><span class="sd">        Args:</span>
+</span><span data-line="54"><span class="sd">            name: The workflow name.</span>
+</span><span data-line="55"><span class="sd">            version: Optional specific version. If None, returns the latest active version.</span>
+</span><span data-line="56"><span class="sd">            active_only: If True, only return active definitions.</span>
+</span><span data-line="57">
+</span><span data-line="58"><span class="sd">        Returns:</span>
+</span><span data-line="59"><span class="sd">            The workflow definition or None if not found.</span>
+</span><span data-line="60"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="61">        <span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span><span class="n">WorkflowDefinitionModel</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">]</span>
+</span><span data-line="62">
+</span><span data-line="63">        <span class="k">if</span> <span class="n">version</span><span class="p">:</span>
+</span><span data-line="64">            <span class="n">conditions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WorkflowDefinitionModel</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="n">version</span><span class="p">)</span>
+</span><span data-line="65">
+</span><span data-line="66">        <span class="k">if</span> <span class="n">active_only</span><span class="p">:</span>
+</span><span data-line="67">            <span class="n">conditions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WorkflowDefinitionModel</span><span class="o">.</span><span class="n">is_active</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># noqa: E712</span>
+</span><span data-line="68">
+</span><span data-line="69">        <span class="n">stmt</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="70">            <span class="n">select</span><span class="p">(</span><span class="n">WorkflowDefinitionModel</span><span class="p">)</span>
+</span><span data-line="71">            <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">and_</span><span class="p">(</span><span class="o">*</span><span class="n">conditions</span><span class="p">))</span>
+</span><span data-line="72">            <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">WorkflowDefinitionModel</span><span class="o">.</span><span class="n">created_at</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span>
+</span><span data-line="73">            <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span data-line="74">        <span class="p">)</span>
+</span><span data-line="75">
+</span><span data-line="76">        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+</span><span data-line="77">        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">scalar_one_or_none</span><span class="p">()</span></div>
+
+</span><span data-line="78">
+<div class="viewcode-block" id="WorkflowDefinitionRepository.get_latest_version">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.WorkflowDefinitionRepository.get_latest_version">[docs]</a>
+</span><span data-line="79">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_latest_version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkflowDefinitionModel</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="80"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the latest active version of a workflow definition.</span>
+</span><span data-line="81">
+</span><span data-line="82"><span class="sd">        Args:</span>
+</span><span data-line="83"><span class="sd">            name: The workflow name.</span>
+</span><span data-line="84">
+</span><span data-line="85"><span class="sd">        Returns:</span>
+</span><span data-line="86"><span class="sd">            The latest active workflow definition or None.</span>
+</span><span data-line="87"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="88">        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">active_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+</span><span data-line="89">
+<div class="viewcode-block" id="WorkflowDefinitionRepository.list_active">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.WorkflowDefinitionRepository.list_active">[docs]</a>
+</span><span data-line="90">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_active</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">WorkflowDefinitionModel</span><span class="p">]:</span>
+</span><span data-line="91"><span class="w">        </span><span class="sd">&quot;&quot;&quot;List all active workflow definitions.</span>
+</span><span data-line="92">
+</span><span data-line="93"><span class="sd">        Returns:</span>
+</span><span data-line="94"><span class="sd">            List of active workflow definitions.</span>
+</span><span data-line="95"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="96">        <span class="n">stmt</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="97">            <span class="n">select</span><span class="p">(</span><span class="n">WorkflowDefinitionModel</span><span class="p">)</span>
+</span><span data-line="98">            <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">WorkflowDefinitionModel</span><span class="o">.</span><span class="n">is_active</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># noqa: E712</span>
+</span><span data-line="99">            <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">WorkflowDefinitionModel</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">WorkflowDefinitionModel</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span>
+</span><span data-line="100">        <span class="p">)</span>
+</span><span data-line="101">        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+</span><span data-line="102">        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">scalars</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+
+</span><span data-line="103">
+<div class="viewcode-block" id="WorkflowDefinitionRepository.deactivate_version">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.WorkflowDefinitionRepository.deactivate_version">[docs]</a>
+</span><span data-line="104">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">deactivate_version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span data-line="105"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Deactivate a specific workflow version.</span>
+</span><span data-line="106">
+</span><span data-line="107"><span class="sd">        Args:</span>
+</span><span data-line="108"><span class="sd">            name: The workflow name.</span>
+</span><span data-line="109"><span class="sd">            version: The version to deactivate.</span>
+</span><span data-line="110">
+</span><span data-line="111"><span class="sd">        Returns:</span>
+</span><span data-line="112"><span class="sd">            True if a definition was deactivated.</span>
+</span><span data-line="113"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="114">        <span class="n">definition</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">active_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span data-line="115">        <span class="k">if</span> <span class="n">definition</span><span class="p">:</span>
+</span><span data-line="116">            <span class="n">definition</span><span class="o">.</span><span class="n">is_active</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span data-line="117">            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</span><span data-line="118">            <span class="k">return</span> <span class="kc">True</span>
+</span><span data-line="119">        <span class="k">return</span> <span class="kc">False</span></div>
+</div>
+
+</span><span data-line="120">
+</span><span data-line="121">
+<div class="viewcode-block" id="WorkflowInstanceRepository">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.WorkflowInstanceRepository">[docs]</a>
+</span><span data-line="122"><span class="k">class</span><span class="w"> </span><span class="nc">WorkflowInstanceRepository</span><span class="p">(</span><span class="n">SQLAlchemyAsyncRepository</span><span class="p">[</span><span class="n">WorkflowInstanceModel</span><span class="p">]):</span>
+</span><span data-line="123"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Repository for workflow instance CRUD operations.</span>
+</span><span data-line="124">
+</span><span data-line="125"><span class="sd">    Provides methods for querying and managing workflow instances</span>
+</span><span data-line="126"><span class="sd">    including filtering by status, user, and workflow name.</span>
+</span><span data-line="127"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="128">
+</span><span data-line="129">    <span class="n">model_type</span> <span class="o">=</span> <span class="n">WorkflowInstanceModel</span>
+</span><span data-line="130">
+<div class="viewcode-block" id="WorkflowInstanceRepository.find_by_workflow">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.WorkflowInstanceRepository.find_by_workflow">[docs]</a>
+</span><span data-line="131">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">find_by_workflow</span><span class="p">(</span>
+</span><span data-line="132">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="133">        <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span data-line="134">        <span class="n">status</span><span class="p">:</span> <span class="n">WorkflowStatus</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="135">        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+</span><span data-line="136">        <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span data-line="137">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">WorkflowInstanceModel</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+</span><span data-line="138"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Find instances by workflow name with optional status filter.</span>
+</span><span data-line="139">
+</span><span data-line="140"><span class="sd">        Args:</span>
+</span><span data-line="141"><span class="sd">            workflow_name: The workflow name to filter by.</span>
+</span><span data-line="142"><span class="sd">            status: Optional status filter.</span>
+</span><span data-line="143"><span class="sd">            limit: Maximum number of results.</span>
+</span><span data-line="144"><span class="sd">            offset: Number of results to skip.</span>
+</span><span data-line="145">
+</span><span data-line="146"><span class="sd">        Returns:</span>
+</span><span data-line="147"><span class="sd">            Tuple of (instances, total_count).</span>
+</span><span data-line="148"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="149">        <span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span><span class="n">WorkflowInstanceModel</span><span class="o">.</span><span class="n">workflow_name</span> <span class="o">==</span> <span class="n">workflow_name</span><span class="p">]</span>
+</span><span data-line="150">
+</span><span data-line="151">        <span class="k">if</span> <span class="n">status</span><span class="p">:</span>
+</span><span data-line="152">            <span class="n">conditions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WorkflowInstanceModel</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">status</span><span class="p">)</span>
+</span><span data-line="153">
+</span><span data-line="154">        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_and_count</span><span class="p">(</span>
+</span><span data-line="155">            <span class="o">*</span><span class="n">conditions</span><span class="p">,</span>
+</span><span data-line="156">            <span class="n">LimitOffset</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">),</span>
+</span><span data-line="157">            <span class="n">OrderBy</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s2">&quot;created_at&quot;</span><span class="p">,</span> <span class="n">sort_order</span><span class="o">=</span><span class="s2">&quot;desc&quot;</span><span class="p">),</span>
+</span><span data-line="158">        <span class="p">)</span></div>
+
+</span><span data-line="159">
+<div class="viewcode-block" id="WorkflowInstanceRepository.find_by_user">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.WorkflowInstanceRepository.find_by_user">[docs]</a>
+</span><span data-line="160">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">find_by_user</span><span class="p">(</span>
+</span><span data-line="161">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="162">        <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span data-line="163">        <span class="n">status</span><span class="p">:</span> <span class="n">WorkflowStatus</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="164">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">WorkflowInstanceModel</span><span class="p">]:</span>
+</span><span data-line="165"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Find instances created by a specific user.</span>
+</span><span data-line="166">
+</span><span data-line="167"><span class="sd">        Args:</span>
+</span><span data-line="168"><span class="sd">            user_id: The user ID to filter by.</span>
+</span><span data-line="169"><span class="sd">            status: Optional status filter.</span>
+</span><span data-line="170">
+</span><span data-line="171"><span class="sd">        Returns:</span>
+</span><span data-line="172"><span class="sd">            List of workflow instances.</span>
+</span><span data-line="173"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="174">        <span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span><span class="n">WorkflowInstanceModel</span><span class="o">.</span><span class="n">created_by</span> <span class="o">==</span> <span class="n">user_id</span><span class="p">]</span>
+</span><span data-line="175">
+</span><span data-line="176">        <span class="k">if</span> <span class="n">status</span><span class="p">:</span>
+</span><span data-line="177">            <span class="n">conditions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WorkflowInstanceModel</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">status</span><span class="p">)</span>
+</span><span data-line="178">
+</span><span data-line="179">        <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">WorkflowInstanceModel</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">and_</span><span class="p">(</span><span class="o">*</span><span class="n">conditions</span><span class="p">))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">WorkflowInstanceModel</span><span class="o">.</span><span class="n">created_at</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span>
+</span><span data-line="180">        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+</span><span data-line="181">        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">scalars</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+
+</span><span data-line="182">
+<div class="viewcode-block" id="WorkflowInstanceRepository.find_by_tenant">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.WorkflowInstanceRepository.find_by_tenant">[docs]</a>
+</span><span data-line="183">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">find_by_tenant</span><span class="p">(</span>
+</span><span data-line="184">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="185">        <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span data-line="186">        <span class="n">status</span><span class="p">:</span> <span class="n">WorkflowStatus</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="187">        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+</span><span data-line="188">        <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span data-line="189">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">WorkflowInstanceModel</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+</span><span data-line="190"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Find instances by tenant ID.</span>
+</span><span data-line="191">
+</span><span data-line="192"><span class="sd">        Args:</span>
+</span><span data-line="193"><span class="sd">            tenant_id: The tenant ID to filter by.</span>
+</span><span data-line="194"><span class="sd">            status: Optional status filter.</span>
+</span><span data-line="195"><span class="sd">            limit: Maximum number of results.</span>
+</span><span data-line="196"><span class="sd">            offset: Number of results to skip.</span>
+</span><span data-line="197">
+</span><span data-line="198"><span class="sd">        Returns:</span>
+</span><span data-line="199"><span class="sd">            Tuple of (instances, total_count).</span>
+</span><span data-line="200"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="201">        <span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span><span class="n">WorkflowInstanceModel</span><span class="o">.</span><span class="n">tenant_id</span> <span class="o">==</span> <span class="n">tenant_id</span><span class="p">]</span>
+</span><span data-line="202">
+</span><span data-line="203">        <span class="k">if</span> <span class="n">status</span><span class="p">:</span>
+</span><span data-line="204">            <span class="n">conditions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WorkflowInstanceModel</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">status</span><span class="p">)</span>
+</span><span data-line="205">
+</span><span data-line="206">        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_and_count</span><span class="p">(</span>
+</span><span data-line="207">            <span class="o">*</span><span class="n">conditions</span><span class="p">,</span>
+</span><span data-line="208">            <span class="n">LimitOffset</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">),</span>
+</span><span data-line="209">            <span class="n">OrderBy</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s2">&quot;created_at&quot;</span><span class="p">,</span> <span class="n">sort_order</span><span class="o">=</span><span class="s2">&quot;desc&quot;</span><span class="p">),</span>
+</span><span data-line="210">        <span class="p">)</span></div>
+
+</span><span data-line="211">
+<div class="viewcode-block" id="WorkflowInstanceRepository.find_running">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.WorkflowInstanceRepository.find_running">[docs]</a>
+</span><span data-line="212">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">find_running</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">WorkflowInstanceModel</span><span class="p">]:</span>
+</span><span data-line="213"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Find all running or waiting workflow instances.</span>
+</span><span data-line="214">
+</span><span data-line="215"><span class="sd">        Returns:</span>
+</span><span data-line="216"><span class="sd">            List of active workflow instances.</span>
+</span><span data-line="217"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="218">        <span class="n">stmt</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="219">            <span class="n">select</span><span class="p">(</span><span class="n">WorkflowInstanceModel</span><span class="p">)</span>
+</span><span data-line="220">            <span class="o">.</span><span class="n">where</span><span class="p">(</span>
+</span><span data-line="221">                <span class="n">WorkflowInstanceModel</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">in_</span><span class="p">(</span>
+</span><span data-line="222">                    <span class="p">[</span>
+</span><span data-line="223">                        <span class="n">WorkflowStatus</span><span class="o">.</span><span class="n">RUNNING</span><span class="p">,</span>
+</span><span data-line="224">                        <span class="n">WorkflowStatus</span><span class="o">.</span><span class="n">WAITING</span><span class="p">,</span>
+</span><span data-line="225">                    <span class="p">]</span>
+</span><span data-line="226">                <span class="p">)</span>
+</span><span data-line="227">            <span class="p">)</span>
+</span><span data-line="228">            <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">WorkflowInstanceModel</span><span class="o">.</span><span class="n">started_at</span><span class="p">)</span>
+</span><span data-line="229">        <span class="p">)</span>
+</span><span data-line="230">        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+</span><span data-line="231">        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">scalars</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+
+</span><span data-line="232">
+<div class="viewcode-block" id="WorkflowInstanceRepository.update_status">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.WorkflowInstanceRepository.update_status">[docs]</a>
+</span><span data-line="233">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_status</span><span class="p">(</span>
+</span><span data-line="234">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="235">        <span class="n">instance_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+</span><span data-line="236">        <span class="n">status</span><span class="p">:</span> <span class="n">WorkflowStatus</span><span class="p">,</span>
+</span><span data-line="237">        <span class="o">*</span><span class="p">,</span>
+</span><span data-line="238">        <span class="n">current_step</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="239">        <span class="n">error</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="240">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkflowInstanceModel</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="241"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the status of a workflow instance.</span>
+</span><span data-line="242">
+</span><span data-line="243"><span class="sd">        Args:</span>
+</span><span data-line="244"><span class="sd">            instance_id: The instance ID.</span>
+</span><span data-line="245"><span class="sd">            status: The new status.</span>
+</span><span data-line="246"><span class="sd">            current_step: Optional current step name.</span>
+</span><span data-line="247"><span class="sd">            error: Optional error message.</span>
+</span><span data-line="248">
+</span><span data-line="249"><span class="sd">        Returns:</span>
+</span><span data-line="250"><span class="sd">            The updated instance or None if not found.</span>
+</span><span data-line="251"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="252">        <span class="n">instance</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">instance_id</span><span class="p">)</span>
+</span><span data-line="253">        <span class="k">if</span> <span class="n">instance</span><span class="p">:</span>
+</span><span data-line="254">            <span class="n">instance</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
+</span><span data-line="255">            <span class="k">if</span> <span class="n">current_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="256">                <span class="n">instance</span><span class="o">.</span><span class="n">current_step</span> <span class="o">=</span> <span class="n">current_step</span>
+</span><span data-line="257">            <span class="k">if</span> <span class="n">error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="258">                <span class="n">instance</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">error</span>
+</span><span data-line="259">            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</span><span data-line="260">        <span class="k">return</span> <span class="n">instance</span></div>
+</div>
+
+</span><span data-line="261">
+</span><span data-line="262">
+<div class="viewcode-block" id="StepExecutionRepository">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.StepExecutionRepository">[docs]</a>
+</span><span data-line="263"><span class="k">class</span><span class="w"> </span><span class="nc">StepExecutionRepository</span><span class="p">(</span><span class="n">SQLAlchemyAsyncRepository</span><span class="p">[</span><span class="n">StepExecutionModel</span><span class="p">]):</span>
+</span><span data-line="264"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Repository for step execution record CRUD operations.&quot;&quot;&quot;</span>
+</span><span data-line="265">
+</span><span data-line="266">    <span class="n">model_type</span> <span class="o">=</span> <span class="n">StepExecutionModel</span>
+</span><span data-line="267">
+<div class="viewcode-block" id="StepExecutionRepository.find_by_instance">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.StepExecutionRepository.find_by_instance">[docs]</a>
+</span><span data-line="268">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">find_by_instance</span><span class="p">(</span>
+</span><span data-line="269">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="270">        <span class="n">instance_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+</span><span data-line="271">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StepExecutionModel</span><span class="p">]:</span>
+</span><span data-line="272"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Find all step executions for an instance.</span>
+</span><span data-line="273">
+</span><span data-line="274"><span class="sd">        Args:</span>
+</span><span data-line="275"><span class="sd">            instance_id: The workflow instance ID.</span>
+</span><span data-line="276">
+</span><span data-line="277"><span class="sd">        Returns:</span>
+</span><span data-line="278"><span class="sd">            List of step executions ordered by start time.</span>
+</span><span data-line="279"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="280">        <span class="n">stmt</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="281">            <span class="n">select</span><span class="p">(</span><span class="n">StepExecutionModel</span><span class="p">)</span>
+</span><span data-line="282">            <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">StepExecutionModel</span><span class="o">.</span><span class="n">instance_id</span> <span class="o">==</span> <span class="n">instance_id</span><span class="p">)</span>
+</span><span data-line="283">            <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">StepExecutionModel</span><span class="o">.</span><span class="n">started_at</span><span class="p">)</span>
+</span><span data-line="284">        <span class="p">)</span>
+</span><span data-line="285">        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+</span><span data-line="286">        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">scalars</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+
+</span><span data-line="287">
+<div class="viewcode-block" id="StepExecutionRepository.find_by_step_name">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.StepExecutionRepository.find_by_step_name">[docs]</a>
+</span><span data-line="288">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">find_by_step_name</span><span class="p">(</span>
+</span><span data-line="289">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="290">        <span class="n">instance_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+</span><span data-line="291">        <span class="n">step_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span data-line="292">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StepExecutionModel</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="293"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the execution record for a specific step.</span>
+</span><span data-line="294">
+</span><span data-line="295"><span class="sd">        Args:</span>
+</span><span data-line="296"><span class="sd">            instance_id: The workflow instance ID.</span>
+</span><span data-line="297"><span class="sd">            step_name: The step name.</span>
+</span><span data-line="298">
+</span><span data-line="299"><span class="sd">        Returns:</span>
+</span><span data-line="300"><span class="sd">            The step execution or None.</span>
+</span><span data-line="301"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="302">        <span class="n">stmt</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="303">            <span class="n">select</span><span class="p">(</span><span class="n">StepExecutionModel</span><span class="p">)</span>
+</span><span data-line="304">            <span class="o">.</span><span class="n">where</span><span class="p">(</span>
+</span><span data-line="305">                <span class="n">and_</span><span class="p">(</span>
+</span><span data-line="306">                    <span class="n">StepExecutionModel</span><span class="o">.</span><span class="n">instance_id</span> <span class="o">==</span> <span class="n">instance_id</span><span class="p">,</span>
+</span><span data-line="307">                    <span class="n">StepExecutionModel</span><span class="o">.</span><span class="n">step_name</span> <span class="o">==</span> <span class="n">step_name</span><span class="p">,</span>
+</span><span data-line="308">                <span class="p">)</span>
+</span><span data-line="309">            <span class="p">)</span>
+</span><span data-line="310">            <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">StepExecutionModel</span><span class="o">.</span><span class="n">started_at</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span>
+</span><span data-line="311">            <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span data-line="312">        <span class="p">)</span>
+</span><span data-line="313">        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+</span><span data-line="314">        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">scalar_one_or_none</span><span class="p">()</span></div>
+
+</span><span data-line="315">
+<div class="viewcode-block" id="StepExecutionRepository.find_failed">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.StepExecutionRepository.find_failed">[docs]</a>
+</span><span data-line="316">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">find_failed</span><span class="p">(</span>
+</span><span data-line="317">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="318">        <span class="n">instance_id</span><span class="p">:</span> <span class="n">UUID</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="319">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StepExecutionModel</span><span class="p">]:</span>
+</span><span data-line="320"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Find failed step executions.</span>
+</span><span data-line="321">
+</span><span data-line="322"><span class="sd">        Args:</span>
+</span><span data-line="323"><span class="sd">            instance_id: Optional instance ID filter.</span>
+</span><span data-line="324">
+</span><span data-line="325"><span class="sd">        Returns:</span>
+</span><span data-line="326"><span class="sd">            List of failed step executions.</span>
+</span><span data-line="327"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="328">        <span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span><span class="n">StepExecutionModel</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">StepStatus</span><span class="o">.</span><span class="n">FAILED</span><span class="p">]</span>
+</span><span data-line="329">
+</span><span data-line="330">        <span class="k">if</span> <span class="n">instance_id</span><span class="p">:</span>
+</span><span data-line="331">            <span class="n">conditions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">StepExecutionModel</span><span class="o">.</span><span class="n">instance_id</span> <span class="o">==</span> <span class="n">instance_id</span><span class="p">)</span>
+</span><span data-line="332">
+</span><span data-line="333">        <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">StepExecutionModel</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">and_</span><span class="p">(</span><span class="o">*</span><span class="n">conditions</span><span class="p">))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">StepExecutionModel</span><span class="o">.</span><span class="n">completed_at</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span>
+</span><span data-line="334">        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+</span><span data-line="335">        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">scalars</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+</div>
+
+</span><span data-line="336">
+</span><span data-line="337">
+<div class="viewcode-block" id="HumanTaskRepository">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.HumanTaskRepository">[docs]</a>
+</span><span data-line="338"><span class="k">class</span><span class="w"> </span><span class="nc">HumanTaskRepository</span><span class="p">(</span><span class="n">SQLAlchemyAsyncRepository</span><span class="p">[</span><span class="n">HumanTaskModel</span><span class="p">]):</span>
+</span><span data-line="339"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Repository for human task CRUD operations.</span>
+</span><span data-line="340">
+</span><span data-line="341"><span class="sd">    Provides methods for querying pending human tasks by assignee,</span>
+</span><span data-line="342"><span class="sd">    group, and due date.</span>
+</span><span data-line="343"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="344">
+</span><span data-line="345">    <span class="n">model_type</span> <span class="o">=</span> <span class="n">HumanTaskModel</span>
+</span><span data-line="346">
+<div class="viewcode-block" id="HumanTaskRepository.find_pending">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.HumanTaskRepository.find_pending">[docs]</a>
+</span><span data-line="347">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">find_pending</span><span class="p">(</span>
+</span><span data-line="348">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="349">        <span class="n">assignee_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="350">        <span class="n">assignee_group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="351">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">HumanTaskModel</span><span class="p">]:</span>
+</span><span data-line="352"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Find pending human tasks.</span>
+</span><span data-line="353">
+</span><span data-line="354"><span class="sd">        Args:</span>
+</span><span data-line="355"><span class="sd">            assignee_id: Optional assignee ID filter.</span>
+</span><span data-line="356"><span class="sd">            assignee_group: Optional group filter.</span>
+</span><span data-line="357">
+</span><span data-line="358"><span class="sd">        Returns:</span>
+</span><span data-line="359"><span class="sd">            List of pending human tasks.</span>
+</span><span data-line="360"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="361">        <span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span><span class="n">HumanTaskModel</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;pending&quot;</span><span class="p">]</span>
+</span><span data-line="362">
+</span><span data-line="363">        <span class="k">if</span> <span class="n">assignee_id</span><span class="p">:</span>
+</span><span data-line="364">            <span class="c1"># Include tasks assigned to user or unassigned</span>
+</span><span data-line="365">            <span class="n">conditions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span data-line="366">                <span class="n">or_</span><span class="p">(</span>
+</span><span data-line="367">                    <span class="n">HumanTaskModel</span><span class="o">.</span><span class="n">assignee_id</span> <span class="o">==</span> <span class="n">assignee_id</span><span class="p">,</span>
+</span><span data-line="368">                    <span class="n">HumanTaskModel</span><span class="o">.</span><span class="n">assignee_id</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+</span><span data-line="369">                <span class="p">)</span>
+</span><span data-line="370">            <span class="p">)</span>
+</span><span data-line="371">
+</span><span data-line="372">        <span class="k">if</span> <span class="n">assignee_group</span><span class="p">:</span>
+</span><span data-line="373">            <span class="n">conditions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span data-line="374">                <span class="n">or_</span><span class="p">(</span>
+</span><span data-line="375">                    <span class="n">HumanTaskModel</span><span class="o">.</span><span class="n">assignee_group</span> <span class="o">==</span> <span class="n">assignee_group</span><span class="p">,</span>
+</span><span data-line="376">                    <span class="n">HumanTaskModel</span><span class="o">.</span><span class="n">assignee_group</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+</span><span data-line="377">                <span class="p">)</span>
+</span><span data-line="378">            <span class="p">)</span>
+</span><span data-line="379">
+</span><span data-line="380">        <span class="n">stmt</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="381">            <span class="n">select</span><span class="p">(</span><span class="n">HumanTaskModel</span><span class="p">)</span>
+</span><span data-line="382">            <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">and_</span><span class="p">(</span><span class="o">*</span><span class="n">conditions</span><span class="p">))</span>
+</span><span data-line="383">            <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">HumanTaskModel</span><span class="o">.</span><span class="n">due_at</span><span class="o">.</span><span class="n">asc</span><span class="p">()</span><span class="o">.</span><span class="n">nullslast</span><span class="p">(),</span> <span class="n">HumanTaskModel</span><span class="o">.</span><span class="n">created_at</span><span class="p">)</span>
+</span><span data-line="384">        <span class="p">)</span>
+</span><span data-line="385">        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+</span><span data-line="386">        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">scalars</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+
+</span><span data-line="387">
+<div class="viewcode-block" id="HumanTaskRepository.find_by_instance">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.HumanTaskRepository.find_by_instance">[docs]</a>
+</span><span data-line="388">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">find_by_instance</span><span class="p">(</span>
+</span><span data-line="389">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="390">        <span class="n">instance_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+</span><span data-line="391">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">HumanTaskModel</span><span class="p">]:</span>
+</span><span data-line="392"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Find all human tasks for an instance.</span>
+</span><span data-line="393">
+</span><span data-line="394"><span class="sd">        Args:</span>
+</span><span data-line="395"><span class="sd">            instance_id: The workflow instance ID.</span>
+</span><span data-line="396">
+</span><span data-line="397"><span class="sd">        Returns:</span>
+</span><span data-line="398"><span class="sd">            List of human tasks.</span>
+</span><span data-line="399"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="400">        <span class="n">stmt</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="401">            <span class="n">select</span><span class="p">(</span><span class="n">HumanTaskModel</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">HumanTaskModel</span><span class="o">.</span><span class="n">instance_id</span> <span class="o">==</span> <span class="n">instance_id</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">HumanTaskModel</span><span class="o">.</span><span class="n">created_at</span><span class="p">)</span>
+</span><span data-line="402">        <span class="p">)</span>
+</span><span data-line="403">        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+</span><span data-line="404">        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">scalars</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+
+</span><span data-line="405">
+<div class="viewcode-block" id="HumanTaskRepository.find_overdue">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.HumanTaskRepository.find_overdue">[docs]</a>
+</span><span data-line="406">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">find_overdue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">HumanTaskModel</span><span class="p">]:</span>
+</span><span data-line="407"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Find overdue pending human tasks.</span>
+</span><span data-line="408">
+</span><span data-line="409"><span class="sd">        Returns:</span>
+</span><span data-line="410"><span class="sd">            List of overdue human tasks.</span>
+</span><span data-line="411"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="412">        <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+</span><span data-line="413">
+</span><span data-line="414">        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+</span><span data-line="415">
+</span><span data-line="416">        <span class="n">stmt</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="417">            <span class="n">select</span><span class="p">(</span><span class="n">HumanTaskModel</span><span class="p">)</span>
+</span><span data-line="418">            <span class="o">.</span><span class="n">where</span><span class="p">(</span>
+</span><span data-line="419">                <span class="n">and_</span><span class="p">(</span>
+</span><span data-line="420">                    <span class="n">HumanTaskModel</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;pending&quot;</span><span class="p">,</span>
+</span><span data-line="421">                    <span class="n">HumanTaskModel</span><span class="o">.</span><span class="n">due_at</span><span class="o">.</span><span class="n">isnot</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+</span><span data-line="422">                    <span class="n">HumanTaskModel</span><span class="o">.</span><span class="n">due_at</span> <span class="o">&lt;</span> <span class="n">now</span><span class="p">,</span>
+</span><span data-line="423">                <span class="p">)</span>
+</span><span data-line="424">            <span class="p">)</span>
+</span><span data-line="425">            <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">HumanTaskModel</span><span class="o">.</span><span class="n">due_at</span><span class="p">)</span>
+</span><span data-line="426">        <span class="p">)</span>
+</span><span data-line="427">        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+</span><span data-line="428">        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">scalars</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+
+</span><span data-line="429">
+<div class="viewcode-block" id="HumanTaskRepository.complete_task">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.HumanTaskRepository.complete_task">[docs]</a>
+</span><span data-line="430">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">complete_task</span><span class="p">(</span>
+</span><span data-line="431">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="432">        <span class="n">task_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+</span><span data-line="433">        <span class="n">completed_by</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span data-line="434">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HumanTaskModel</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="435"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Mark a human task as completed.</span>
+</span><span data-line="436">
+</span><span data-line="437"><span class="sd">        Args:</span>
+</span><span data-line="438"><span class="sd">            task_id: The task ID.</span>
+</span><span data-line="439"><span class="sd">            completed_by: User ID who completed the task.</span>
+</span><span data-line="440">
+</span><span data-line="441"><span class="sd">        Returns:</span>
+</span><span data-line="442"><span class="sd">            The updated task or None if not found.</span>
+</span><span data-line="443"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="444">        <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+</span><span data-line="445">
+</span><span data-line="446">        <span class="n">task</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
+</span><span data-line="447">        <span class="k">if</span> <span class="n">task</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;pending&quot;</span><span class="p">:</span>
+</span><span data-line="448">            <span class="n">task</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;completed&quot;</span>
+</span><span data-line="449">            <span class="n">task</span><span class="o">.</span><span class="n">completed_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+</span><span data-line="450">            <span class="n">task</span><span class="o">.</span><span class="n">completed_by</span> <span class="o">=</span> <span class="n">completed_by</span>
+</span><span data-line="451">            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</span><span data-line="452">        <span class="k">return</span> <span class="n">task</span></div>
+
+</span><span data-line="453">
+<div class="viewcode-block" id="HumanTaskRepository.cancel_task">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.db.HumanTaskRepository.cancel_task">[docs]</a>
+</span><span data-line="454">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cancel_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HumanTaskModel</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="455"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Cancel a pending human task.</span>
+</span><span data-line="456">
+</span><span data-line="457"><span class="sd">        Args:</span>
+</span><span data-line="458"><span class="sd">            task_id: The task ID.</span>
+</span><span data-line="459">
+</span><span data-line="460"><span class="sd">        Returns:</span>
+</span><span data-line="461"><span class="sd">            The updated task or None if not found.</span>
+</span><span data-line="462"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="463">        <span class="n">task</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
+</span><span data-line="464">        <span class="k">if</span> <span class="n">task</span> <span class="ow">and</span> <span class="n">task</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;pending&quot;</span><span class="p">:</span>
+</span><span data-line="465">            <span class="n">task</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;canceled&quot;</span>
+</span><span data-line="466">            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</span><span data-line="467">        <span class="k">return</span> <span class="n">task</span></div>
+</div>
+
+</span></pre></div>
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2025, Jacob Coffee</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+<a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+  <iconify-icon icon="simple-icons:github"></iconify-icon>
+</a></div>
+    </div>
+  </div>
+</footer>
+      <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=30646c52"></script>
+      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../../../_static/shibuya.js?v=c1cf1a6b"></script></body>
+</html>
