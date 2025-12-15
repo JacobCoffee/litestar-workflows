@@ -23,14 +23,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
           token: ${{ secrets.CHANGELOG_PAT }}
           persist-credentials: false
 
       - name: Generate changelog
-        uses: orhun/git-cliff-action@d77b37db2e3f7398432d34b72a12aa3e2ba87e51 # v4.6.0
+        uses: orhun/git-cliff-action@e16f179f0be49ecdfe63753837f20b9531642772 # v4.7.0
         with:
           config: pyproject.toml
           args: --verbose
