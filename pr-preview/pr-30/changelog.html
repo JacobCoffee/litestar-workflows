@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="violet" data-content_root="./">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Changelog - litestar-workflows</title><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Phase 3: Web Plugin Architecture" href="architecture/phase3-web.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="_static/shibuya.css?v=14737038" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link media="print" rel="stylesheet" type="text/css" href="_static/print.css?v=20ff2c19" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=8975404a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    <meta property="og:type" content="website"/><meta property="og:title" content="Changelog"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="index.html">
+      
+      
+      <strong>litestar-workflows</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"><ul><li class="link">
+          <a href="https://litestar.dev/">
+            <span>Litestar</span></a>
+        </li><li class="link">
+          <a href="https://pypi.org/project/litestar-workflows/">
+            <span>PyPI</span></a>
+        </li></ul></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Learn</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting-started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting-started/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started/quickstart.html">Quickstart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Core Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concepts/workflows.html">Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts/steps.html">Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts/context.html">Workflow Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts/execution.html">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guides/index.html">How-To Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/simple-workflow.html">Building a Simple Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/human-tasks.html">Working with Human Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/parallel-execution.html">Parallel Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/conditional-logic.html">Conditional Logic and Gateways</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/persistence.html">Database Persistence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/web-plugin.html">Web Plugin (REST API)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cookbook/index.html">Cookbook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cookbook/expense-approval.html">Expense Approval Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cookbook/document-review.html">Document Review Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cookbook/onboarding.html">Employee Onboarding Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cookbook/integration-patterns.html">Integration Patterns</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/modules.html">Module Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/web.html">Web Plugin API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture/index.html">Architecture Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture/phase3-web.html">Phase 3: Web Plugin Architecture</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/litestar-919193495116337154">Discord</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#id1">0.3.1 - 2025-11-26</a><ul>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id2">0.3.0 - 2025-11-26</a><ul>
+<li><a class="reference internal" href="#bug-fixes">Bug Fixes</a></li>
+<li><a class="reference internal" href="#id3">Documentation</a></li>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#miscellaneous-chores">Miscellaneous Chores</a></li>
+<li><a class="reference internal" href="#build">Build</a></li>
+<li><a class="reference internal" href="#ci">Ci</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id4">[0.1.0] - 2024-03-24</a><ul>
+<li><a class="reference internal" href="#id5">Features</a></li>
+<li><a class="reference internal" href="#id6">Build</a></li>
+<li><a class="reference internal" href="#id7">Ci</a></li>
+</ul>
+</li>
+</ul>
+</div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="index.html"><span itemprop="name">litestar-workflows</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">Changelog</strong>
+        <meta itemprop="position" content="2" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+        <article class="yue" role="main">
+          <section id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">¶</a></h1>
+<p>All notable changes to this project will be documented in this file.</p>
+<section id="id1">
+<h2><a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/compare/v0.3.0..v0.3.1">0.3.1</a> - 2025-11-26<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<section id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>regenerate changelog for v0.3.0 - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/cbac0184acc4b77adf27a4f2f53719ae91a16880">cbac018</a>) - github-actions[bot]</p></li>
+<li><p>add UI screenshots to README and web-plugin guide - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/04d8ea30650d4111eb3786a28dfb081e4bb7437a">04d8ea3</a>) - Jacob Coffee</p></li>
+</ul>
+</section>
+</section>
+<section id="id2">
+<h2><a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/compare/v0.1.0..v0.3.0">0.3.0</a> - 2025-11-26<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<section id="bug-fixes">
+<h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>(ci)</strong> restore ty-action with proper .venv config - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/ea9a133d58ab99c597c286cbb972133513136eda">ea9a133</a>) - Jacob Coffee</p></li>
+<li><p><strong>(ci)</strong> workflow fixes and docs preview (#15) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/1e797604ea50ddbc33662f3258ea1a3e84d4355e">1e79760</a>) - Jacob Coffee</p></li>
+<li><p><strong>(ci)</strong> correct git-cliff-action SHA to v4.6.0 (#27) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/9513826d7bd3d8c114159537665f48b8b7640706">9513826</a>) - Jacob Coffee</p></li>
+<li><p>add type ignore for exception handler assignment - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/8159e9d5b99168aded82dfddbc53580a83516e23">8159e9d</a>) - Jacob Coffee</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>Documentation<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>add cookbook, contrib stubs, and improve test coverage (#23) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/d2257581ef1ac525aabf8d677d478d5ef96aec75">d225758</a>) - Jacob Coffee</p></li>
+<li><p>regenerate changelog for v0.2.0 - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/5d669300d3d2ecacd370f3c2f00e02cd5cd9a294">5d66930</a>) - github-actions[bot]</p></li>
+<li><p>add UI screenshots for Phase 4 templates - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/ba3ed65dde1f50d04422b1cf6976bc0efaca136e">ba3ed65</a>) - Jacob Coffee</p></li>
+</ul>
+</section>
+<section id="features">
+<h3>Features<a class="headerlink" href="#features" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>(ui)</strong> Phase 4 UI templates + immutable releases (#25) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/4db4c37af4d391e028ec451acff6b525c4ad61e3">4db4c37</a>) - Jacob Coffee</p></li>
+<li><p>initial internal api - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/01741e254413d1dc72bf3ddbcd6466d2483ca386">01741e2</a>) - Jacob Coffee</p></li>
+<li><p>Phase 1 - Core Foundation (#12) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/eb583aa1f7137333a36560f6839752a4e75fa5ce">eb583aa</a>) - Jacob Coffee</p></li>
+<li><p>Phase 2 - Persistence Layer (#13) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/ee116d302682fa209bcc832307e447d8fc903b67">ee116d3</a>) - Jacob Coffee</p></li>
+</ul>
+</section>
+<section id="miscellaneous-chores">
+<h3>Miscellaneous Chores<a class="headerlink" href="#miscellaneous-chores" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>(ci)</strong> refactor workflows for efficiency - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/b1b08c48275d199ed33e7b9dd56e581c535a9258">b1b08c4</a>) - Jacob Coffee</p></li>
+<li><p><strong>(release)</strong> add metadata - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/d3c942d24fce9e7c6e9fa3364982828f548c0456">d3c942d</a>) - Jacob Coffee</p></li>
+<li><p>fix badges - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/2b0aae8d11b7042cb2017f9464cfa83b850c5845">2b0aae8</a>) - Jacob Coffee</p></li>
+<li><p>update project - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/7a35c0595a1ae4b072264d99056d46cd516a3c54">7a35c05</a>) - Jacob Coffee</p></li>
+</ul>
+</section>
+<section id="build">
+<h3>Build<a class="headerlink" href="#build" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>(deps)</strong> bump the actions group with 8 updates (#22) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/816ad023ac4c12cbc3a42aa7688ea695733ebd9c">816ad02</a>) - dependabot[bot]</p></li>
+</ul>
+</section>
+<section id="ci">
+<h3>Ci<a class="headerlink" href="#ci" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>(docs)</strong> skip PR docs workflow when only src/ changes (#24) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/505774bde458259262496488c1e14f0a02ed9684">505774b</a>) - Jacob Coffee</p></li>
+<li><p>group dependabot updates (#21) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/cb3f892043098858c4e7dcd7e8f2826fb23002c2">cb3f892</a>) - Jacob Coffee</p></li>
+<li><p>fix CD/release workflows + pin all actions to SHAs (#26) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/54df4cff4d72b3b980229206f847ef1d78b7405e">54df4cf</a>) - Jacob Coffee</p></li>
+<li><p>simplify path filtering for CI workflow (#28) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/4b3784ade4b65241d9df5685d26757f68ba68813">4b3784a</a>) - Jacob Coffee</p></li>
+</ul>
+</section>
+</section>
+<section id="id4">
+<h2>[0.1.0] - 2024-03-24<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<section id="id5">
+<h3>Features<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>project initialization - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/334db8714bcdf43bd29f795c64fd0ea087231dd2">334db87</a>) - Jacob Coffee</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>Build<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>(deps)</strong> bump actions/cache from 3 to 4 (#1) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/8a3f87fd5600c27399297568020a3af0147ed9bb">8a3f87f</a>) - dependabot[bot]</p></li>
+<li><p><strong>(deps)</strong> bump actions/upload-artifact from 3 to 4 (#2) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/5dba88df248abf22e807567fdc288ae9e48a93a7">5dba88d</a>) - dependabot[bot]</p></li>
+<li><p><strong>(deps)</strong> bump pdm-project/setup-pdm from 3 to 4 (#3) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/8ce64341729488d62e2181168f0291678cb433fc">8ce6434</a>) - dependabot[bot]</p></li>
+<li><p><strong>(deps)</strong> bump actions/setup-python from 4 to 5 (#4) - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/9e63e82c58f61a68eb357fe538a7a77579b1347e">9e63e82</a>) - dependabot[bot]</p></li>
+</ul>
+</section>
+<section id="id7">
+<h3>Ci<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>(release)</strong> add release note config - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/ae0d890ffccb331a55cb359ccfd271206d27188a">ae0d890</a>) - Jacob Coffee</p></li>
+<li><p>add basic github ci - (<a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows/commit/2632742d99a7d45bb7c4bba96d9ce955e7979db7">2632742</a>) - Jacob Coffee</p></li>
+</ul>
+<hr class="docutils" />
+<p><em>litestar-workflows Changelog</em></p>
+</section>
+</section>
+</section>
+
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-prev">
+    <a href="architecture/phase3-web.html">
+      <i class="i-lucide chevron-left"></i>
+      <div class="page-info">
+        <span>Previous</span><div class="title">Phase 3: Web Plugin Architecture</div></div>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2025, Jacob Coffee</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+<a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+  <iconify-icon icon="simple-icons:github"></iconify-icon>
+</a></div>
+    </div>
+  </div>
+</footer>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=30646c52"></script>
+      <script src="_static/design-tabs.js?v=f930bc37"></script>
+      <script src="_static/shibuya.js?v=c1cf1a6b"></script></body>
+</html>

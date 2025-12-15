@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="violet" data-content_root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Steps - litestar-workflows</title><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Workflow Context" href="context.html" /><link rel="prev" title="Workflows" href="workflows.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=14737038" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=8975404a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    <meta property="og:type" content="website"/><meta property="og:title" content="Steps"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../index.html">
+      
+      
+      <strong>litestar-workflows</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"><ul><li class="link">
+          <a href="https://litestar.dev/">
+            <span>Litestar</span></a>
+        </li><li class="link">
+          <a href="https://pypi.org/project/litestar-workflows/">
+            <span>PyPI</span></a>
+        </li></ul></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Learn</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/quickstart.html">Quickstart</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Core Concepts</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="workflows.html">Workflows</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="context.html">Workflow Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="execution.html">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/index.html">How-To Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../guides/simple-workflow.html">Building a Simple Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/human-tasks.html">Working with Human Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/parallel-execution.html">Parallel Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/conditional-logic.html">Conditional Logic and Gateways</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/persistence.html">Database Persistence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/web-plugin.html">Web Plugin (REST API)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/index.html">Cookbook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/expense-approval.html">Expense Approval Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/document-review.html">Document Review Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/onboarding.html">Employee Onboarding Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cookbook/integration-patterns.html">Integration Patterns</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/modules.html">Module Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/web.html">Web Plugin API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architecture Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../architecture/phase3-web.html">Phase 3: Web Plugin Architecture</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/litestar-919193495116337154">Discord</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#step-types">Step Types</a></li>
+<li><a class="reference internal" href="#machine-steps">Machine Steps</a><ul>
+<li><a class="reference internal" href="#machine-step-lifecycle">Machine Step Lifecycle</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#human-steps">Human Steps</a><ul>
+<li><a class="reference internal" href="#form-schema">Form Schema</a></li>
+<li><a class="reference internal" href="#task-assignment">Task Assignment</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#gateway-steps">Gateway Steps</a></li>
+<li><a class="reference internal" href="#timer-steps">Timer Steps</a></li>
+<li><a class="reference internal" href="#webhook-steps">Webhook Steps</a></li>
+<li><a class="reference internal" href="#step-groups">Step Groups</a><ul>
+<li><a class="reference internal" href="#sequential-group">Sequential Group</a></li>
+<li><a class="reference internal" href="#parallel-group">Parallel Group</a></li>
+<li><a class="reference internal" href="#parallel-with-callback-chord">Parallel with Callback (Chord)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-custom-steps">Creating Custom Steps</a></li>
+<li><a class="reference internal" href="#best-practices">Best Practices</a><ul>
+<li><a class="reference internal" href="#keep-steps-focused">Keep Steps Focused</a></li>
+<li><a class="reference internal" href="#make-steps-reusable">Make Steps Reusable</a></li>
+<li><a class="reference internal" href="#handle-errors-gracefully">Handle Errors Gracefully</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">litestar-workflows</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="index.html"><span itemprop="name">Core Concepts</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">Steps</strong>
+        <meta itemprop="position" content="3" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+        <article class="yue" role="main">
+          <section id="steps">
+<h1>Steps<a class="headerlink" href="#steps" title="Link to this heading">¶</a></h1>
+<p><strong>Steps</strong> are the building blocks of workflows. Each step represents a single
+unit of work, whether automated or requiring human interaction.</p>
+<section id="step-types">
+<h2>Step Types<a class="headerlink" href="#step-types" title="Link to this heading">¶</a></h2>
+<p>litestar-workflows provides five step types, each designed for specific use cases:</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 25.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Class</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MACHINE</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BaseMachineStep</span></code></p></td>
+<td><p>Automated execution without human intervention</p></td>
+</tr>
+<tr class="row-odd"><td><p>HUMAN</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BaseHumanStep</span></code></p></td>
+<td><p>Requires user interaction (forms, approvals)</p></td>
+</tr>
+<tr class="row-even"><td><p>GATEWAY</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BaseGateway</span></code></p></td>
+<td><p>Decision points for conditional branching</p></td>
+</tr>
+<tr class="row-odd"><td><p>TIMER</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TimerStep</span></code></p></td>
+<td><p>Delays or scheduled execution</p></td>
+</tr>
+<tr class="row-even"><td><p>WEBHOOK</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">WebhookStep</span></code></p></td>
+<td><p>Waits for external callbacks</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="machine-steps">
+<h2>Machine Steps<a class="headerlink" href="#machine-steps" title="Link to this heading">¶</a></h2>
+<p>Machine steps execute automatically when reached. They’re used for:</p>
+<ul class="simple">
+<li><p>Data processing</p></li>
+<li><p>API calls</p></li>
+<li><p>Calculations</p></li>
+<li><p>Notifications</p></li>
+<li><p>File operations</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMachineStep</span><span class="p">,</span> <span class="n">WorkflowContext</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="k">class</span><span class="w"> </span><span class="nc">SendNotification</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="4"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Send an email notification.&quot;&quot;&quot;</span>
+</span><span data-line="5">
+</span><span data-line="6">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;send_notification&quot;</span>
+</span><span data-line="7">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Notify stakeholders of the request&quot;</span>
+</span><span data-line="8">
+</span><span data-line="9">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="10">        <span class="n">recipient</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requester_email&quot;</span><span class="p">)</span>
+</span><span data-line="11">        <span class="n">status</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+</span><span data-line="12">
+</span><span data-line="13">        <span class="k">await</span> <span class="n">email_service</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+</span><span data-line="14">            <span class="n">to</span><span class="o">=</span><span class="n">recipient</span><span class="p">,</span>
+</span><span data-line="15">            <span class="n">subject</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Request </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+</span><span data-line="16">            <span class="n">body</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Your request has been </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+</span><span data-line="17">        <span class="p">)</span>
+</span><span data-line="18">
+</span><span data-line="19">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;notification_sent&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<section id="machine-step-lifecycle">
+<h3>Machine Step Lifecycle<a class="headerlink" href="#machine-step-lifecycle" title="Link to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p><strong>can_execute</strong>: Check if the step should run (guards)</p></li>
+<li><p><strong>execute</strong>: Perform the actual work</p></li>
+<li><p><strong>on_success</strong>: Called after successful execution</p></li>
+<li><p><strong>on_failure</strong>: Called if execution raises an exception</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">RobustStep</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="2">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;robust_step&quot;</span>
+</span><span data-line="3">
+</span><span data-line="4">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">can_execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span data-line="5"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Only run if prerequisites are met.&quot;&quot;&quot;</span>
+</span><span data-line="6">        <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;prerequisites_met&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span data-line="7">
+</span><span data-line="8">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="9"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Main logic.&quot;&quot;&quot;</span>
+</span><span data-line="10">        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">do_work</span><span class="p">()</span>
+</span><span data-line="11">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</span><span data-line="12">
+</span><span data-line="13">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_success</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="14"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Log success metrics.&quot;&quot;&quot;</span>
+</span><span data-line="15">        <span class="k">await</span> <span class="n">metrics</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s2">&quot;step_completed&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;step&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
+</span><span data-line="16">
+</span><span data-line="17">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_failure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">,</span> <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="18"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle failures gracefully.&quot;&quot;&quot;</span>
+</span><span data-line="19">        <span class="k">await</span> <span class="n">alerting</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Step failed: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="20">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
+</span></pre></div>
+</div>
+</section>
+</section>
+<section id="human-steps">
+<h2>Human Steps<a class="headerlink" href="#human-steps" title="Link to this heading">¶</a></h2>
+<p>Human steps pause execution and wait for user input. They’re used for:</p>
+<ul class="simple">
+<li><p>Approvals and rejections</p></li>
+<li><p>Form submissions</p></li>
+<li><p>Manual data entry</p></li>
+<li><p>Decision points requiring human judgment</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseHumanStep</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="k">class</span><span class="w"> </span><span class="nc">DocumentReview</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="4"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Human reviews and approves a document.&quot;&quot;&quot;</span>
+</span><span data-line="5">
+</span><span data-line="6">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;document_review&quot;</span>
+</span><span data-line="7">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Review Document&quot;</span>
+</span><span data-line="8">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Please review this document and provide your decision&quot;</span>
+</span><span data-line="9">
+</span><span data-line="10">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="11">        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="12">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="13">            <span class="s2">&quot;decision&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="14">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="15">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Your Decision&quot;</span><span class="p">,</span>
+</span><span data-line="16">                <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;approve&quot;</span><span class="p">,</span> <span class="s2">&quot;reject&quot;</span><span class="p">,</span> <span class="s2">&quot;revise&quot;</span><span class="p">],</span>
+</span><span data-line="17">                <span class="s2">&quot;enumNames&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Approve&quot;</span><span class="p">,</span> <span class="s2">&quot;Reject&quot;</span><span class="p">,</span> <span class="s2">&quot;Request Revisions&quot;</span><span class="p">],</span>
+</span><span data-line="18">            <span class="p">},</span>
+</span><span data-line="19">            <span class="s2">&quot;feedback&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="20">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="21">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Feedback&quot;</span><span class="p">,</span>
+</span><span data-line="22">                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Comments for the author&quot;</span><span class="p">,</span>
+</span><span data-line="23">            <span class="p">},</span>
+</span><span data-line="24">            <span class="s2">&quot;priority&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="25">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span>
+</span><span data-line="26">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Priority Score&quot;</span><span class="p">,</span>
+</span><span data-line="27">                <span class="s2">&quot;minimum&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span><span data-line="28">                <span class="s2">&quot;maximum&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+</span><span data-line="29">            <span class="p">},</span>
+</span><span data-line="30">        <span class="p">},</span>
+</span><span data-line="31">        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;decision&quot;</span><span class="p">],</span>
+</span><span data-line="32">    <span class="p">}</span>
+</span></pre></div>
+</div>
+<section id="form-schema">
+<h3>Form Schema<a class="headerlink" href="#form-schema" title="Link to this heading">¶</a></h3>
+<p>Human steps use <a class="reference external" href="https://json-schema.org/">JSON Schema</a> to define their forms.
+This enables:</p>
+<ul class="simple">
+<li><p>Automatic form generation in the UI</p></li>
+<li><p>Input validation</p></li>
+<li><p>Type safety</p></li>
+</ul>
+<p>Common schema patterns:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># Boolean approval</span>
+</span><span data-line="2"><span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="3">    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="4">    <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="5">        <span class="s2">&quot;approved&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Approve?&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+</span><span data-line="6">    <span class="p">},</span>
+</span><span data-line="7">    <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;approved&quot;</span><span class="p">],</span>
+</span><span data-line="8"><span class="p">}</span>
+</span><span data-line="9">
+</span><span data-line="10"><span class="c1"># Selection from options</span>
+</span><span data-line="11"><span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="12">    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="13">    <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="14">        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="15">            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="16">            <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pending&quot;</span><span class="p">,</span> <span class="s2">&quot;active&quot;</span><span class="p">,</span> <span class="s2">&quot;completed&quot;</span><span class="p">],</span>
+</span><span data-line="17">            <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;pending&quot;</span><span class="p">,</span>
+</span><span data-line="18">        <span class="p">},</span>
+</span><span data-line="19">    <span class="p">},</span>
+</span><span data-line="20"><span class="p">}</span>
+</span><span data-line="21">
+</span><span data-line="22"><span class="c1"># Numeric input with constraints</span>
+</span><span data-line="23"><span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="24">    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="25">    <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="26">        <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="27">            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">,</span>
+</span><span data-line="28">            <span class="s2">&quot;minimum&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span><span data-line="29">            <span class="s2">&quot;maximum&quot;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span>
+</span><span data-line="30">            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Adjustment Amount&quot;</span><span class="p">,</span>
+</span><span data-line="31">        <span class="p">},</span>
+</span><span data-line="32">    <span class="p">},</span>
+</span><span data-line="33"><span class="p">}</span>
+</span></pre></div>
+</div>
+</section>
+<section id="task-assignment">
+<h3>Task Assignment<a class="headerlink" href="#task-assignment" title="Link to this heading">¶</a></h3>
+<p>Human tasks can be assigned to specific users or groups:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">ManagerApproval</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="2">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;manager_approval&quot;</span>
+</span><span data-line="3">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Manager Approval Required&quot;</span>
+</span><span data-line="4">
+</span><span data-line="5">    <span class="c1"># Assignment can be dynamic based on context</span>
+</span><span data-line="6">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_assignee</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="7">        <span class="n">department</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;department&quot;</span><span class="p">)</span>
+</span><span data-line="8">        <span class="k">return</span> <span class="k">await</span> <span class="n">org_chart</span><span class="o">.</span><span class="n">get_manager</span><span class="p">(</span><span class="n">department</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+</section>
+<section id="gateway-steps">
+<h2>Gateway Steps<a class="headerlink" href="#gateway-steps" title="Link to this heading">¶</a></h2>
+<p>Gateways are decision points that route execution based on conditions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseGateway</span><span class="p">,</span> <span class="n">WorkflowContext</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="k">class</span><span class="w"> </span><span class="nc">AmountGateway</span><span class="p">(</span><span class="n">BaseGateway</span><span class="p">):</span>
+</span><span data-line="4"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Route based on request amount.&quot;&quot;&quot;</span>
+</span><span data-line="5">
+</span><span data-line="6">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;amount_gateway&quot;</span>
+</span><span data-line="7">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Determine approval path based on amount&quot;</span>
+</span><span data-line="8">
+</span><span data-line="9">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="10"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the name of the next step.&quot;&quot;&quot;</span>
+</span><span data-line="11">        <span class="n">amount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span data-line="12">
+</span><span data-line="13">        <span class="k">if</span> <span class="n">amount</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">:</span>
+</span><span data-line="14">            <span class="k">return</span> <span class="s2">&quot;vp_approval&quot;</span>
+</span><span data-line="15">        <span class="k">elif</span> <span class="n">amount</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">:</span>
+</span><span data-line="16">            <span class="k">return</span> <span class="s2">&quot;manager_approval&quot;</span>
+</span><span data-line="17">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="18">            <span class="k">return</span> <span class="s2">&quot;auto_approve&quot;</span>
+</span></pre></div>
+</div>
+<p>Gateways connect to multiple outgoing edges, and the <code class="docutils literal notranslate"><span class="pre">evaluate</span></code> method
+determines which path to take.</p>
+</section>
+<section id="timer-steps">
+<h2>Timer Steps<a class="headerlink" href="#timer-steps" title="Link to this heading">¶</a></h2>
+<p>Timer steps introduce delays or schedule execution for later:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimerStep</span>
+</span><span data-line="2"><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
+</span><span data-line="3">
+</span><span data-line="4"><span class="k">class</span><span class="w"> </span><span class="nc">WaitForBusinessHours</span><span class="p">(</span><span class="n">TimerStep</span><span class="p">):</span>
+</span><span data-line="5"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Wait until next business day if outside hours.&quot;&quot;&quot;</span>
+</span><span data-line="6">
+</span><span data-line="7">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;wait_for_business_hours&quot;</span>
+</span><span data-line="8">
+</span><span data-line="9">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_delay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">timedelta</span><span class="p">:</span>
+</span><span data-line="10">        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+</span><span data-line="11">        <span class="k">if</span> <span class="n">is_business_hours</span><span class="p">(</span><span class="n">now</span><span class="p">):</span>
+</span><span data-line="12">            <span class="k">return</span> <span class="n">timedelta</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># No delay</span>
+</span><span data-line="13">        <span class="k">return</span> <span class="n">get_next_business_day</span><span class="p">()</span> <span class="o">-</span> <span class="n">now</span>
+</span></pre></div>
+</div>
+</section>
+<section id="webhook-steps">
+<h2>Webhook Steps<a class="headerlink" href="#webhook-steps" title="Link to this heading">¶</a></h2>
+<p>Webhook steps wait for external systems to call back:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">WebhookStep</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="k">class</span><span class="w"> </span><span class="nc">PaymentCallback</span><span class="p">(</span><span class="n">WebhookStep</span><span class="p">):</span>
+</span><span data-line="4"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Wait for payment processor callback.&quot;&quot;&quot;</span>
+</span><span data-line="5">
+</span><span data-line="6">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;payment_callback&quot;</span>
+</span><span data-line="7">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Waiting for payment confirmation&quot;</span>
+</span><span data-line="8">
+</span><span data-line="9">    <span class="c1"># Unique token for this webhook</span>
+</span><span data-line="10">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_callback_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="11">        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;payment-</span><span class="si">{</span><span class="n">context</span><span class="o">.</span><span class="n">instance_id</span><span class="si">}</span><span class="s2">&quot;</span>
+</span></pre></div>
+</div>
+<p>The workflow pauses until an external system calls the webhook endpoint
+with the matching token.</p>
+</section>
+<section id="step-groups">
+<h2>Step Groups<a class="headerlink" href="#step-groups" title="Link to this heading">¶</a></h2>
+<p>Steps can be composed into groups for more complex patterns:</p>
+<section id="sequential-group">
+<h3>Sequential Group<a class="headerlink" href="#sequential-group" title="Link to this heading">¶</a></h3>
+<p>Execute steps one after another:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">SequentialGroup</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="n">validation_sequence</span> <span class="o">=</span> <span class="n">SequentialGroup</span><span class="p">(</span>
+</span><span data-line="4">    <span class="n">ValidateFormat</span><span class="p">(),</span>
+</span><span data-line="5">    <span class="n">ValidateContent</span><span class="p">(),</span>
+</span><span data-line="6">    <span class="n">ValidatePermissions</span><span class="p">(),</span>
+</span><span data-line="7"><span class="p">)</span>
+</span><span data-line="8">
+</span><span data-line="9"><span class="c1"># Use in workflow definition</span>
+</span><span data-line="10"><span class="n">steps</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="11">    <span class="s2">&quot;validation&quot;</span><span class="p">:</span> <span class="n">validation_sequence</span><span class="p">,</span>
+</span><span data-line="12">    <span class="o">...</span>
+</span><span data-line="13"><span class="p">}</span>
+</span></pre></div>
+</div>
+</section>
+<section id="parallel-group">
+<h3>Parallel Group<a class="headerlink" href="#parallel-group" title="Link to this heading">¶</a></h3>
+<p>Execute steps simultaneously:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParallelGroup</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="n">parallel_notifications</span> <span class="o">=</span> <span class="n">ParallelGroup</span><span class="p">(</span>
+</span><span data-line="4">    <span class="n">SendEmail</span><span class="p">(),</span>
+</span><span data-line="5">    <span class="n">SendSlack</span><span class="p">(),</span>
+</span><span data-line="6">    <span class="n">SendSMS</span><span class="p">(),</span>
+</span><span data-line="7"><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>All steps in the group run concurrently, and execution continues when all
+complete.</p>
+</section>
+<section id="parallel-with-callback-chord">
+<h3>Parallel with Callback (Chord)<a class="headerlink" href="#parallel-with-callback-chord" title="Link to this heading">¶</a></h3>
+<p>Execute steps in parallel, then run a callback with all results:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParallelGroup</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="n">gather_approvals</span> <span class="o">=</span> <span class="n">ParallelGroup</span><span class="p">(</span>
+</span><span data-line="4">    <span class="n">ManagerApproval</span><span class="p">(),</span>
+</span><span data-line="5">    <span class="n">LegalReview</span><span class="p">(),</span>
+</span><span data-line="6">    <span class="n">FinanceReview</span><span class="p">(),</span>
+</span><span data-line="7">    <span class="n">callback</span><span class="o">=</span><span class="n">AggregateDecisions</span><span class="p">(),</span>  <span class="c1"># Runs after all complete</span>
+</span><span data-line="8"><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+</section>
+<section id="creating-custom-steps">
+<h2>Creating Custom Steps<a class="headerlink" href="#creating-custom-steps" title="Link to this heading">¶</a></h2>
+<p>While the base classes cover most use cases, you can create custom step types:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">Step</span><span class="p">,</span> <span class="n">StepType</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="k">class</span><span class="w"> </span><span class="nc">BatchProcessingStep</span><span class="p">(</span><span class="n">Step</span><span class="p">):</span>
+</span><span data-line="4"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom step for batch operations.&quot;&quot;&quot;</span>
+</span><span data-line="5">
+</span><span data-line="6">    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+</span><span data-line="7">    <span class="n">step_type</span> <span class="o">=</span> <span class="n">StepType</span><span class="o">.</span><span class="n">MACHINE</span>
+</span><span data-line="8">    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span>
+</span><span data-line="9">
+</span><span data-line="10">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="11">        <span class="n">items</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;items&quot;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span data-line="12">
+</span><span data-line="13">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">):</span>
+</span><span data-line="14">            <span class="n">batch</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">]</span>
+</span><span data-line="15">            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</span><span data-line="16">
+</span><span data-line="17">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;processed_count&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">))</span>
+</span><span data-line="18">
+</span><span data-line="19">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">process_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="20"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Override in subclasses.&quot;&quot;&quot;</span>
+</span><span data-line="21">        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</span></pre></div>
+</div>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading">¶</a></h2>
+<section id="keep-steps-focused">
+<h3>Keep Steps Focused<a class="headerlink" href="#keep-steps-focused" title="Link to this heading">¶</a></h3>
+<p>Each step should do one thing well:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># Good - single responsibility</span>
+</span><span data-line="2"><span class="k">class</span><span class="w"> </span><span class="nc">ValidateInput</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="3">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+</span><span data-line="4">        <span class="n">validate</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">))</span>
+</span><span data-line="5">
+</span><span data-line="6"><span class="k">class</span><span class="w"> </span><span class="nc">TransformData</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="7">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+</span><span data-line="8">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">)))</span>
+</span><span data-line="9">
+</span><span data-line="10"><span class="c1"># Avoid - doing too much</span>
+</span><span data-line="11"><span class="k">class</span><span class="w"> </span><span class="nc">DoEverything</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="12">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+</span><span data-line="13">        <span class="n">validate</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">))</span>
+</span><span data-line="14">        <span class="n">result</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">))</span>
+</span><span data-line="15">        <span class="k">await</span> <span class="n">save_to_database</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span data-line="16">        <span class="k">await</span> <span class="n">send_notification</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="make-steps-reusable">
+<h3>Make Steps Reusable<a class="headerlink" href="#make-steps-reusable" title="Link to this heading">¶</a></h3>
+<p>Design steps to be configurable and reusable across workflows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">SendEmail</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="2"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reusable email step.&quot;&quot;&quot;</span>
+</span><span data-line="3">
+</span><span data-line="4">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;send_email&quot;</span>
+</span><span data-line="5">
+</span><span data-line="6">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">recipient_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;email&quot;</span><span class="p">):</span>
+</span><span data-line="7">        <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">template</span>
+</span><span data-line="8">        <span class="bp">self</span><span class="o">.</span><span class="n">recipient_key</span> <span class="o">=</span> <span class="n">recipient_key</span>
+</span><span data-line="9">
+</span><span data-line="10">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="11">        <span class="n">recipient</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recipient_key</span><span class="p">)</span>
+</span><span data-line="12">        <span class="k">await</span> <span class="n">email_service</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">recipient</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">)</span>
+</span><span data-line="13">
+</span><span data-line="14"><span class="c1"># Use with different configurations</span>
+</span><span data-line="15"><span class="n">steps</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="16">    <span class="s2">&quot;notify_requester&quot;</span><span class="p">:</span> <span class="n">SendEmail</span><span class="p">(</span><span class="s2">&quot;request_received&quot;</span><span class="p">,</span> <span class="s2">&quot;requester_email&quot;</span><span class="p">),</span>
+</span><span data-line="17">    <span class="s2">&quot;notify_manager&quot;</span><span class="p">:</span> <span class="n">SendEmail</span><span class="p">(</span><span class="s2">&quot;approval_needed&quot;</span><span class="p">,</span> <span class="s2">&quot;manager_email&quot;</span><span class="p">),</span>
+</span><span data-line="18"><span class="p">}</span>
+</span></pre></div>
+</div>
+</section>
+<section id="handle-errors-gracefully">
+<h3>Handle Errors Gracefully<a class="headerlink" href="#handle-errors-gracefully" title="Link to this heading">¶</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">on_failure</span></code> to handle errors without crashing the workflow:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">ResilientStep</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="2">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="3">        <span class="c1"># Main logic that might fail</span>
+</span><span data-line="4">        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">risky_operation</span><span class="p">()</span>
+</span><span data-line="5">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</span><span data-line="6">
+</span><span data-line="7">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_failure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">,</span> <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="8">        <span class="c1"># Log the error</span>
+</span><span data-line="9">        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Step failed: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="10">
+</span><span data-line="11">        <span class="c1"># Set fallback values</span>
+</span><span data-line="12">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span data-line="13">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
+</span><span data-line="14">
+</span><span data-line="15">        <span class="c1"># Optionally, don&#39;t re-raise to allow workflow to continue</span>
+</span><span data-line="16">        <span class="c1"># raise  # Re-raise to fail the workflow</span>
+</span></pre></div>
+</div>
+</section>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="context.html"><span class="doc">Workflow Context</span></a> - How steps share data</p></li>
+<li><p><a class="reference internal" href="execution.html"><span class="doc">Execution</span></a> - How steps are executed</p></li>
+<li><p><a class="reference internal" href="../guides/human-tasks.html"><span class="doc">Working with Human Tasks</span></a> - Deep dive into human tasks</p></li>
+</ul>
+</section>
+</section>
+
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-prev">
+    <a href="workflows.html">
+      <i class="i-lucide chevron-left"></i>
+      <div class="page-info">
+        <span>Previous</span><div class="title">Workflows</div></div>
+    </a>
+  </div><div class="navigation-next">
+    <a href="context.html">
+      <div class="page-info">
+        <span>Next</span>
+        <div class="title">Workflow Context</div>
+      </div>
+      <i class="i-lucide chevron-right"></i>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2025, Jacob Coffee</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+<a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+  <iconify-icon icon="simple-icons:github"></iconify-icon>
+</a></div>
+    </div>
+  </div>
+</footer>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=30646c52"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/shibuya.js?v=c1cf1a6b"></script></body>
+</html>
