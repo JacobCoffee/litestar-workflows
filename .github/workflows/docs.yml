@@ -79,7 +79,7 @@ jobs:
 
       - name: Deploy PR preview
         if: github.event_name == 'pull_request' && (steps.filter.outputs.docs == 'true' || steps.filter.outputs.src == 'true')
-        uses: rossjrw/pr-preview-action@3e4ed158ecbf7f58513abc0dc15a4ad3b0e18ee5 # v1.7.2
+        uses: rossjrw/pr-preview-action@5fd5f8e2f88e735fc3d1151302b32242037e3962 # v1.8.0
         with:
           source-dir: docs/_build/html
 
