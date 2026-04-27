@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="violet" data-content_root="../../../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>litestar_workflows.web.controllers - litestar-workflows</title><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/shibuya.css?v=14737038" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link media="print" rel="stylesheet" type="text/css" href="../../../_static/print.css?v=20ff2c19" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=8975404a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    <meta property="og:type" content="website"/><meta property="og:title" content="litestar_workflows.web.controllers"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../../../index.html">
+      
+      
+      <strong>litestar-workflows</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"><ul><li class="link">
+          <a href="https://litestar.dev/">
+            <span>Litestar</span></a>
+        </li><li class="link">
+          <a href="https://pypi.org/project/litestar-workflows/">
+            <span>PyPI</span></a>
+        </li></ul></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../../../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Learn</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/quickstart.html">Quickstart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Core Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/workflows.html">Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/steps.html">Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/context.html">Workflow Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/execution.html">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">How-To Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/simple-workflow.html">Building a Simple Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/human-tasks.html">Working with Human Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/parallel-execution.html">Parallel Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/conditional-logic.html">Conditional Logic and Gateways</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/persistence.html">Database Persistence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/web-plugin.html">Web Plugin (REST API)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cookbook/index.html">Cookbook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../cookbook/expense-approval.html">Expense Approval Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cookbook/document-review.html">Document Review Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cookbook/onboarding.html">Employee Onboarding Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cookbook/integration-patterns.html">Integration Patterns</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/modules.html">Module Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/web.html">Web Plugin API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../architecture/index.html">Architecture Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../architecture/phase3-web.html">Phase 3: Web Plugin Architecture</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/litestar-919193495116337154">Discord</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../../../index.html"><span itemprop="name">litestar-workflows</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../../index.html"><span itemprop="name">Module code</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">litestar_workflows.web.controllers</strong>
+        <meta itemprop="position" content="3" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+        <article class="yue" role="main">
+          <h1>Source code for litestar_workflows.web.controllers</h1><div class="highlight"><pre>
+<span></span><span data-line="1"><span class="sd">&quot;&quot;&quot;REST API controllers for workflow management.</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="sd">This module provides three controller classes for managing workflows:</span>
+</span><span data-line="4"><span class="sd">- WorkflowDefinitionController: Manage workflow definitions and schemas</span>
+</span><span data-line="5"><span class="sd">- WorkflowInstanceController: Start, monitor, and control workflow executions</span>
+</span><span data-line="6"><span class="sd">- HumanTaskController: Manage human approval tasks</span>
+</span><span data-line="7"><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="8">
+</span><span data-line="9"><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+</span><span data-line="10">
+</span><span data-line="11"><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">ClassVar</span>
+</span><span data-line="12"><span class="kn">from</span><span class="w"> </span><span class="nn">uuid</span><span class="w"> </span><span class="kn">import</span> <span class="n">UUID</span>
+</span><span data-line="13">
+</span><span data-line="14"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar</span><span class="w"> </span><span class="kn">import</span> <span class="n">Controller</span><span class="p">,</span> <span class="n">get</span><span class="p">,</span> <span class="n">post</span>
+</span><span data-line="15"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">NotFoundException</span>
+</span><span data-line="16"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar.params</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parameter</span>
+</span><span data-line="17">
+</span><span data-line="18"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows.core.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkflowStatus</span>
+</span><span data-line="19"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows.engine.local</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalExecutionEngine</span>  <span class="c1"># noqa: TC001 - needed for DI</span>
+</span><span data-line="20"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows.engine.registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkflowRegistry</span>  <span class="c1"># noqa: TC001 - needed for DI</span>
+</span><span data-line="21"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows.web.dto</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span data-line="22">    <span class="n">CompleteTaskDTO</span><span class="p">,</span>
+</span><span data-line="23">    <span class="n">GraphDTO</span><span class="p">,</span>
+</span><span data-line="24">    <span class="n">HumanTaskDTO</span><span class="p">,</span>
+</span><span data-line="25">    <span class="n">ReassignTaskDTO</span><span class="p">,</span>
+</span><span data-line="26">    <span class="n">StartWorkflowDTO</span><span class="p">,</span>
+</span><span data-line="27">    <span class="n">StepExecutionDTO</span><span class="p">,</span>
+</span><span data-line="28">    <span class="n">WorkflowDefinitionDTO</span><span class="p">,</span>
+</span><span data-line="29">    <span class="n">WorkflowInstanceDetailDTO</span><span class="p">,</span>
+</span><span data-line="30">    <span class="n">WorkflowInstanceDTO</span><span class="p">,</span>
+</span><span data-line="31"><span class="p">)</span>
+</span><span data-line="32"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows.web.graph</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span data-line="33">    <span class="n">generate_mermaid_graph</span><span class="p">,</span>
+</span><span data-line="34">    <span class="n">generate_mermaid_graph_with_state</span><span class="p">,</span>
+</span><span data-line="35">    <span class="n">parse_graph_to_dict</span><span class="p">,</span>
+</span><span data-line="36"><span class="p">)</span>
+</span><span data-line="37">
+</span><span data-line="38"><span class="c1"># Try to import DB repositories - will be None if [db] extra not installed</span>
+</span><span data-line="39"><span class="k">try</span><span class="p">:</span>
+</span><span data-line="40">    <span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows.db.repositories</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span data-line="41">        <span class="n">HumanTaskRepository</span><span class="p">,</span>
+</span><span data-line="42">        <span class="n">WorkflowInstanceRepository</span><span class="p">,</span>
+</span><span data-line="43">    <span class="p">)</span>
+</span><span data-line="44"><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+</span><span data-line="45">    <span class="n">HumanTaskRepository</span> <span class="o">=</span> <span class="n">Any</span>  <span class="c1"># type: ignore[misc, assignment]</span>
+</span><span data-line="46">    <span class="n">WorkflowInstanceRepository</span> <span class="o">=</span> <span class="n">Any</span>  <span class="c1"># type: ignore[misc, assignment]</span>
+</span><span data-line="47">
+</span><span data-line="48"><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+</span><span data-line="49">    <span class="s2">&quot;HumanTaskController&quot;</span><span class="p">,</span>
+</span><span data-line="50">    <span class="s2">&quot;WorkflowDefinitionController&quot;</span><span class="p">,</span>
+</span><span data-line="51">    <span class="s2">&quot;WorkflowInstanceController&quot;</span><span class="p">,</span>
+</span><span data-line="52"><span class="p">]</span>
+</span><span data-line="53">
+</span><span data-line="54">
+<div class="viewcode-block" id="WorkflowDefinitionController">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.web.WorkflowDefinitionController">[docs]</a>
+</span><span data-line="55"><span class="k">class</span><span class="w"> </span><span class="nc">WorkflowDefinitionController</span><span class="p">(</span><span class="n">Controller</span><span class="p">):</span>
+</span><span data-line="56"><span class="w">    </span><span class="sd">&quot;&quot;&quot;API controller for workflow definitions.</span>
+</span><span data-line="57">
+</span><span data-line="58"><span class="sd">    Provides endpoints for listing and retrieving workflow definitions,</span>
+</span><span data-line="59"><span class="sd">    including their schemas and graph visualizations.</span>
+</span><span data-line="60">
+</span><span data-line="61"><span class="sd">    Tags: Workflow Definitions</span>
+</span><span data-line="62"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="63">
+</span><span data-line="64">    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/definitions&quot;</span>
+</span><span data-line="65">    <span class="n">tags</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Workflow Definitions&quot;</span><span class="p">]</span>
+</span><span data-line="66">
+</span><span data-line="67">    <span class="nd">@get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+</span><span data-line="68">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_definitions</span><span class="p">(</span>
+</span><span data-line="69">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="70">        <span class="n">workflow_registry</span><span class="p">:</span> <span class="n">WorkflowRegistry</span><span class="p">,</span>
+</span><span data-line="71">        <span class="n">active_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+</span><span data-line="72">            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span data-line="73">            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Filter to only active workflow definitions&quot;</span><span class="p">,</span>
+</span><span data-line="74">        <span class="p">),</span>
+</span><span data-line="75">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">WorkflowDefinitionDTO</span><span class="p">]:</span>
+</span><span data-line="76"><span class="w">        </span><span class="sd">&quot;&quot;&quot;List all registered workflow definitions.</span>
+</span><span data-line="77">
+</span><span data-line="78"><span class="sd">        Returns a list of workflow definitions available for instantiation.</span>
+</span><span data-line="79"><span class="sd">        By default, only active definitions are returned.</span>
+</span><span data-line="80">
+</span><span data-line="81"><span class="sd">        Args:</span>
+</span><span data-line="82"><span class="sd">            workflow_registry: Injected workflow registry.</span>
+</span><span data-line="83"><span class="sd">            active_only: Whether to filter to only active definitions.</span>
+</span><span data-line="84">
+</span><span data-line="85"><span class="sd">        Returns:</span>
+</span><span data-line="86"><span class="sd">            List of workflow definition DTOs.</span>
+</span><span data-line="87"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="88">        <span class="n">definitions</span> <span class="o">=</span> <span class="n">workflow_registry</span><span class="o">.</span><span class="n">list_definitions</span><span class="p">()</span>
+</span><span data-line="89">
+</span><span data-line="90">        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="91">        <span class="k">for</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">definitions</span><span class="p">:</span>
+</span><span data-line="92">            <span class="n">dto</span> <span class="o">=</span> <span class="n">WorkflowDefinitionDTO</span><span class="p">(</span>
+</span><span data-line="93">                <span class="n">name</span><span class="o">=</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+</span><span data-line="94">                <span class="n">version</span><span class="o">=</span><span class="n">definition</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span data-line="95">                <span class="n">description</span><span class="o">=</span><span class="n">definition</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+</span><span data-line="96">                <span class="n">steps</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">definition</span><span class="o">.</span><span class="n">steps</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+</span><span data-line="97">                <span class="n">edges</span><span class="o">=</span><span class="p">[</span>
+</span><span data-line="98">                    <span class="p">{</span>
+</span><span data-line="99">                        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">edge</span><span class="o">.</span><span class="n">get_source_name</span><span class="p">(),</span>
+</span><span data-line="100">                        <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">edge</span><span class="o">.</span><span class="n">get_target_name</span><span class="p">(),</span>
+</span><span data-line="101">                        <span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">edge</span><span class="o">.</span><span class="n">condition</span><span class="p">)</span> <span class="k">if</span> <span class="n">edge</span><span class="o">.</span><span class="n">condition</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="102">                    <span class="p">}</span>
+</span><span data-line="103">                    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">definition</span><span class="o">.</span><span class="n">edges</span>
+</span><span data-line="104">                <span class="p">],</span>
+</span><span data-line="105">                <span class="n">initial_step</span><span class="o">=</span><span class="n">definition</span><span class="o">.</span><span class="n">initial_step</span><span class="p">,</span>
+</span><span data-line="106">                <span class="n">terminal_steps</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">definition</span><span class="o">.</span><span class="n">terminal_steps</span><span class="p">),</span>
+</span><span data-line="107">            <span class="p">)</span>
+</span><span data-line="108">            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dto</span><span class="p">)</span>
+</span><span data-line="109">
+</span><span data-line="110">        <span class="k">return</span> <span class="n">result</span>
+</span><span data-line="111">
+</span><span data-line="112">    <span class="nd">@get</span><span class="p">(</span><span class="s2">&quot;/{name:str}&quot;</span><span class="p">)</span>
+</span><span data-line="113">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_definition</span><span class="p">(</span>
+</span><span data-line="114">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="115">        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span data-line="116">        <span class="n">workflow_registry</span><span class="p">:</span> <span class="n">WorkflowRegistry</span><span class="p">,</span>
+</span><span data-line="117">        <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+</span><span data-line="118">            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="119">            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Specific version to retrieve. If omitted, returns latest.&quot;</span><span class="p">,</span>
+</span><span data-line="120">        <span class="p">),</span>
+</span><span data-line="121">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkflowDefinitionDTO</span><span class="p">:</span>
+</span><span data-line="122"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a specific workflow definition by name.</span>
+</span><span data-line="123">
+</span><span data-line="124"><span class="sd">        Args:</span>
+</span><span data-line="125"><span class="sd">            name: The workflow name.</span>
+</span><span data-line="126"><span class="sd">            workflow_registry: Injected workflow registry.</span>
+</span><span data-line="127"><span class="sd">            version: Optional specific version to retrieve.</span>
+</span><span data-line="128">
+</span><span data-line="129"><span class="sd">        Returns:</span>
+</span><span data-line="130"><span class="sd">            Workflow definition DTO.</span>
+</span><span data-line="131">
+</span><span data-line="132"><span class="sd">        Raises:</span>
+</span><span data-line="133"><span class="sd">            NotFoundException: If workflow definition not found.</span>
+</span><span data-line="134"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="135">        <span class="k">try</span><span class="p">:</span>
+</span><span data-line="136">            <span class="n">definition</span> <span class="o">=</span> <span class="n">workflow_registry</span><span class="o">.</span><span class="n">get_definition</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">)</span>
+</span><span data-line="137">        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span data-line="138">            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Workflow definition &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; not found&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+</span><span data-line="139">
+</span><span data-line="140">        <span class="k">return</span> <span class="n">WorkflowDefinitionDTO</span><span class="p">(</span>
+</span><span data-line="141">            <span class="n">name</span><span class="o">=</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+</span><span data-line="142">            <span class="n">version</span><span class="o">=</span><span class="n">definition</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span data-line="143">            <span class="n">description</span><span class="o">=</span><span class="n">definition</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+</span><span data-line="144">            <span class="n">steps</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">definition</span><span class="o">.</span><span class="n">steps</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+</span><span data-line="145">            <span class="n">edges</span><span class="o">=</span><span class="p">[</span>
+</span><span data-line="146">                <span class="p">{</span>
+</span><span data-line="147">                    <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">edge</span><span class="o">.</span><span class="n">get_source_name</span><span class="p">(),</span>
+</span><span data-line="148">                    <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">edge</span><span class="o">.</span><span class="n">get_target_name</span><span class="p">(),</span>
+</span><span data-line="149">                    <span class="s2">&quot;condition&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">edge</span><span class="o">.</span><span class="n">condition</span><span class="p">)</span> <span class="k">if</span> <span class="n">edge</span><span class="o">.</span><span class="n">condition</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="150">                <span class="p">}</span>
+</span><span data-line="151">                <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">definition</span><span class="o">.</span><span class="n">edges</span>
+</span><span data-line="152">            <span class="p">],</span>
+</span><span data-line="153">            <span class="n">initial_step</span><span class="o">=</span><span class="n">definition</span><span class="o">.</span><span class="n">initial_step</span><span class="p">,</span>
+</span><span data-line="154">            <span class="n">terminal_steps</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">definition</span><span class="o">.</span><span class="n">terminal_steps</span><span class="p">),</span>
+</span><span data-line="155">        <span class="p">)</span>
+</span><span data-line="156">
+</span><span data-line="157">    <span class="nd">@get</span><span class="p">(</span><span class="s2">&quot;/{name:str}/graph&quot;</span><span class="p">)</span>
+</span><span data-line="158">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_definition_graph</span><span class="p">(</span>
+</span><span data-line="159">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="160">        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span data-line="161">        <span class="n">workflow_registry</span><span class="p">:</span> <span class="n">WorkflowRegistry</span><span class="p">,</span>
+</span><span data-line="162">        <span class="n">graph_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+</span><span data-line="163">            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;mermaid&quot;</span><span class="p">,</span>
+</span><span data-line="164">            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Graph format: &#39;mermaid&#39; or &#39;json&#39;&quot;</span><span class="p">,</span>
+</span><span data-line="165">        <span class="p">),</span>
+</span><span data-line="166">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GraphDTO</span><span class="p">:</span>
+</span><span data-line="167"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get workflow graph visualization.</span>
+</span><span data-line="168">
+</span><span data-line="169"><span class="sd">        Returns a visual representation of the workflow graph, either as</span>
+</span><span data-line="170"><span class="sd">        MermaidJS source or as a structured JSON object.</span>
+</span><span data-line="171">
+</span><span data-line="172"><span class="sd">        Args:</span>
+</span><span data-line="173"><span class="sd">            name: The workflow name.</span>
+</span><span data-line="174"><span class="sd">            workflow_registry: Injected workflow registry.</span>
+</span><span data-line="175"><span class="sd">            graph_format: Graph format (&#39;mermaid&#39; or &#39;json&#39;).</span>
+</span><span data-line="176">
+</span><span data-line="177"><span class="sd">        Returns:</span>
+</span><span data-line="178"><span class="sd">            Graph DTO with visualization data.</span>
+</span><span data-line="179">
+</span><span data-line="180"><span class="sd">        Raises:</span>
+</span><span data-line="181"><span class="sd">            NotFoundException: If workflow definition not found.</span>
+</span><span data-line="182"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="183">        <span class="k">try</span><span class="p">:</span>
+</span><span data-line="184">            <span class="n">definition</span> <span class="o">=</span> <span class="n">workflow_registry</span><span class="o">.</span><span class="n">get_definition</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</span><span data-line="185">        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span data-line="186">            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Workflow definition &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; not found&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+</span><span data-line="187">
+</span><span data-line="188">        <span class="k">if</span> <span class="n">graph_format</span> <span class="o">==</span> <span class="s2">&quot;mermaid&quot;</span><span class="p">:</span>
+</span><span data-line="189">            <span class="n">mermaid_source</span> <span class="o">=</span> <span class="n">generate_mermaid_graph</span><span class="p">(</span><span class="n">definition</span><span class="p">)</span>
+</span><span data-line="190">            <span class="n">graph_dict</span> <span class="o">=</span> <span class="n">parse_graph_to_dict</span><span class="p">(</span><span class="n">definition</span><span class="p">)</span>
+</span><span data-line="191">            <span class="k">return</span> <span class="n">GraphDTO</span><span class="p">(</span>
+</span><span data-line="192">                <span class="n">mermaid_source</span><span class="o">=</span><span class="n">mermaid_source</span><span class="p">,</span>
+</span><span data-line="193">                <span class="n">nodes</span><span class="o">=</span><span class="n">graph_dict</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">],</span>
+</span><span data-line="194">                <span class="n">edges</span><span class="o">=</span><span class="n">graph_dict</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">],</span>
+</span><span data-line="195">            <span class="p">)</span>
+</span><span data-line="196">        <span class="k">if</span> <span class="n">graph_format</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
+</span><span data-line="197">            <span class="n">graph_dict</span> <span class="o">=</span> <span class="n">parse_graph_to_dict</span><span class="p">(</span><span class="n">definition</span><span class="p">)</span>
+</span><span data-line="198">            <span class="k">return</span> <span class="n">GraphDTO</span><span class="p">(</span>
+</span><span data-line="199">                <span class="n">mermaid_source</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+</span><span data-line="200">                <span class="n">nodes</span><span class="o">=</span><span class="n">graph_dict</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">],</span>
+</span><span data-line="201">                <span class="n">edges</span><span class="o">=</span><span class="n">graph_dict</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">],</span>
+</span><span data-line="202">            <span class="p">)</span>
+</span><span data-line="203">        <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Unknown format: </span><span class="si">{</span><span class="n">graph_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+</span><span data-line="204">
+</span><span data-line="205">
+<div class="viewcode-block" id="WorkflowInstanceController">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.web.WorkflowInstanceController">[docs]</a>
+</span><span data-line="206"><span class="k">class</span><span class="w"> </span><span class="nc">WorkflowInstanceController</span><span class="p">(</span><span class="n">Controller</span><span class="p">):</span>
+</span><span data-line="207"><span class="w">    </span><span class="sd">&quot;&quot;&quot;API controller for workflow instances.</span>
+</span><span data-line="208">
+</span><span data-line="209"><span class="sd">    Provides endpoints for starting, listing, and managing workflow</span>
+</span><span data-line="210"><span class="sd">    instance executions.</span>
+</span><span data-line="211">
+</span><span data-line="212"><span class="sd">    Tags: Workflow Instances</span>
+</span><span data-line="213"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="214">
+</span><span data-line="215">    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/instances&quot;</span>
+</span><span data-line="216">    <span class="n">tags</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Workflow Instances&quot;</span><span class="p">]</span>
+</span><span data-line="217">
+</span><span data-line="218">    <span class="nd">@post</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">dto</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_dto</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</span><span data-line="219">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">start_workflow</span><span class="p">(</span>
+</span><span data-line="220">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="221">        <span class="n">data</span><span class="p">:</span> <span class="n">StartWorkflowDTO</span><span class="p">,</span>
+</span><span data-line="222">        <span class="n">workflow_engine</span><span class="p">:</span> <span class="n">LocalExecutionEngine</span><span class="p">,</span>
+</span><span data-line="223">        <span class="n">workflow_registry</span><span class="p">:</span> <span class="n">WorkflowRegistry</span><span class="p">,</span>
+</span><span data-line="224">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkflowInstanceDTO</span><span class="p">:</span>
+</span><span data-line="225"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Start a new workflow instance.</span>
+</span><span data-line="226">
+</span><span data-line="227"><span class="sd">        Creates and starts a new instance of the specified workflow definition.</span>
+</span><span data-line="228">
+</span><span data-line="229"><span class="sd">        Args:</span>
+</span><span data-line="230"><span class="sd">            data: Workflow start parameters.</span>
+</span><span data-line="231"><span class="sd">            workflow_engine: Injected execution engine.</span>
+</span><span data-line="232"><span class="sd">            workflow_registry: Injected workflow registry.</span>
+</span><span data-line="233">
+</span><span data-line="234"><span class="sd">        Returns:</span>
+</span><span data-line="235"><span class="sd">            Workflow instance DTO.</span>
+</span><span data-line="236">
+</span><span data-line="237"><span class="sd">        Raises:</span>
+</span><span data-line="238"><span class="sd">            NotFoundException: If workflow definition not found.</span>
+</span><span data-line="239"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="240">        <span class="k">try</span><span class="p">:</span>
+</span><span data-line="241">            <span class="n">workflow_class</span> <span class="o">=</span> <span class="n">workflow_registry</span><span class="o">.</span><span class="n">get_workflow_class</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">definition_name</span><span class="p">)</span>
+</span><span data-line="242">        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span data-line="243">            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Workflow &#39;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">definition_name</span><span class="si">}</span><span class="s2">&#39; not found&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+</span><span data-line="244">
+</span><span data-line="245">        <span class="c1"># Start the workflow</span>
+</span><span data-line="246">        <span class="n">instance</span> <span class="o">=</span> <span class="k">await</span> <span class="n">workflow_engine</span><span class="o">.</span><span class="n">start_workflow</span><span class="p">(</span>
+</span><span data-line="247">            <span class="n">workflow_class</span><span class="p">,</span>
+</span><span data-line="248">            <span class="n">initial_data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">input_data</span> <span class="ow">or</span> <span class="p">{},</span>
+</span><span data-line="249">        <span class="p">)</span>
+</span><span data-line="250">
+</span><span data-line="251">        <span class="k">return</span> <span class="n">WorkflowInstanceDTO</span><span class="p">(</span>
+</span><span data-line="252">            <span class="nb">id</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span data-line="253">            <span class="n">definition_name</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">workflow_name</span><span class="p">,</span>
+</span><span data-line="254">            <span class="n">status</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+</span><span data-line="255">            <span class="n">current_step</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">current_step</span><span class="p">,</span>
+</span><span data-line="256">            <span class="n">started_at</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">started_at</span><span class="p">,</span>
+</span><span data-line="257">            <span class="n">completed_at</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="258">            <span class="n">created_by</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span>
+</span><span data-line="259">        <span class="p">)</span>
+</span><span data-line="260">
+</span><span data-line="261">    <span class="nd">@get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+</span><span data-line="262">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_instances</span><span class="p">(</span>
+</span><span data-line="263">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="264">        <span class="n">workflow_instance_repo</span><span class="p">:</span> <span class="n">WorkflowInstanceRepository</span><span class="p">,</span>
+</span><span data-line="265">        <span class="n">workflow_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+</span><span data-line="266">            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="267">            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Filter by workflow name&quot;</span><span class="p">,</span>
+</span><span data-line="268">        <span class="p">),</span>
+</span><span data-line="269">        <span class="n">status</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+</span><span data-line="270">            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="271">            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Filter by status&quot;</span><span class="p">,</span>
+</span><span data-line="272">        <span class="p">),</span>
+</span><span data-line="273">        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+</span><span data-line="274">            <span class="n">default</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+</span><span data-line="275">            <span class="n">le</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+</span><span data-line="276">            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Maximum number of results&quot;</span><span class="p">,</span>
+</span><span data-line="277">        <span class="p">),</span>
+</span><span data-line="278">        <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+</span><span data-line="279">            <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+</span><span data-line="280">            <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+</span><span data-line="281">            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Number of results to skip&quot;</span><span class="p">,</span>
+</span><span data-line="282">        <span class="p">),</span>
+</span><span data-line="283">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">WorkflowInstanceDTO</span><span class="p">]:</span>
+</span><span data-line="284"><span class="w">        </span><span class="sd">&quot;&quot;&quot;List workflow instances with optional filtering.</span>
+</span><span data-line="285">
+</span><span data-line="286"><span class="sd">        Args:</span>
+</span><span data-line="287"><span class="sd">            workflow_instance_repo: Injected workflow instance repository.</span>
+</span><span data-line="288"><span class="sd">            workflow_name: Optional workflow name filter.</span>
+</span><span data-line="289"><span class="sd">            status: Optional status filter.</span>
+</span><span data-line="290"><span class="sd">            limit: Maximum number of results.</span>
+</span><span data-line="291"><span class="sd">            offset: Pagination offset.</span>
+</span><span data-line="292">
+</span><span data-line="293"><span class="sd">        Returns:</span>
+</span><span data-line="294"><span class="sd">            List of workflow instance DTOs.</span>
+</span><span data-line="295"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="296">        <span class="n">workflow_status</span> <span class="o">=</span> <span class="n">WorkflowStatus</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="k">if</span> <span class="n">status</span> <span class="k">else</span> <span class="kc">None</span>
+</span><span data-line="297">
+</span><span data-line="298">        <span class="k">if</span> <span class="n">workflow_name</span><span class="p">:</span>
+</span><span data-line="299">            <span class="n">instances</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">workflow_instance_repo</span><span class="o">.</span><span class="n">find_by_workflow</span><span class="p">(</span>
+</span><span data-line="300">                <span class="n">workflow_name</span><span class="o">=</span><span class="n">workflow_name</span><span class="p">,</span>
+</span><span data-line="301">                <span class="n">status</span><span class="o">=</span><span class="n">workflow_status</span><span class="p">,</span>
+</span><span data-line="302">                <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span>
+</span><span data-line="303">                <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span>
+</span><span data-line="304">            <span class="p">)</span>
+</span><span data-line="305">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="306">            <span class="c1"># List all instances</span>
+</span><span data-line="307">            <span class="n">instances</span> <span class="o">=</span> <span class="k">await</span> <span class="n">workflow_instance_repo</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+</span><span data-line="308">
+</span><span data-line="309">        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="310">        <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">[:</span><span class="n">limit</span><span class="p">]:</span>  <span class="c1"># Apply limit manually if not filtered</span>
+</span><span data-line="311">            <span class="n">dto</span> <span class="o">=</span> <span class="n">WorkflowInstanceDTO</span><span class="p">(</span>
+</span><span data-line="312">                <span class="nb">id</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span data-line="313">                <span class="n">definition_name</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">workflow_name</span><span class="p">,</span>
+</span><span data-line="314">                <span class="n">status</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+</span><span data-line="315">                <span class="n">current_step</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">current_step</span><span class="p">,</span>
+</span><span data-line="316">                <span class="n">started_at</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">started_at</span><span class="p">,</span>
+</span><span data-line="317">                <span class="n">completed_at</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">completed_at</span><span class="p">,</span>
+</span><span data-line="318">                <span class="n">created_by</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">created_by</span><span class="p">,</span>
+</span><span data-line="319">            <span class="p">)</span>
+</span><span data-line="320">            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dto</span><span class="p">)</span>
+</span><span data-line="321">
+</span><span data-line="322">        <span class="k">return</span> <span class="n">result</span>
+</span><span data-line="323">
+</span><span data-line="324">    <span class="nd">@get</span><span class="p">(</span><span class="s2">&quot;/{instance_id:uuid}&quot;</span><span class="p">)</span>
+</span><span data-line="325">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_instance</span><span class="p">(</span>
+</span><span data-line="326">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="327">        <span class="n">instance_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+</span><span data-line="328">        <span class="n">workflow_instance_repo</span><span class="p">:</span> <span class="n">WorkflowInstanceRepository</span><span class="p">,</span>
+</span><span data-line="329">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkflowInstanceDetailDTO</span><span class="p">:</span>
+</span><span data-line="330"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get detailed workflow instance information.</span>
+</span><span data-line="331">
+</span><span data-line="332"><span class="sd">        Returns comprehensive information about a workflow instance including</span>
+</span><span data-line="333"><span class="sd">        execution context, step history, and current state.</span>
+</span><span data-line="334">
+</span><span data-line="335"><span class="sd">        Args:</span>
+</span><span data-line="336"><span class="sd">            instance_id: The workflow instance ID.</span>
+</span><span data-line="337"><span class="sd">            workflow_instance_repo: Injected workflow instance repository.</span>
+</span><span data-line="338">
+</span><span data-line="339"><span class="sd">        Returns:</span>
+</span><span data-line="340"><span class="sd">            Detailed workflow instance DTO.</span>
+</span><span data-line="341">
+</span><span data-line="342"><span class="sd">        Raises:</span>
+</span><span data-line="343"><span class="sd">            NotFoundException: If instance not found.</span>
+</span><span data-line="344"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="345">        <span class="n">instance</span> <span class="o">=</span> <span class="k">await</span> <span class="n">workflow_instance_repo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">instance_id</span><span class="p">)</span>
+</span><span data-line="346">        <span class="k">if</span> <span class="ow">not</span> <span class="n">instance</span><span class="p">:</span>
+</span><span data-line="347">            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Workflow instance </span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
+</span><span data-line="348">
+</span><span data-line="349">        <span class="c1"># Convert step executions to DTOs</span>
+</span><span data-line="350">        <span class="n">step_history</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="351">        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="s2">&quot;step_executions&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">instance</span><span class="o">.</span><span class="n">step_executions</span><span class="p">:</span>
+</span><span data-line="352">            <span class="k">for</span> <span class="n">step_exec</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">step_executions</span><span class="p">:</span>
+</span><span data-line="353">                <span class="n">step_dto</span> <span class="o">=</span> <span class="n">StepExecutionDTO</span><span class="p">(</span>
+</span><span data-line="354">                    <span class="nb">id</span><span class="o">=</span><span class="n">step_exec</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span data-line="355">                    <span class="n">step_name</span><span class="o">=</span><span class="n">step_exec</span><span class="o">.</span><span class="n">step_name</span><span class="p">,</span>
+</span><span data-line="356">                    <span class="n">status</span><span class="o">=</span><span class="n">step_exec</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+</span><span data-line="357">                    <span class="n">started_at</span><span class="o">=</span><span class="n">step_exec</span><span class="o">.</span><span class="n">started_at</span><span class="p">,</span>
+</span><span data-line="358">                    <span class="n">completed_at</span><span class="o">=</span><span class="n">step_exec</span><span class="o">.</span><span class="n">completed_at</span><span class="p">,</span>
+</span><span data-line="359">                    <span class="n">error</span><span class="o">=</span><span class="n">step_exec</span><span class="o">.</span><span class="n">error</span><span class="p">,</span>
+</span><span data-line="360">                <span class="p">)</span>
+</span><span data-line="361">                <span class="n">step_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step_dto</span><span class="p">)</span>
+</span><span data-line="362">
+</span><span data-line="363">        <span class="k">return</span> <span class="n">WorkflowInstanceDetailDTO</span><span class="p">(</span>
+</span><span data-line="364">            <span class="nb">id</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span data-line="365">            <span class="n">definition_name</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">workflow_name</span><span class="p">,</span>
+</span><span data-line="366">            <span class="n">status</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+</span><span data-line="367">            <span class="n">current_step</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">current_step</span><span class="p">,</span>
+</span><span data-line="368">            <span class="n">started_at</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">started_at</span><span class="p">,</span>
+</span><span data-line="369">            <span class="n">completed_at</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">completed_at</span><span class="p">,</span>
+</span><span data-line="370">            <span class="n">created_by</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">created_by</span><span class="p">,</span>
+</span><span data-line="371">            <span class="n">context_data</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">context_data</span><span class="p">,</span>
+</span><span data-line="372">            <span class="n">metadata</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">metadata_</span><span class="p">,</span>
+</span><span data-line="373">            <span class="n">step_history</span><span class="o">=</span><span class="n">step_history</span><span class="p">,</span>
+</span><span data-line="374">            <span class="n">error</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">error</span><span class="p">,</span>
+</span><span data-line="375">        <span class="p">)</span>
+</span><span data-line="376">
+</span><span data-line="377">    <span class="nd">@get</span><span class="p">(</span><span class="s2">&quot;/{instance_id:uuid}/graph&quot;</span><span class="p">)</span>
+</span><span data-line="378">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_instance_graph</span><span class="p">(</span>
+</span><span data-line="379">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="380">        <span class="n">instance_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+</span><span data-line="381">        <span class="n">workflow_instance_repo</span><span class="p">:</span> <span class="n">WorkflowInstanceRepository</span><span class="p">,</span>
+</span><span data-line="382">        <span class="n">workflow_registry</span><span class="p">:</span> <span class="n">WorkflowRegistry</span><span class="p">,</span>
+</span><span data-line="383">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GraphDTO</span><span class="p">:</span>
+</span><span data-line="384"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get workflow instance graph with execution state highlighting.</span>
+</span><span data-line="385">
+</span><span data-line="386"><span class="sd">        Returns a visual representation of the workflow with the current</span>
+</span><span data-line="387"><span class="sd">        execution state highlighted, showing completed and failed steps.</span>
+</span><span data-line="388">
+</span><span data-line="389"><span class="sd">        Args:</span>
+</span><span data-line="390"><span class="sd">            instance_id: The workflow instance ID.</span>
+</span><span data-line="391"><span class="sd">            workflow_instance_repo: Injected workflow instance repository.</span>
+</span><span data-line="392"><span class="sd">            workflow_registry: Injected workflow registry.</span>
+</span><span data-line="393">
+</span><span data-line="394"><span class="sd">        Returns:</span>
+</span><span data-line="395"><span class="sd">            Graph DTO with state highlighting.</span>
+</span><span data-line="396">
+</span><span data-line="397"><span class="sd">        Raises:</span>
+</span><span data-line="398"><span class="sd">            NotFoundException: If instance not found.</span>
+</span><span data-line="399"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="400">        <span class="n">instance</span> <span class="o">=</span> <span class="k">await</span> <span class="n">workflow_instance_repo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">instance_id</span><span class="p">)</span>
+</span><span data-line="401">        <span class="k">if</span> <span class="ow">not</span> <span class="n">instance</span><span class="p">:</span>
+</span><span data-line="402">            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Workflow instance </span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
+</span><span data-line="403">
+</span><span data-line="404">        <span class="k">try</span><span class="p">:</span>
+</span><span data-line="405">            <span class="n">definition</span> <span class="o">=</span> <span class="n">workflow_registry</span><span class="o">.</span><span class="n">get_definition</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">workflow_name</span><span class="p">)</span>
+</span><span data-line="406">        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span data-line="407">            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Workflow definition &#39;</span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">workflow_name</span><span class="si">}</span><span class="s2">&#39; not found&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+</span><span data-line="408">
+</span><span data-line="409">        <span class="c1"># Extract completed and failed steps from execution history</span>
+</span><span data-line="410">        <span class="n">completed_steps</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="411">        <span class="n">failed_steps</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="412">
+</span><span data-line="413">        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="s2">&quot;step_executions&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">instance</span><span class="o">.</span><span class="n">step_executions</span><span class="p">:</span>
+</span><span data-line="414">            <span class="k">for</span> <span class="n">step_exec</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">step_executions</span><span class="p">:</span>
+</span><span data-line="415">                <span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows.core.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">StepStatus</span>
+</span><span data-line="416">
+</span><span data-line="417">                <span class="k">if</span> <span class="n">step_exec</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">StepStatus</span><span class="o">.</span><span class="n">SUCCEEDED</span><span class="p">:</span>
+</span><span data-line="418">                    <span class="n">completed_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step_exec</span><span class="o">.</span><span class="n">step_name</span><span class="p">)</span>
+</span><span data-line="419">                <span class="k">elif</span> <span class="n">step_exec</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">StepStatus</span><span class="o">.</span><span class="n">FAILED</span><span class="p">:</span>
+</span><span data-line="420">                    <span class="n">failed_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step_exec</span><span class="o">.</span><span class="n">step_name</span><span class="p">)</span>
+</span><span data-line="421">
+</span><span data-line="422">        <span class="n">mermaid_source</span> <span class="o">=</span> <span class="n">generate_mermaid_graph_with_state</span><span class="p">(</span>
+</span><span data-line="423">            <span class="n">definition</span><span class="p">,</span>
+</span><span data-line="424">            <span class="n">current_step</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">current_step</span><span class="p">,</span>
+</span><span data-line="425">            <span class="n">completed_steps</span><span class="o">=</span><span class="n">completed_steps</span><span class="p">,</span>
+</span><span data-line="426">            <span class="n">failed_steps</span><span class="o">=</span><span class="n">failed_steps</span><span class="p">,</span>
+</span><span data-line="427">        <span class="p">)</span>
+</span><span data-line="428">
+</span><span data-line="429">        <span class="n">graph_dict</span> <span class="o">=</span> <span class="n">parse_graph_to_dict</span><span class="p">(</span><span class="n">definition</span><span class="p">)</span>
+</span><span data-line="430">
+</span><span data-line="431">        <span class="k">return</span> <span class="n">GraphDTO</span><span class="p">(</span>
+</span><span data-line="432">            <span class="n">mermaid_source</span><span class="o">=</span><span class="n">mermaid_source</span><span class="p">,</span>
+</span><span data-line="433">            <span class="n">nodes</span><span class="o">=</span><span class="n">graph_dict</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">],</span>
+</span><span data-line="434">            <span class="n">edges</span><span class="o">=</span><span class="n">graph_dict</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">],</span>
+</span><span data-line="435">        <span class="p">)</span>
+</span><span data-line="436">
+</span><span data-line="437">    <span class="nd">@post</span><span class="p">(</span><span class="s2">&quot;/{instance_id:uuid}/cancel&quot;</span><span class="p">)</span>
+</span><span data-line="438">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">cancel_instance</span><span class="p">(</span>
+</span><span data-line="439">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="440">        <span class="n">instance_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+</span><span data-line="441">        <span class="n">workflow_engine</span><span class="p">:</span> <span class="n">LocalExecutionEngine</span><span class="p">,</span>
+</span><span data-line="442">        <span class="n">workflow_instance_repo</span><span class="p">:</span> <span class="n">WorkflowInstanceRepository</span><span class="p">,</span>
+</span><span data-line="443">        <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+</span><span data-line="444">            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;User canceled&quot;</span><span class="p">,</span>
+</span><span data-line="445">            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reason for cancellation&quot;</span><span class="p">,</span>
+</span><span data-line="446">        <span class="p">),</span>
+</span><span data-line="447">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkflowInstanceDTO</span><span class="p">:</span>
+</span><span data-line="448"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Cancel a running workflow instance.</span>
+</span><span data-line="449">
+</span><span data-line="450"><span class="sd">        Args:</span>
+</span><span data-line="451"><span class="sd">            instance_id: The workflow instance ID.</span>
+</span><span data-line="452"><span class="sd">            workflow_engine: Injected execution engine.</span>
+</span><span data-line="453"><span class="sd">            workflow_instance_repo: Injected workflow instance repository.</span>
+</span><span data-line="454"><span class="sd">            reason: Cancellation reason.</span>
+</span><span data-line="455">
+</span><span data-line="456"><span class="sd">        Returns:</span>
+</span><span data-line="457"><span class="sd">            Updated workflow instance DTO.</span>
+</span><span data-line="458">
+</span><span data-line="459"><span class="sd">        Raises:</span>
+</span><span data-line="460"><span class="sd">            NotFoundException: If instance not found.</span>
+</span><span data-line="461"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="462">        <span class="n">instance</span> <span class="o">=</span> <span class="k">await</span> <span class="n">workflow_instance_repo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">instance_id</span><span class="p">)</span>
+</span><span data-line="463">        <span class="k">if</span> <span class="ow">not</span> <span class="n">instance</span><span class="p">:</span>
+</span><span data-line="464">            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Workflow instance </span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
+</span><span data-line="465">
+</span><span data-line="466">        <span class="k">await</span> <span class="n">workflow_engine</span><span class="o">.</span><span class="n">cancel_workflow</span><span class="p">(</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="n">reason</span><span class="p">)</span>
+</span><span data-line="467">
+</span><span data-line="468">        <span class="c1"># Reload instance</span>
+</span><span data-line="469">        <span class="n">instance</span> <span class="o">=</span> <span class="k">await</span> <span class="n">workflow_instance_repo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">instance_id</span><span class="p">)</span>
+</span><span data-line="470">
+</span><span data-line="471">        <span class="k">return</span> <span class="n">WorkflowInstanceDTO</span><span class="p">(</span>
+</span><span data-line="472">            <span class="nb">id</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span data-line="473">            <span class="n">definition_name</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">workflow_name</span><span class="p">,</span>
+</span><span data-line="474">            <span class="n">status</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+</span><span data-line="475">            <span class="n">current_step</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">current_step</span><span class="p">,</span>
+</span><span data-line="476">            <span class="n">started_at</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">started_at</span><span class="p">,</span>
+</span><span data-line="477">            <span class="n">completed_at</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">completed_at</span><span class="p">,</span>
+</span><span data-line="478">            <span class="n">created_by</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">created_by</span><span class="p">,</span>
+</span><span data-line="479">        <span class="p">)</span>
+</span><span data-line="480">
+</span><span data-line="481">    <span class="nd">@post</span><span class="p">(</span><span class="s2">&quot;/{instance_id:uuid}/retry&quot;</span><span class="p">)</span>
+</span><span data-line="482">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">retry_instance</span><span class="p">(</span>
+</span><span data-line="483">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="484">        <span class="n">instance_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+</span><span data-line="485">        <span class="n">workflow_engine</span><span class="p">:</span> <span class="n">LocalExecutionEngine</span><span class="p">,</span>
+</span><span data-line="486">        <span class="n">workflow_instance_repo</span><span class="p">:</span> <span class="n">WorkflowInstanceRepository</span><span class="p">,</span>
+</span><span data-line="487">        <span class="n">from_step</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+</span><span data-line="488">            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="489">            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Step to retry from (defaults to failed step)&quot;</span><span class="p">,</span>
+</span><span data-line="490">        <span class="p">),</span>
+</span><span data-line="491">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkflowInstanceDTO</span><span class="p">:</span>
+</span><span data-line="492"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Retry a failed workflow instance.</span>
+</span><span data-line="493">
+</span><span data-line="494"><span class="sd">        Args:</span>
+</span><span data-line="495"><span class="sd">            instance_id: The workflow instance ID.</span>
+</span><span data-line="496"><span class="sd">            workflow_engine: Injected execution engine.</span>
+</span><span data-line="497"><span class="sd">            workflow_instance_repo: Injected workflow instance repository.</span>
+</span><span data-line="498"><span class="sd">            from_step: Optional step to retry from.</span>
+</span><span data-line="499">
+</span><span data-line="500"><span class="sd">        Returns:</span>
+</span><span data-line="501"><span class="sd">            Updated workflow instance DTO.</span>
+</span><span data-line="502">
+</span><span data-line="503"><span class="sd">        Raises:</span>
+</span><span data-line="504"><span class="sd">            NotFoundException: If instance not found.</span>
+</span><span data-line="505"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="506">        <span class="n">instance</span> <span class="o">=</span> <span class="k">await</span> <span class="n">workflow_instance_repo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">instance_id</span><span class="p">)</span>
+</span><span data-line="507">        <span class="k">if</span> <span class="ow">not</span> <span class="n">instance</span><span class="p">:</span>
+</span><span data-line="508">            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Workflow instance </span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
+</span><span data-line="509">
+</span><span data-line="510">        <span class="c1"># Retry logic would go here - this is a placeholder</span>
+</span><span data-line="511">        <span class="c1"># In a real implementation, this would call engine.retry_workflow()</span>
+</span><span data-line="512">        <span class="c1"># For now, we&#39;ll just return the instance</span>
+</span><span data-line="513">
+</span><span data-line="514">        <span class="k">return</span> <span class="n">WorkflowInstanceDTO</span><span class="p">(</span>
+</span><span data-line="515">            <span class="nb">id</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span data-line="516">            <span class="n">definition_name</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">workflow_name</span><span class="p">,</span>
+</span><span data-line="517">            <span class="n">status</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+</span><span data-line="518">            <span class="n">current_step</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">current_step</span><span class="p">,</span>
+</span><span data-line="519">            <span class="n">started_at</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">started_at</span><span class="p">,</span>
+</span><span data-line="520">            <span class="n">completed_at</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">completed_at</span><span class="p">,</span>
+</span><span data-line="521">            <span class="n">created_by</span><span class="o">=</span><span class="n">instance</span><span class="o">.</span><span class="n">created_by</span><span class="p">,</span>
+</span><span data-line="522">        <span class="p">)</span></div>
+
+</span><span data-line="523">
+</span><span data-line="524">
+<div class="viewcode-block" id="HumanTaskController">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.web.HumanTaskController">[docs]</a>
+</span><span data-line="525"><span class="k">class</span><span class="w"> </span><span class="nc">HumanTaskController</span><span class="p">(</span><span class="n">Controller</span><span class="p">):</span>
+</span><span data-line="526"><span class="w">    </span><span class="sd">&quot;&quot;&quot;API controller for human tasks.</span>
+</span><span data-line="527">
+</span><span data-line="528"><span class="sd">    Provides endpoints for managing human approval tasks including</span>
+</span><span data-line="529"><span class="sd">    listing, completing, and reassigning tasks.</span>
+</span><span data-line="530">
+</span><span data-line="531"><span class="sd">    Tags: Human Tasks</span>
+</span><span data-line="532"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="533">
+</span><span data-line="534">    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/tasks&quot;</span>
+</span><span data-line="535">    <span class="n">tags</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Human Tasks&quot;</span><span class="p">]</span>
+</span><span data-line="536">
+</span><span data-line="537">    <span class="nd">@get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+</span><span data-line="538">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_tasks</span><span class="p">(</span>
+</span><span data-line="539">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="540">        <span class="n">human_task_repo</span><span class="p">:</span> <span class="n">HumanTaskRepository</span><span class="p">,</span>
+</span><span data-line="541">        <span class="n">assignee_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+</span><span data-line="542">            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="543">            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Filter by assignee ID&quot;</span><span class="p">,</span>
+</span><span data-line="544">        <span class="p">),</span>
+</span><span data-line="545">        <span class="n">assignee_group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+</span><span data-line="546">            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="547">            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Filter by assignee group&quot;</span><span class="p">,</span>
+</span><span data-line="548">        <span class="p">),</span>
+</span><span data-line="549">        <span class="n">status</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+</span><span data-line="550">            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;pending&quot;</span><span class="p">,</span>
+</span><span data-line="551">            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Filter by task status&quot;</span><span class="p">,</span>
+</span><span data-line="552">        <span class="p">),</span>
+</span><span data-line="553">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">HumanTaskDTO</span><span class="p">]:</span>
+</span><span data-line="554"><span class="w">        </span><span class="sd">&quot;&quot;&quot;List human tasks with optional filtering.</span>
+</span><span data-line="555">
+</span><span data-line="556"><span class="sd">        Returns tasks that match the specified filters. By default, returns</span>
+</span><span data-line="557"><span class="sd">        all pending tasks.</span>
+</span><span data-line="558">
+</span><span data-line="559"><span class="sd">        Args:</span>
+</span><span data-line="560"><span class="sd">            human_task_repo: Injected human task repository.</span>
+</span><span data-line="561"><span class="sd">            assignee_id: Optional assignee ID filter.</span>
+</span><span data-line="562"><span class="sd">            assignee_group: Optional group filter.</span>
+</span><span data-line="563"><span class="sd">            status: Task status filter.</span>
+</span><span data-line="564">
+</span><span data-line="565"><span class="sd">        Returns:</span>
+</span><span data-line="566"><span class="sd">            List of human task DTOs.</span>
+</span><span data-line="567"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="568">        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;pending&quot;</span><span class="p">:</span>
+</span><span data-line="569">            <span class="n">tasks</span> <span class="o">=</span> <span class="k">await</span> <span class="n">human_task_repo</span><span class="o">.</span><span class="n">find_pending</span><span class="p">(</span>
+</span><span data-line="570">                <span class="n">assignee_id</span><span class="o">=</span><span class="n">assignee_id</span><span class="p">,</span>
+</span><span data-line="571">                <span class="n">assignee_group</span><span class="o">=</span><span class="n">assignee_group</span><span class="p">,</span>
+</span><span data-line="572">            <span class="p">)</span>
+</span><span data-line="573">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="574">            <span class="c1"># For other statuses, we&#39;d need to implement additional filters</span>
+</span><span data-line="575">            <span class="n">tasks</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="576">
+</span><span data-line="577">        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="578">        <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">:</span>
+</span><span data-line="579">            <span class="n">dto</span> <span class="o">=</span> <span class="n">HumanTaskDTO</span><span class="p">(</span>
+</span><span data-line="580">                <span class="nb">id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span data-line="581">                <span class="n">instance_id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span>
+</span><span data-line="582">                <span class="n">step_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">step_name</span><span class="p">,</span>
+</span><span data-line="583">                <span class="n">title</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+</span><span data-line="584">                <span class="n">description</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+</span><span data-line="585">                <span class="n">assignee</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">assignee_id</span><span class="p">,</span>
+</span><span data-line="586">                <span class="n">status</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">status</span><span class="p">,</span>
+</span><span data-line="587">                <span class="n">due_date</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">due_at</span><span class="p">,</span>
+</span><span data-line="588">                <span class="n">created_at</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">created_at</span><span class="p">,</span>
+</span><span data-line="589">                <span class="n">form_schema</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">form_schema</span><span class="p">,</span>
+</span><span data-line="590">            <span class="p">)</span>
+</span><span data-line="591">            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dto</span><span class="p">)</span>
+</span><span data-line="592">
+</span><span data-line="593">        <span class="k">return</span> <span class="n">result</span>
+</span><span data-line="594">
+</span><span data-line="595">    <span class="nd">@get</span><span class="p">(</span><span class="s2">&quot;/{task_id:uuid}&quot;</span><span class="p">)</span>
+</span><span data-line="596">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_task</span><span class="p">(</span>
+</span><span data-line="597">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="598">        <span class="n">task_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+</span><span data-line="599">        <span class="n">human_task_repo</span><span class="p">:</span> <span class="n">HumanTaskRepository</span><span class="p">,</span>
+</span><span data-line="600">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HumanTaskDTO</span><span class="p">:</span>
+</span><span data-line="601"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get detailed information about a human task.</span>
+</span><span data-line="602">
+</span><span data-line="603"><span class="sd">        Args:</span>
+</span><span data-line="604"><span class="sd">            task_id: The task ID.</span>
+</span><span data-line="605"><span class="sd">            human_task_repo: Injected human task repository.</span>
+</span><span data-line="606">
+</span><span data-line="607"><span class="sd">        Returns:</span>
+</span><span data-line="608"><span class="sd">            Human task DTO.</span>
+</span><span data-line="609">
+</span><span data-line="610"><span class="sd">        Raises:</span>
+</span><span data-line="611"><span class="sd">            NotFoundException: If task not found.</span>
+</span><span data-line="612"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="613">        <span class="n">task</span> <span class="o">=</span> <span class="k">await</span> <span class="n">human_task_repo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
+</span><span data-line="614">        <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span><span class="p">:</span>
+</span><span data-line="615">            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Task </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
+</span><span data-line="616">
+</span><span data-line="617">        <span class="k">return</span> <span class="n">HumanTaskDTO</span><span class="p">(</span>
+</span><span data-line="618">            <span class="nb">id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span data-line="619">            <span class="n">instance_id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span>
+</span><span data-line="620">            <span class="n">step_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">step_name</span><span class="p">,</span>
+</span><span data-line="621">            <span class="n">title</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+</span><span data-line="622">            <span class="n">description</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+</span><span data-line="623">            <span class="n">assignee</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">assignee_id</span><span class="p">,</span>
+</span><span data-line="624">            <span class="n">status</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">status</span><span class="p">,</span>
+</span><span data-line="625">            <span class="n">due_date</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">due_at</span><span class="p">,</span>
+</span><span data-line="626">            <span class="n">created_at</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">created_at</span><span class="p">,</span>
+</span><span data-line="627">            <span class="n">form_schema</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">form_schema</span><span class="p">,</span>
+</span><span data-line="628">        <span class="p">)</span>
+</span><span data-line="629">
+</span><span data-line="630">    <span class="nd">@post</span><span class="p">(</span>
+</span><span data-line="631">        <span class="s2">&quot;/{task_id:uuid}/complete&quot;</span><span class="p">,</span>
+</span><span data-line="632">        <span class="n">dto</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="633">        <span class="n">return_dto</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="634">    <span class="p">)</span>
+</span><span data-line="635">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">complete_task</span><span class="p">(</span>
+</span><span data-line="636">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="637">        <span class="n">task_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+</span><span data-line="638">        <span class="n">data</span><span class="p">:</span> <span class="n">CompleteTaskDTO</span><span class="p">,</span>
+</span><span data-line="639">        <span class="n">workflow_engine</span><span class="p">:</span> <span class="n">LocalExecutionEngine</span><span class="p">,</span>
+</span><span data-line="640">        <span class="n">human_task_repo</span><span class="p">:</span> <span class="n">HumanTaskRepository</span><span class="p">,</span>
+</span><span data-line="641">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkflowInstanceDTO</span><span class="p">:</span>
+</span><span data-line="642"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Complete a human task with form data.</span>
+</span><span data-line="643">
+</span><span data-line="644"><span class="sd">        Submits the task completion data and resumes the workflow execution.</span>
+</span><span data-line="645">
+</span><span data-line="646"><span class="sd">        Args:</span>
+</span><span data-line="647"><span class="sd">            task_id: The task ID.</span>
+</span><span data-line="648"><span class="sd">            data: Task completion data.</span>
+</span><span data-line="649"><span class="sd">            workflow_engine: Injected execution engine.</span>
+</span><span data-line="650"><span class="sd">            human_task_repo: Injected human task repository.</span>
+</span><span data-line="651">
+</span><span data-line="652"><span class="sd">        Returns:</span>
+</span><span data-line="653"><span class="sd">            Updated workflow instance DTO.</span>
+</span><span data-line="654">
+</span><span data-line="655"><span class="sd">        Raises:</span>
+</span><span data-line="656"><span class="sd">            NotFoundException: If task not found.</span>
+</span><span data-line="657"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="658">        <span class="n">task</span> <span class="o">=</span> <span class="k">await</span> <span class="n">human_task_repo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
+</span><span data-line="659">        <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span><span class="p">:</span>
+</span><span data-line="660">            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Task </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
+</span><span data-line="661">
+</span><span data-line="662">        <span class="c1"># Complete the task</span>
+</span><span data-line="663">        <span class="k">await</span> <span class="n">human_task_repo</span><span class="o">.</span><span class="n">complete_task</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">completed_by</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">completed_by</span><span class="p">)</span>
+</span><span data-line="664">
+</span><span data-line="665">        <span class="c1"># Resume the workflow with the task output</span>
+</span><span data-line="666">        <span class="k">await</span> <span class="n">workflow_engine</span><span class="o">.</span><span class="n">complete_human_task</span><span class="p">(</span>
+</span><span data-line="667">            <span class="n">instance_id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span>
+</span><span data-line="668">            <span class="n">step_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">step_name</span><span class="p">,</span>
+</span><span data-line="669">            <span class="n">user_id</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">completed_by</span><span class="p">,</span>
+</span><span data-line="670">            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">output_data</span><span class="p">,</span>
+</span><span data-line="671">        <span class="p">)</span>
+</span><span data-line="672">
+</span><span data-line="673">        <span class="c1"># Return updated instance (placeholder)</span>
+</span><span data-line="674">        <span class="k">return</span> <span class="n">WorkflowInstanceDTO</span><span class="p">(</span>
+</span><span data-line="675">            <span class="nb">id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span>
+</span><span data-line="676">            <span class="n">definition_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>  <span class="c1"># Would need to fetch from instance</span>
+</span><span data-line="677">            <span class="n">status</span><span class="o">=</span><span class="s2">&quot;RUNNING&quot;</span><span class="p">,</span>
+</span><span data-line="678">            <span class="n">current_step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="679">            <span class="n">started_at</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">created_at</span><span class="p">,</span>
+</span><span data-line="680">            <span class="n">created_by</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">completed_by</span><span class="p">,</span>
+</span><span data-line="681">        <span class="p">)</span>
+</span><span data-line="682">
+</span><span data-line="683">    <span class="nd">@post</span><span class="p">(</span>
+</span><span data-line="684">        <span class="s2">&quot;/{task_id:uuid}/reassign&quot;</span><span class="p">,</span>
+</span><span data-line="685">        <span class="n">dto</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="686">        <span class="n">return_dto</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="687">    <span class="p">)</span>
+</span><span data-line="688">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">reassign_task</span><span class="p">(</span>
+</span><span data-line="689">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="690">        <span class="n">task_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+</span><span data-line="691">        <span class="n">data</span><span class="p">:</span> <span class="n">ReassignTaskDTO</span><span class="p">,</span>
+</span><span data-line="692">        <span class="n">human_task_repo</span><span class="p">:</span> <span class="n">HumanTaskRepository</span><span class="p">,</span>
+</span><span data-line="693">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HumanTaskDTO</span><span class="p">:</span>
+</span><span data-line="694"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Reassign a task to a different user.</span>
+</span><span data-line="695">
+</span><span data-line="696"><span class="sd">        Args:</span>
+</span><span data-line="697"><span class="sd">            task_id: The task ID.</span>
+</span><span data-line="698"><span class="sd">            data: Reassignment data.</span>
+</span><span data-line="699"><span class="sd">            human_task_repo: Injected human task repository.</span>
+</span><span data-line="700">
+</span><span data-line="701"><span class="sd">        Returns:</span>
+</span><span data-line="702"><span class="sd">            Updated human task DTO.</span>
+</span><span data-line="703">
+</span><span data-line="704"><span class="sd">        Raises:</span>
+</span><span data-line="705"><span class="sd">            NotFoundException: If task not found.</span>
+</span><span data-line="706"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="707">        <span class="n">task</span> <span class="o">=</span> <span class="k">await</span> <span class="n">human_task_repo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
+</span><span data-line="708">        <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span><span class="p">:</span>
+</span><span data-line="709">            <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Task </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
+</span><span data-line="710">
+</span><span data-line="711">        <span class="c1"># Update assignee</span>
+</span><span data-line="712">        <span class="n">task</span><span class="o">.</span><span class="n">assignee_id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">new_assignee</span>
+</span><span data-line="713">        <span class="k">await</span> <span class="n">human_task_repo</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</span><span data-line="714">
+</span><span data-line="715">        <span class="k">return</span> <span class="n">HumanTaskDTO</span><span class="p">(</span>
+</span><span data-line="716">            <span class="nb">id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span data-line="717">            <span class="n">instance_id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span>
+</span><span data-line="718">            <span class="n">step_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">step_name</span><span class="p">,</span>
+</span><span data-line="719">            <span class="n">title</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+</span><span data-line="720">            <span class="n">description</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+</span><span data-line="721">            <span class="n">assignee</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">assignee_id</span><span class="p">,</span>
+</span><span data-line="722">            <span class="n">status</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">status</span><span class="p">,</span>
+</span><span data-line="723">            <span class="n">due_date</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">due_at</span><span class="p">,</span>
+</span><span data-line="724">            <span class="n">created_at</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">created_at</span><span class="p">,</span>
+</span><span data-line="725">            <span class="n">form_schema</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">form_schema</span><span class="p">,</span>
+</span><span data-line="726">        <span class="p">)</span></div>
+
+</span></pre></div>
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2026, Jacob Coffee</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+<a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+  <iconify-icon icon="simple-icons:github"></iconify-icon>
+</a></div>
+    </div>
+  </div>
+</footer>
+      <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=30646c52"></script>
+      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../../../_static/shibuya.js?v=c1cf1a6b"></script></body>
+</html>
