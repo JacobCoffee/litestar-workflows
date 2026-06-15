@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="violet" data-content_root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Employee Onboarding Workflow - litestar-workflows</title><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Integration Patterns" href="integration-patterns.html" /><link rel="prev" title="Document Review Workflow" href="document-review.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=14737038" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=8975404a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    <meta property="og:type" content="website"/><meta property="og:title" content="Employee Onboarding Workflow"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../index.html">
+      
+      
+      <strong>litestar-workflows</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"><ul><li class="link">
+          <a href="https://litestar.dev/">
+            <span>Litestar</span></a>
+        </li><li class="link">
+          <a href="https://pypi.org/project/litestar-workflows/">
+            <span>PyPI</span></a>
+        </li></ul></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Learn</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/quickstart.html">Quickstart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Core Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/workflows.html">Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/steps.html">Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/context.html">Workflow Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concepts/execution.html">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/index.html">How-To Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../guides/simple-workflow.html">Building a Simple Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/human-tasks.html">Working with Human Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/parallel-execution.html">Parallel Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/conditional-logic.html">Conditional Logic and Gateways</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/persistence.html">Database Persistence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/web-plugin.html">Web Plugin (REST API)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Cookbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="expense-approval.html">Expense Approval Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="document-review.html">Document Review Workflow</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Employee Onboarding Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration-patterns.html">Integration Patterns</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/modules.html">Module Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/web.html">Web Plugin API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architecture Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../architecture/phase3-web.html">Phase 3: Web Plugin Architecture</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/litestar-919193495116337154">Discord</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#complete-implementation">Complete Implementation</a></li>
+<li><a class="reference internal" href="#key-concepts">Key Concepts</a><ul>
+<li><a class="reference internal" href="#parallel-task-execution">Parallel Task Execution</a></li>
+<li><a class="reference internal" href="#timer-steps-for-deadlines">Timer Steps for Deadlines</a></li>
+<li><a class="reference internal" href="#cross-department-coordination">Cross-Department Coordination</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#customization-points">Customization Points</a></li>
+<li><a class="reference internal" href="#usage-example">Usage Example</a></li>
+<li><a class="reference internal" href="#testing">Testing</a></li>
+<li><a class="reference internal" href="#common-variations">Common Variations</a></li>
+<li><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">litestar-workflows</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="index.html"><span itemprop="name">Cookbook</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">Employee Onboarding Workflow</strong>
+        <meta itemprop="position" content="3" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+        <article class="yue" role="main">
+          <section id="employee-onboarding-workflow">
+<h1>Employee Onboarding Workflow<a class="headerlink" href="#employee-onboarding-workflow" title="Link to this heading">¶</a></h1>
+<p>A complete employee onboarding system with parallel setup tasks,
+timer steps for deadline reminders, and coordinated task management
+across departments.</p>
+<p>This recipe demonstrates:</p>
+<ul class="simple">
+<li><p>Parallel execution of independent setup tasks</p></li>
+<li><p>Timer steps for deadline enforcement</p></li>
+<li><p>Cross-department task coordination (IT, HR, Manager)</p></li>
+<li><p>Progress tracking and status updates</p></li>
+<li><p>Escalation handling for overdue tasks</p></li>
+</ul>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>New employee onboarding requires coordination across multiple departments:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span><span data-line="1">[Start Onboarding]
+</span><span data-line="2">      |
+</span><span data-line="3">      v
+</span><span data-line="4">[Parallel Setup] --+--&gt; [IT Setup]      --&gt; [Equipment Delivered]
+</span><span data-line="5">                   |                           |
+</span><span data-line="6">                   +--&gt; [HR Paperwork]  --&gt; [Paperwork Complete]
+</span><span data-line="7">                   |                           |
+</span><span data-line="8">                   +--&gt; [Manager Prep]  --&gt; [Training Scheduled]
+</span><span data-line="9">                   |                           |
+</span><span data-line="10">                   v                           v
+</span><span data-line="11">            [Wait All Complete]      [Deadline Timer]
+</span><span data-line="12">                   |                      |
+</span><span data-line="13">                   v                      v
+</span><span data-line="14">           [Orientation]         [Escalate if Overdue]
+</span><span data-line="15">                   |
+</span><span data-line="16">                   v
+</span><span data-line="17">           [First Day Complete]
+</span></pre></div>
+</div>
+<p><strong>Key Tasks:</strong></p>
+<ul class="simple">
+<li><p><strong>IT Setup</strong>: Account creation, equipment provisioning</p></li>
+<li><p><strong>HR Paperwork</strong>: Tax forms, benefits enrollment</p></li>
+<li><p><strong>Manager Preparation</strong>: Workspace setup, training schedule</p></li>
+<li><p><strong>Orientation</strong>: First-day walkthrough</p></li>
+</ul>
+</section>
+<section id="complete-implementation">
+<h2>Complete Implementation<a class="headerlink" href="#complete-implementation" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="sd">&quot;&quot;&quot;Employee onboarding workflow with parallel tasks and deadline tracking.</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="sd">Save this file as ``employee_onboarding.py`` and run with:</span>
+</span><span data-line="4"><span class="sd">    uv run python employee_onboarding.py</span>
+</span><span data-line="5"><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="6">
+</span><span data-line="7"><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+</span><span data-line="8">
+</span><span data-line="9"><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+</span><span data-line="10"><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span>
+</span><span data-line="11">
+</span><span data-line="12"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar</span><span class="w"> </span><span class="kn">import</span> <span class="n">Litestar</span><span class="p">,</span> <span class="n">get</span>
+</span><span data-line="13"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar.di</span><span class="w"> </span><span class="kn">import</span> <span class="n">Provide</span>
+</span><span data-line="14"><span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.ext.asyncio</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncSession</span><span class="p">,</span> <span class="n">async_sessionmaker</span><span class="p">,</span> <span class="n">create_async_engine</span>
+</span><span data-line="15">
+</span><span data-line="16"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span data-line="17">    <span class="n">BaseMachineStep</span><span class="p">,</span>
+</span><span data-line="18">    <span class="n">BaseHumanStep</span><span class="p">,</span>
+</span><span data-line="19">    <span class="n">Edge</span><span class="p">,</span>
+</span><span data-line="20">    <span class="n">ExclusiveGateway</span><span class="p">,</span>
+</span><span data-line="21">    <span class="n">ParallelGroup</span><span class="p">,</span>
+</span><span data-line="22">    <span class="n">TimerStep</span><span class="p">,</span>
+</span><span data-line="23">    <span class="n">WorkflowContext</span><span class="p">,</span>
+</span><span data-line="24">    <span class="n">WorkflowDefinition</span><span class="p">,</span>
+</span><span data-line="25">    <span class="n">WorkflowPlugin</span><span class="p">,</span>
+</span><span data-line="26">    <span class="n">WorkflowPluginConfig</span><span class="p">,</span>
+</span><span data-line="27">    <span class="n">WorkflowRegistry</span><span class="p">,</span>
+</span><span data-line="28"><span class="p">)</span>
+</span><span data-line="29"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">PersistentExecutionEngine</span>
+</span><span data-line="30">
+</span><span data-line="31"><span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+</span><span data-line="32">    <span class="k">pass</span>
+</span><span data-line="33">
+</span><span data-line="34">
+</span><span data-line="35"><span class="c1"># =============================================================================</span>
+</span><span data-line="36"><span class="c1"># Step Definitions</span>
+</span><span data-line="37"><span class="c1"># =============================================================================</span>
+</span><span data-line="38">
+</span><span data-line="39"><span class="k">class</span><span class="w"> </span><span class="nc">InitiateOnboarding</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="40"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the onboarding process.&quot;&quot;&quot;</span>
+</span><span data-line="41">
+</span><span data-line="42">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;initiate_onboarding&quot;</span>
+</span><span data-line="43">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Start onboarding and calculate deadlines&quot;</span>
+</span><span data-line="44">
+</span><span data-line="45">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span data-line="46"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up onboarding context with employee info and deadlines.&quot;&quot;&quot;</span>
+</span><span data-line="47">        <span class="n">start_date_str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;start_date&quot;</span><span class="p">)</span>
+</span><span data-line="48">        <span class="k">if</span> <span class="ow">not</span> <span class="n">start_date_str</span><span class="p">:</span>
+</span><span data-line="49">            <span class="c1"># Default to 5 business days from now</span>
+</span><span data-line="50">            <span class="n">start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</span><span data-line="51">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="52">            <span class="n">start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">start_date_str</span><span class="p">)</span>
+</span><span data-line="53">
+</span><span data-line="54">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;start_date&quot;</span><span class="p">,</span> <span class="n">start_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="55">
+</span><span data-line="56">        <span class="c1"># Calculate deadlines</span>
+</span><span data-line="57">        <span class="c1"># IT setup must be done 2 days before start</span>
+</span><span data-line="58">        <span class="n">it_deadline</span> <span class="o">=</span> <span class="n">start_date</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</span><span data-line="59">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;it_deadline&quot;</span><span class="p">,</span> <span class="n">it_deadline</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="60">
+</span><span data-line="61">        <span class="c1"># HR paperwork due 1 day before</span>
+</span><span data-line="62">        <span class="n">hr_deadline</span> <span class="o">=</span> <span class="n">start_date</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span data-line="63">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;hr_deadline&quot;</span><span class="p">,</span> <span class="n">hr_deadline</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="64">
+</span><span data-line="65">        <span class="c1"># Manager prep due on start date</span>
+</span><span data-line="66">        <span class="n">manager_deadline</span> <span class="o">=</span> <span class="n">start_date</span>
+</span><span data-line="67">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;manager_deadline&quot;</span><span class="p">,</span> <span class="n">manager_deadline</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="68">
+</span><span data-line="69">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;onboarding_status&quot;</span><span class="p">,</span> <span class="s2">&quot;in_progress&quot;</span><span class="p">)</span>
+</span><span data-line="70">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;tasks_completed&quot;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span data-line="71">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;initiated_at&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="72">
+</span><span data-line="73">        <span class="k">return</span> <span class="p">{</span>
+</span><span data-line="74">            <span class="s2">&quot;initiated&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span data-line="75">            <span class="s2">&quot;employee&quot;</span><span class="p">:</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;employee_name&quot;</span><span class="p">),</span>
+</span><span data-line="76">            <span class="s2">&quot;start_date&quot;</span><span class="p">:</span> <span class="n">start_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+</span><span data-line="77">        <span class="p">}</span>
+</span><span data-line="78">
+</span><span data-line="79">
+</span><span data-line="80"><span class="k">class</span><span class="w"> </span><span class="nc">ITSetup</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="81"><span class="w">    </span><span class="sd">&quot;&quot;&quot;IT provisions accounts and equipment.&quot;&quot;&quot;</span>
+</span><span data-line="82">
+</span><span data-line="83">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;it_setup&quot;</span>
+</span><span data-line="84">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;IT Setup Required&quot;</span>
+</span><span data-line="85">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Create accounts and prepare equipment for new employee&quot;</span>
+</span><span data-line="86">
+</span><span data-line="87">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="88">        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="89">        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;IT Onboarding Setup&quot;</span><span class="p">,</span>
+</span><span data-line="90">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="91">            <span class="s2">&quot;email_created&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="92">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="93">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Email Account Created&quot;</span><span class="p">,</span>
+</span><span data-line="94">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="95">            <span class="p">},</span>
+</span><span data-line="96">            <span class="s2">&quot;email_address&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="97">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="98">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Email Address&quot;</span><span class="p">,</span>
+</span><span data-line="99">                <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span>
+</span><span data-line="100">            <span class="p">},</span>
+</span><span data-line="101">            <span class="s2">&quot;ad_account&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="102">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="103">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Active Directory Account Created&quot;</span><span class="p">,</span>
+</span><span data-line="104">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="105">            <span class="p">},</span>
+</span><span data-line="106">            <span class="s2">&quot;vpn_access&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="107">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="108">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;VPN Access Configured&quot;</span><span class="p">,</span>
+</span><span data-line="109">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="110">            <span class="p">},</span>
+</span><span data-line="111">            <span class="s2">&quot;laptop_model&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="112">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="113">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Laptop Model&quot;</span><span class="p">,</span>
+</span><span data-line="114">                <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MacBook Pro 14&quot;</span><span class="p">,</span> <span class="s2">&quot;MacBook Pro 16&quot;</span><span class="p">,</span> <span class="s2">&quot;Dell XPS 15&quot;</span><span class="p">,</span> <span class="s2">&quot;ThinkPad X1&quot;</span><span class="p">],</span>
+</span><span data-line="115">            <span class="p">},</span>
+</span><span data-line="116">            <span class="s2">&quot;laptop_asset_tag&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="117">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="118">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Asset Tag&quot;</span><span class="p">,</span>
+</span><span data-line="119">                <span class="s2">&quot;pattern&quot;</span><span class="p">:</span> <span class="s2">&quot;^[A-Z]</span><span class="si">{2}</span><span class="s2">[0-9]</span><span class="si">{6}</span><span class="s2">$&quot;</span><span class="p">,</span>
+</span><span data-line="120">            <span class="p">},</span>
+</span><span data-line="121">            <span class="s2">&quot;software_installed&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="122">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
+</span><span data-line="123">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Software Installed&quot;</span><span class="p">,</span>
+</span><span data-line="124">                <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="125">                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="126">                    <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Office 365&quot;</span><span class="p">,</span> <span class="s2">&quot;Slack&quot;</span><span class="p">,</span> <span class="s2">&quot;Zoom&quot;</span><span class="p">,</span> <span class="s2">&quot;IDE&quot;</span><span class="p">,</span> <span class="s2">&quot;VPN Client&quot;</span><span class="p">],</span>
+</span><span data-line="127">                <span class="p">},</span>
+</span><span data-line="128">                <span class="s2">&quot;uniqueItems&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span data-line="129">            <span class="p">},</span>
+</span><span data-line="130">            <span class="s2">&quot;notes&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="131">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="132">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Setup Notes&quot;</span><span class="p">,</span>
+</span><span data-line="133">            <span class="p">},</span>
+</span><span data-line="134">        <span class="p">},</span>
+</span><span data-line="135">        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;email_created&quot;</span><span class="p">,</span> <span class="s2">&quot;email_address&quot;</span><span class="p">,</span> <span class="s2">&quot;ad_account&quot;</span><span class="p">,</span> <span class="s2">&quot;laptop_model&quot;</span><span class="p">,</span> <span class="s2">&quot;laptop_asset_tag&quot;</span><span class="p">],</span>
+</span><span data-line="136">    <span class="p">}</span>
+</span><span data-line="137">
+</span><span data-line="138">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="139"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide employee details for IT team.&quot;&quot;&quot;</span>
+</span><span data-line="140">        <span class="n">name</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;employee_name&quot;</span><span class="p">,</span> <span class="s2">&quot;New Employee&quot;</span><span class="p">)</span>
+</span><span data-line="141">        <span class="n">department</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;department&quot;</span><span class="p">,</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">)</span>
+</span><span data-line="142">        <span class="n">role</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;job_title&quot;</span><span class="p">,</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">)</span>
+</span><span data-line="143">        <span class="n">start_date</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;start_date&quot;</span><span class="p">,</span> <span class="s2">&quot;TBD&quot;</span><span class="p">)</span>
+</span><span data-line="144">        <span class="n">deadline</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;it_deadline&quot;</span><span class="p">,</span> <span class="s2">&quot;TBD&quot;</span><span class="p">)</span>
+</span><span data-line="145">
+</span><span data-line="146">        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+</span><span data-line="147"><span class="s2">**IT Setup for New Employee**</span>
+</span><span data-line="148">
+</span><span data-line="149"><span class="s2">- **Name:** </span><span class="si">{</span><span class="n">name</span><span class="si">}</span>
+</span><span data-line="150"><span class="s2">- **Department:** </span><span class="si">{</span><span class="n">department</span><span class="si">}</span>
+</span><span data-line="151"><span class="s2">- **Role:** </span><span class="si">{</span><span class="n">role</span><span class="si">}</span>
+</span><span data-line="152"><span class="s2">- **Start Date:** </span><span class="si">{</span><span class="n">start_date</span><span class="si">}</span>
+</span><span data-line="153"><span class="s2">- **Setup Deadline:** </span><span class="si">{</span><span class="n">deadline</span><span class="si">}</span>
+</span><span data-line="154">
+</span><span data-line="155"><span class="s2">Please create all necessary accounts and prepare equipment.</span>
+</span><span data-line="156"><span class="s2">&quot;&quot;&quot;</span>
+</span><span data-line="157">
+</span><span data-line="158">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_assignee_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="159"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Route to IT team.&quot;&quot;&quot;</span>
+</span><span data-line="160">        <span class="k">return</span> <span class="s2">&quot;it-support&quot;</span>
+</span><span data-line="161">
+</span><span data-line="162">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_due_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+</span><span data-line="163"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return IT deadline from context.&quot;&quot;&quot;</span>
+</span><span data-line="164">        <span class="n">deadline_str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;it_deadline&quot;</span><span class="p">)</span>
+</span><span data-line="165">        <span class="k">if</span> <span class="n">deadline_str</span><span class="p">:</span>
+</span><span data-line="166">            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">deadline_str</span><span class="p">)</span>
+</span><span data-line="167">        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span data-line="168">
+</span><span data-line="169">
+</span><span data-line="170"><span class="k">class</span><span class="w"> </span><span class="nc">HRPaperwork</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="171"><span class="w">    </span><span class="sd">&quot;&quot;&quot;HR processes required documentation.&quot;&quot;&quot;</span>
+</span><span data-line="172">
+</span><span data-line="173">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;hr_paperwork&quot;</span>
+</span><span data-line="174">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;HR Documentation Required&quot;</span>
+</span><span data-line="175">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Process new hire paperwork and benefits enrollment&quot;</span>
+</span><span data-line="176">
+</span><span data-line="177">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="178">        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="179">        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;HR Onboarding&quot;</span><span class="p">,</span>
+</span><span data-line="180">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="181">            <span class="s2">&quot;i9_verified&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="182">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="183">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;I-9 Verified&quot;</span><span class="p">,</span>
+</span><span data-line="184">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="185">            <span class="p">},</span>
+</span><span data-line="186">            <span class="s2">&quot;w4_completed&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="187">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="188">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;W-4 Completed&quot;</span><span class="p">,</span>
+</span><span data-line="189">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="190">            <span class="p">},</span>
+</span><span data-line="191">            <span class="s2">&quot;direct_deposit&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="192">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="193">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Direct Deposit Setup&quot;</span><span class="p">,</span>
+</span><span data-line="194">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="195">            <span class="p">},</span>
+</span><span data-line="196">            <span class="s2">&quot;benefits_enrolled&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="197">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="198">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Benefits Enrollment Complete&quot;</span><span class="p">,</span>
+</span><span data-line="199">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="200">            <span class="p">},</span>
+</span><span data-line="201">            <span class="s2">&quot;benefits_package&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="202">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="203">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Benefits Package&quot;</span><span class="p">,</span>
+</span><span data-line="204">                <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Basic&quot;</span><span class="p">,</span> <span class="s2">&quot;Standard&quot;</span><span class="p">,</span> <span class="s2">&quot;Premium&quot;</span><span class="p">,</span> <span class="s2">&quot;Executive&quot;</span><span class="p">],</span>
+</span><span data-line="205">            <span class="p">},</span>
+</span><span data-line="206">            <span class="s2">&quot;emergency_contact_provided&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="207">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="208">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Emergency Contact Provided&quot;</span><span class="p">,</span>
+</span><span data-line="209">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="210">            <span class="p">},</span>
+</span><span data-line="211">            <span class="s2">&quot;handbook_acknowledged&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="212">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="213">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Employee Handbook Acknowledged&quot;</span><span class="p">,</span>
+</span><span data-line="214">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="215">            <span class="p">},</span>
+</span><span data-line="216">            <span class="s2">&quot;background_check_status&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="217">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="218">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Background Check Status&quot;</span><span class="p">,</span>
+</span><span data-line="219">                <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pending&quot;</span><span class="p">,</span> <span class="s2">&quot;passed&quot;</span><span class="p">,</span> <span class="s2">&quot;review_required&quot;</span><span class="p">],</span>
+</span><span data-line="220">            <span class="p">},</span>
+</span><span data-line="221">            <span class="s2">&quot;notes&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="222">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="223">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;HR Notes&quot;</span><span class="p">,</span>
+</span><span data-line="224">            <span class="p">},</span>
+</span><span data-line="225">        <span class="p">},</span>
+</span><span data-line="226">        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;i9_verified&quot;</span><span class="p">,</span> <span class="s2">&quot;w4_completed&quot;</span><span class="p">,</span> <span class="s2">&quot;direct_deposit&quot;</span><span class="p">,</span> <span class="s2">&quot;background_check_status&quot;</span><span class="p">],</span>
+</span><span data-line="227">    <span class="p">}</span>
+</span><span data-line="228">
+</span><span data-line="229">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_assignee_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="230"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Route to HR team.&quot;&quot;&quot;</span>
+</span><span data-line="231">        <span class="k">return</span> <span class="s2">&quot;hr-team&quot;</span>
+</span><span data-line="232">
+</span><span data-line="233">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_due_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+</span><span data-line="234"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return HR deadline.&quot;&quot;&quot;</span>
+</span><span data-line="235">        <span class="n">deadline_str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hr_deadline&quot;</span><span class="p">)</span>
+</span><span data-line="236">        <span class="k">if</span> <span class="n">deadline_str</span><span class="p">:</span>
+</span><span data-line="237">            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">deadline_str</span><span class="p">)</span>
+</span><span data-line="238">        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+</span><span data-line="239">
+</span><span data-line="240">
+</span><span data-line="241"><span class="k">class</span><span class="w"> </span><span class="nc">ManagerPreparation</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="242"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Manager prepares for new team member.&quot;&quot;&quot;</span>
+</span><span data-line="243">
+</span><span data-line="244">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;manager_preparation&quot;</span>
+</span><span data-line="245">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Manager Preparation Required&quot;</span>
+</span><span data-line="246">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Prepare workspace and training plan for new hire&quot;</span>
+</span><span data-line="247">
+</span><span data-line="248">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="249">        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="250">        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Manager Preparation&quot;</span><span class="p">,</span>
+</span><span data-line="251">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="252">            <span class="s2">&quot;workspace_ready&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="253">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="254">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Workspace Prepared&quot;</span><span class="p">,</span>
+</span><span data-line="255">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="256">            <span class="p">},</span>
+</span><span data-line="257">            <span class="s2">&quot;workspace_location&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="258">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="259">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Workspace Location&quot;</span><span class="p">,</span>
+</span><span data-line="260">                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Desk/office assignment&quot;</span><span class="p">,</span>
+</span><span data-line="261">            <span class="p">},</span>
+</span><span data-line="262">            <span class="s2">&quot;buddy_assigned&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="263">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="264">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Onboarding Buddy Assigned&quot;</span><span class="p">,</span>
+</span><span data-line="265">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="266">            <span class="p">},</span>
+</span><span data-line="267">            <span class="s2">&quot;buddy_name&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="268">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="269">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Buddy Name&quot;</span><span class="p">,</span>
+</span><span data-line="270">            <span class="p">},</span>
+</span><span data-line="271">            <span class="s2">&quot;training_plan_created&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="272">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="273">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Training Plan Created&quot;</span><span class="p">,</span>
+</span><span data-line="274">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="275">            <span class="p">},</span>
+</span><span data-line="276">            <span class="s2">&quot;first_week_schedule&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="277">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="278">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;First Week Schedule&quot;</span><span class="p">,</span>
+</span><span data-line="279">                <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;textarea&quot;</span><span class="p">,</span>
+</span><span data-line="280">                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Outline of first week activities&quot;</span><span class="p">,</span>
+</span><span data-line="281">            <span class="p">},</span>
+</span><span data-line="282">            <span class="s2">&quot;team_notified&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="283">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="284">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Team Notified&quot;</span><span class="p">,</span>
+</span><span data-line="285">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="286">            <span class="p">},</span>
+</span><span data-line="287">            <span class="s2">&quot;initial_projects&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="288">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
+</span><span data-line="289">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Initial Projects/Tasks&quot;</span><span class="p">,</span>
+</span><span data-line="290">                <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="291">                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="292">                <span class="p">},</span>
+</span><span data-line="293">            <span class="p">},</span>
+</span><span data-line="294">            <span class="s2">&quot;notes&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="295">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="296">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Manager Notes&quot;</span><span class="p">,</span>
+</span><span data-line="297">            <span class="p">},</span>
+</span><span data-line="298">        <span class="p">},</span>
+</span><span data-line="299">        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;workspace_ready&quot;</span><span class="p">,</span> <span class="s2">&quot;buddy_assigned&quot;</span><span class="p">,</span> <span class="s2">&quot;training_plan_created&quot;</span><span class="p">,</span> <span class="s2">&quot;team_notified&quot;</span><span class="p">],</span>
+</span><span data-line="300">    <span class="p">}</span>
+</span><span data-line="301">
+</span><span data-line="302">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_assignee</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="303"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Route to the hiring manager.&quot;&quot;&quot;</span>
+</span><span data-line="304">        <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;manager_email&quot;</span><span class="p">)</span>
+</span><span data-line="305">
+</span><span data-line="306">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_due_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+</span><span data-line="307"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return manager deadline.&quot;&quot;&quot;</span>
+</span><span data-line="308">        <span class="n">deadline_str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;manager_deadline&quot;</span><span class="p">)</span>
+</span><span data-line="309">        <span class="k">if</span> <span class="n">deadline_str</span><span class="p">:</span>
+</span><span data-line="310">            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">deadline_str</span><span class="p">)</span>
+</span><span data-line="311">        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</span><span data-line="312">
+</span><span data-line="313">
+</span><span data-line="314"><span class="k">class</span><span class="w"> </span><span class="nc">CheckAllTasksComplete</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="315"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Verify all setup tasks are complete.&quot;&quot;&quot;</span>
+</span><span data-line="316">
+</span><span data-line="317">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;check_all_complete&quot;</span>
+</span><span data-line="318">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Verify all onboarding tasks completed successfully&quot;</span>
+</span><span data-line="319">
+</span><span data-line="320">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span data-line="321"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Check completion status of all parallel tasks.&quot;&quot;&quot;</span>
+</span><span data-line="322">        <span class="n">it_complete</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;it_setup_email_created&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span data-line="323">        <span class="n">hr_complete</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hr_paperwork_i9_verified&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span data-line="324">        <span class="n">manager_complete</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;manager_preparation_workspace_ready&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span data-line="325">
+</span><span data-line="326">        <span class="n">all_complete</span> <span class="o">=</span> <span class="n">it_complete</span> <span class="ow">and</span> <span class="n">hr_complete</span> <span class="ow">and</span> <span class="n">manager_complete</span>
+</span><span data-line="327">
+</span><span data-line="328">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;all_tasks_complete&quot;</span><span class="p">,</span> <span class="n">all_complete</span><span class="p">)</span>
+</span><span data-line="329">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+</span><span data-line="330">            <span class="s2">&quot;tasks_completed&quot;</span><span class="p">,</span>
+</span><span data-line="331">            <span class="p">[</span>
+</span><span data-line="332">                <span class="s2">&quot;it_setup&quot;</span> <span class="k">if</span> <span class="n">it_complete</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="333">                <span class="s2">&quot;hr_paperwork&quot;</span> <span class="k">if</span> <span class="n">hr_complete</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="334">                <span class="s2">&quot;manager_preparation&quot;</span> <span class="k">if</span> <span class="n">manager_complete</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="335">            <span class="p">],</span>
+</span><span data-line="336">        <span class="p">)</span>
+</span><span data-line="337">
+</span><span data-line="338">        <span class="c1"># Compile summary</span>
+</span><span data-line="339">        <span class="n">summary</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="340">            <span class="s2">&quot;employee_email&quot;</span><span class="p">:</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;it_setup_email_address&quot;</span><span class="p">),</span>
+</span><span data-line="341">            <span class="s2">&quot;laptop&quot;</span><span class="p">:</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;it_setup_laptop_model&quot;</span><span class="p">),</span>
+</span><span data-line="342">            <span class="s2">&quot;benefits&quot;</span><span class="p">:</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hr_paperwork_benefits_package&quot;</span><span class="p">),</span>
+</span><span data-line="343">            <span class="s2">&quot;workspace&quot;</span><span class="p">:</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;manager_preparation_workspace_location&quot;</span><span class="p">),</span>
+</span><span data-line="344">            <span class="s2">&quot;buddy&quot;</span><span class="p">:</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;manager_preparation_buddy_name&quot;</span><span class="p">),</span>
+</span><span data-line="345">        <span class="p">}</span>
+</span><span data-line="346">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;onboarding_summary&quot;</span><span class="p">,</span> <span class="n">summary</span><span class="p">)</span>
+</span><span data-line="347">
+</span><span data-line="348">        <span class="k">return</span> <span class="p">{</span>
+</span><span data-line="349">            <span class="s2">&quot;all_complete&quot;</span><span class="p">:</span> <span class="n">all_complete</span><span class="p">,</span>
+</span><span data-line="350">            <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="n">summary</span><span class="p">,</span>
+</span><span data-line="351">        <span class="p">}</span>
+</span><span data-line="352">
+</span><span data-line="353">
+</span><span data-line="354"><span class="k">class</span><span class="w"> </span><span class="nc">OnboardingRouter</span><span class="p">(</span><span class="n">ExclusiveGateway</span><span class="p">):</span>
+</span><span data-line="355"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Route based on task completion status.&quot;&quot;&quot;</span>
+</span><span data-line="356">
+</span><span data-line="357">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;onboarding_router&quot;</span>
+</span><span data-line="358">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Determine next step based on completion status&quot;</span>
+</span><span data-line="359">
+</span><span data-line="360">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="361"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Route to orientation or handle incomplete tasks.&quot;&quot;&quot;</span>
+</span><span data-line="362">        <span class="n">all_complete</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;all_tasks_complete&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span data-line="363">
+</span><span data-line="364">        <span class="k">if</span> <span class="n">all_complete</span><span class="p">:</span>
+</span><span data-line="365">            <span class="k">return</span> <span class="s2">&quot;orientation&quot;</span>
+</span><span data-line="366">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="367">            <span class="k">return</span> <span class="s2">&quot;handle_incomplete&quot;</span>
+</span><span data-line="368">
+</span><span data-line="369">
+</span><span data-line="370"><span class="k">class</span><span class="w"> </span><span class="nc">HandleIncomplete</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="371"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle case when not all tasks are complete.&quot;&quot;&quot;</span>
+</span><span data-line="372">
+</span><span data-line="373">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;handle_incomplete&quot;</span>
+</span><span data-line="374">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Escalate or wait for incomplete tasks&quot;</span>
+</span><span data-line="375">
+</span><span data-line="376">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span data-line="377"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Identify and escalate incomplete tasks.&quot;&quot;&quot;</span>
+</span><span data-line="378">        <span class="n">tasks_completed</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tasks_completed&quot;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span data-line="379">        <span class="n">incomplete</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;it_setup&quot;</span><span class="p">,</span> <span class="s2">&quot;hr_paperwork&quot;</span><span class="p">,</span> <span class="s2">&quot;manager_preparation&quot;</span><span class="p">]</span>
+</span><span data-line="380">                     <span class="k">if</span> <span class="n">t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tasks_completed</span><span class="p">]</span>
+</span><span data-line="381">
+</span><span data-line="382">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;incomplete_tasks&quot;</span><span class="p">,</span> <span class="n">incomplete</span><span class="p">)</span>
+</span><span data-line="383">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;onboarding_status&quot;</span><span class="p">,</span> <span class="s2">&quot;blocked&quot;</span><span class="p">)</span>
+</span><span data-line="384">
+</span><span data-line="385">        <span class="c1"># In a real app: send escalation emails</span>
+</span><span data-line="386">        <span class="k">return</span> <span class="p">{</span>
+</span><span data-line="387">            <span class="s2">&quot;escalated&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span data-line="388">            <span class="s2">&quot;incomplete_tasks&quot;</span><span class="p">:</span> <span class="n">incomplete</span><span class="p">,</span>
+</span><span data-line="389">        <span class="p">}</span>
+</span><span data-line="390">
+</span><span data-line="391">
+</span><span data-line="392"><span class="k">class</span><span class="w"> </span><span class="nc">Orientation</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="393"><span class="w">    </span><span class="sd">&quot;&quot;&quot;First day orientation session.&quot;&quot;&quot;</span>
+</span><span data-line="394">
+</span><span data-line="395">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;orientation&quot;</span>
+</span><span data-line="396">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Conduct Orientation&quot;</span>
+</span><span data-line="397">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Complete first-day orientation with new employee&quot;</span>
+</span><span data-line="398">
+</span><span data-line="399">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="400">        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span data-line="401">        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Orientation Checklist&quot;</span><span class="p">,</span>
+</span><span data-line="402">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="403">            <span class="s2">&quot;welcome_completed&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="404">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="405">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Welcome Session Completed&quot;</span><span class="p">,</span>
+</span><span data-line="406">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="407">            <span class="p">},</span>
+</span><span data-line="408">            <span class="s2">&quot;tour_completed&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="409">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="410">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Office Tour Completed&quot;</span><span class="p">,</span>
+</span><span data-line="411">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="412">            <span class="p">},</span>
+</span><span data-line="413">            <span class="s2">&quot;team_introductions&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="414">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="415">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Team Introductions Done&quot;</span><span class="p">,</span>
+</span><span data-line="416">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="417">            <span class="p">},</span>
+</span><span data-line="418">            <span class="s2">&quot;systems_access_verified&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="419">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="420">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Systems Access Verified&quot;</span><span class="p">,</span>
+</span><span data-line="421">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="422">            <span class="p">},</span>
+</span><span data-line="423">            <span class="s2">&quot;security_training&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="424">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="425">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Security Training Completed&quot;</span><span class="p">,</span>
+</span><span data-line="426">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="427">            <span class="p">},</span>
+</span><span data-line="428">            <span class="s2">&quot;questions_addressed&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="429">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+</span><span data-line="430">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Initial Questions Addressed&quot;</span><span class="p">,</span>
+</span><span data-line="431">                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="432">            <span class="p">},</span>
+</span><span data-line="433">            <span class="s2">&quot;employee_feedback&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="434">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="435">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Employee First Day Feedback&quot;</span><span class="p">,</span>
+</span><span data-line="436">                <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;textarea&quot;</span><span class="p">,</span>
+</span><span data-line="437">            <span class="p">},</span>
+</span><span data-line="438">            <span class="s2">&quot;issues_noted&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="439">                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span data-line="440">                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Any Issues Noted&quot;</span><span class="p">,</span>
+</span><span data-line="441">            <span class="p">},</span>
+</span><span data-line="442">        <span class="p">},</span>
+</span><span data-line="443">        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;welcome_completed&quot;</span><span class="p">,</span> <span class="s2">&quot;tour_completed&quot;</span><span class="p">,</span> <span class="s2">&quot;team_introductions&quot;</span><span class="p">,</span> <span class="s2">&quot;systems_access_verified&quot;</span><span class="p">],</span>
+</span><span data-line="444">    <span class="p">}</span>
+</span><span data-line="445">
+</span><span data-line="446">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_assignee</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="447"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Route to hiring manager for orientation.&quot;&quot;&quot;</span>
+</span><span data-line="448">        <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;manager_email&quot;</span><span class="p">)</span>
+</span><span data-line="449">
+</span><span data-line="450">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_due_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+</span><span data-line="451"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Due on start date.&quot;&quot;&quot;</span>
+</span><span data-line="452">        <span class="n">start_date_str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;start_date&quot;</span><span class="p">)</span>
+</span><span data-line="453">        <span class="k">if</span> <span class="n">start_date_str</span><span class="p">:</span>
+</span><span data-line="454">            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">start_date_str</span><span class="p">)</span>
+</span><span data-line="455">        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</span><span data-line="456">
+</span><span data-line="457">
+</span><span data-line="458"><span class="k">class</span><span class="w"> </span><span class="nc">CompleteOnboarding</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="459"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Finalize the onboarding process.&quot;&quot;&quot;</span>
+</span><span data-line="460">
+</span><span data-line="461">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;complete_onboarding&quot;</span>
+</span><span data-line="462">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Mark onboarding as complete&quot;</span>
+</span><span data-line="463">
+</span><span data-line="464">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span data-line="465"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Finalize onboarding and create summary.&quot;&quot;&quot;</span>
+</span><span data-line="466">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;onboarding_status&quot;</span><span class="p">,</span> <span class="s2">&quot;completed&quot;</span><span class="p">)</span>
+</span><span data-line="467">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;completed_at&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="468">
+</span><span data-line="469">        <span class="n">summary</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;onboarding_summary&quot;</span><span class="p">,</span> <span class="p">{})</span>
+</span><span data-line="470">        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;orientation_complete&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span data-line="471">        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;first_day_feedback&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;orientation_employee_feedback&quot;</span><span class="p">)</span>
+</span><span data-line="472">
+</span><span data-line="473">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;final_summary&quot;</span><span class="p">,</span> <span class="n">summary</span><span class="p">)</span>
+</span><span data-line="474">
+</span><span data-line="475">        <span class="c1"># In a real app: update HRIS, send welcome email, create 30/60/90 day check-ins</span>
+</span><span data-line="476">        <span class="k">return</span> <span class="p">{</span>
+</span><span data-line="477">            <span class="s2">&quot;completed&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span data-line="478">            <span class="s2">&quot;employee&quot;</span><span class="p">:</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;employee_name&quot;</span><span class="p">),</span>
+</span><span data-line="479">            <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="n">summary</span><span class="p">,</span>
+</span><span data-line="480">        <span class="p">}</span>
+</span><span data-line="481">
+</span><span data-line="482">
+</span><span data-line="483"><span class="c1"># =============================================================================</span>
+</span><span data-line="484"><span class="c1"># Timer Step for Deadline Reminders</span>
+</span><span data-line="485"><span class="c1"># =============================================================================</span>
+</span><span data-line="486">
+</span><span data-line="487"><span class="k">def</span><span class="w"> </span><span class="nf">calculate_reminder_delay</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">timedelta</span><span class="p">:</span>
+</span><span data-line="488"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate when to send deadline reminder.&quot;&quot;&quot;</span>
+</span><span data-line="489">    <span class="n">start_date_str</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;start_date&quot;</span><span class="p">)</span>
+</span><span data-line="490">    <span class="k">if</span> <span class="n">start_date_str</span><span class="p">:</span>
+</span><span data-line="491">        <span class="n">start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">start_date_str</span><span class="p">)</span>
+</span><span data-line="492">        <span class="c1"># Remind 3 days before start date</span>
+</span><span data-line="493">        <span class="n">reminder_date</span> <span class="o">=</span> <span class="n">start_date</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</span><span data-line="494">        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+</span><span data-line="495">        <span class="k">if</span> <span class="n">reminder_date</span> <span class="o">&gt;</span> <span class="n">now</span><span class="p">:</span>
+</span><span data-line="496">            <span class="k">return</span> <span class="n">reminder_date</span> <span class="o">-</span> <span class="n">now</span>
+</span><span data-line="497">    <span class="k">return</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Default 2 day delay</span>
+</span><span data-line="498">
+</span><span data-line="499">
+</span><span data-line="500"><span class="n">deadline_reminder</span> <span class="o">=</span> <span class="n">TimerStep</span><span class="p">(</span>
+</span><span data-line="501">    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;deadline_reminder&quot;</span><span class="p">,</span>
+</span><span data-line="502">    <span class="n">duration</span><span class="o">=</span><span class="n">calculate_reminder_delay</span><span class="p">,</span>
+</span><span data-line="503">    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wait until deadline reminder time&quot;</span><span class="p">,</span>
+</span><span data-line="504"><span class="p">)</span>
+</span><span data-line="505">
+</span><span data-line="506">
+</span><span data-line="507"><span class="k">class</span><span class="w"> </span><span class="nc">SendDeadlineReminder</span><span class="p">(</span><span class="n">BaseMachineStep</span><span class="p">):</span>
+</span><span data-line="508"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Send reminder for approaching deadlines.&quot;&quot;&quot;</span>
+</span><span data-line="509">
+</span><span data-line="510">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;send_reminder&quot;</span>
+</span><span data-line="511">    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Send deadline reminder notifications&quot;</span>
+</span><span data-line="512">
+</span><span data-line="513">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span data-line="514"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Check and send reminders for incomplete tasks.&quot;&quot;&quot;</span>
+</span><span data-line="515">        <span class="n">tasks_completed</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tasks_completed&quot;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span data-line="516">        <span class="n">reminders_sent</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="517">
+</span><span data-line="518">        <span class="k">if</span> <span class="s2">&quot;it_setup&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tasks_completed</span><span class="p">:</span>
+</span><span data-line="519">            <span class="c1"># In real app: send reminder to IT</span>
+</span><span data-line="520">            <span class="n">reminders_sent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;it_setup&quot;</span><span class="p">)</span>
+</span><span data-line="521">
+</span><span data-line="522">        <span class="k">if</span> <span class="s2">&quot;hr_paperwork&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tasks_completed</span><span class="p">:</span>
+</span><span data-line="523">            <span class="c1"># In real app: send reminder to HR</span>
+</span><span data-line="524">            <span class="n">reminders_sent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;hr_paperwork&quot;</span><span class="p">)</span>
+</span><span data-line="525">
+</span><span data-line="526">        <span class="k">if</span> <span class="s2">&quot;manager_preparation&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tasks_completed</span><span class="p">:</span>
+</span><span data-line="527">            <span class="c1"># In real app: send reminder to manager</span>
+</span><span data-line="528">            <span class="n">reminders_sent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;manager_preparation&quot;</span><span class="p">)</span>
+</span><span data-line="529">
+</span><span data-line="530">        <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;reminders_sent&quot;</span><span class="p">,</span> <span class="n">reminders_sent</span><span class="p">)</span>
+</span><span data-line="531">
+</span><span data-line="532">        <span class="k">return</span> <span class="p">{</span>
+</span><span data-line="533">            <span class="s2">&quot;reminders_sent&quot;</span><span class="p">:</span> <span class="n">reminders_sent</span><span class="p">,</span>
+</span><span data-line="534">            <span class="s2">&quot;reminder_count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">reminders_sent</span><span class="p">),</span>
+</span><span data-line="535">        <span class="p">}</span>
+</span><span data-line="536">
+</span><span data-line="537">
+</span><span data-line="538"><span class="c1"># =============================================================================</span>
+</span><span data-line="539"><span class="c1"># Workflow Definition</span>
+</span><span data-line="540"><span class="c1"># =============================================================================</span>
+</span><span data-line="541">
+</span><span data-line="542"><span class="c1"># Create parallel setup group</span>
+</span><span data-line="543"><span class="n">parallel_setup</span> <span class="o">=</span> <span class="n">ParallelGroup</span><span class="p">(</span>
+</span><span data-line="544">    <span class="n">ITSetup</span><span class="p">(),</span>
+</span><span data-line="545">    <span class="n">HRPaperwork</span><span class="p">(),</span>
+</span><span data-line="546">    <span class="n">ManagerPreparation</span><span class="p">(),</span>
+</span><span data-line="547"><span class="p">)</span>
+</span><span data-line="548">
+</span><span data-line="549">
+</span><span data-line="550"><span class="n">onboarding_workflow</span> <span class="o">=</span> <span class="n">WorkflowDefinition</span><span class="p">(</span>
+</span><span data-line="551">    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;employee_onboarding&quot;</span><span class="p">,</span>
+</span><span data-line="552">    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+</span><span data-line="553">    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Employee onboarding with parallel setup and deadline tracking&quot;</span><span class="p">,</span>
+</span><span data-line="554">    <span class="n">steps</span><span class="o">=</span><span class="p">{</span>
+</span><span data-line="555">        <span class="s2">&quot;initiate_onboarding&quot;</span><span class="p">:</span> <span class="n">InitiateOnboarding</span><span class="p">(),</span>
+</span><span data-line="556">        <span class="s2">&quot;parallel_setup&quot;</span><span class="p">:</span> <span class="n">parallel_setup</span><span class="p">,</span>
+</span><span data-line="557">        <span class="s2">&quot;check_all_complete&quot;</span><span class="p">:</span> <span class="n">CheckAllTasksComplete</span><span class="p">(),</span>
+</span><span data-line="558">        <span class="s2">&quot;onboarding_router&quot;</span><span class="p">:</span> <span class="n">OnboardingRouter</span><span class="p">(),</span>
+</span><span data-line="559">        <span class="s2">&quot;handle_incomplete&quot;</span><span class="p">:</span> <span class="n">HandleIncomplete</span><span class="p">(),</span>
+</span><span data-line="560">        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="n">Orientation</span><span class="p">(),</span>
+</span><span data-line="561">        <span class="s2">&quot;complete_onboarding&quot;</span><span class="p">:</span> <span class="n">CompleteOnboarding</span><span class="p">(),</span>
+</span><span data-line="562">        <span class="s2">&quot;deadline_reminder&quot;</span><span class="p">:</span> <span class="n">deadline_reminder</span><span class="p">,</span>
+</span><span data-line="563">        <span class="s2">&quot;send_reminder&quot;</span><span class="p">:</span> <span class="n">SendDeadlineReminder</span><span class="p">(),</span>
+</span><span data-line="564">    <span class="p">},</span>
+</span><span data-line="565">    <span class="n">edges</span><span class="o">=</span><span class="p">[</span>
+</span><span data-line="566">        <span class="c1"># Main flow</span>
+</span><span data-line="567">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;initiate_onboarding&quot;</span><span class="p">,</span> <span class="s2">&quot;parallel_setup&quot;</span><span class="p">),</span>
+</span><span data-line="568">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;parallel_setup&quot;</span><span class="p">,</span> <span class="s2">&quot;check_all_complete&quot;</span><span class="p">),</span>
+</span><span data-line="569">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;check_all_complete&quot;</span><span class="p">,</span> <span class="s2">&quot;onboarding_router&quot;</span><span class="p">),</span>
+</span><span data-line="570">
+</span><span data-line="571">        <span class="c1"># Success path</span>
+</span><span data-line="572">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="573">            <span class="s2">&quot;onboarding_router&quot;</span><span class="p">,</span>
+</span><span data-line="574">            <span class="s2">&quot;orientation&quot;</span><span class="p">,</span>
+</span><span data-line="575">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;all_tasks_complete&#39;) == True&quot;</span>
+</span><span data-line="576">        <span class="p">),</span>
+</span><span data-line="577">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;orientation&quot;</span><span class="p">,</span> <span class="s2">&quot;complete_onboarding&quot;</span><span class="p">),</span>
+</span><span data-line="578">
+</span><span data-line="579">        <span class="c1"># Incomplete path</span>
+</span><span data-line="580">        <span class="n">Edge</span><span class="p">(</span>
+</span><span data-line="581">            <span class="s2">&quot;onboarding_router&quot;</span><span class="p">,</span>
+</span><span data-line="582">            <span class="s2">&quot;handle_incomplete&quot;</span><span class="p">,</span>
+</span><span data-line="583">            <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;context.get(&#39;all_tasks_complete&#39;) == False&quot;</span>
+</span><span data-line="584">        <span class="p">),</span>
+</span><span data-line="585">
+</span><span data-line="586">        <span class="c1"># Timer-based reminder (runs in parallel with setup)</span>
+</span><span data-line="587">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;initiate_onboarding&quot;</span><span class="p">,</span> <span class="s2">&quot;deadline_reminder&quot;</span><span class="p">),</span>
+</span><span data-line="588">        <span class="n">Edge</span><span class="p">(</span><span class="s2">&quot;deadline_reminder&quot;</span><span class="p">,</span> <span class="s2">&quot;send_reminder&quot;</span><span class="p">),</span>
+</span><span data-line="589">    <span class="p">],</span>
+</span><span data-line="590">    <span class="n">initial_step</span><span class="o">=</span><span class="s2">&quot;initiate_onboarding&quot;</span><span class="p">,</span>
+</span><span data-line="591">    <span class="n">terminal_steps</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;complete_onboarding&quot;</span><span class="p">,</span> <span class="s2">&quot;handle_incomplete&quot;</span><span class="p">},</span>
+</span><span data-line="592"><span class="p">)</span>
+</span><span data-line="593">
+</span><span data-line="594">
+</span><span data-line="595"><span class="c1"># =============================================================================</span>
+</span><span data-line="596"><span class="c1"># Application Setup</span>
+</span><span data-line="597"><span class="c1"># =============================================================================</span>
+</span><span data-line="598">
+</span><span data-line="599"><span class="k">def</span><span class="w"> </span><span class="nf">create_app</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Litestar</span><span class="p">:</span>
+</span><span data-line="600"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the Litestar application with onboarding workflow.&quot;&quot;&quot;</span>
+</span><span data-line="601">    <span class="n">db_engine</span> <span class="o">=</span> <span class="n">create_async_engine</span><span class="p">(</span>
+</span><span data-line="602">        <span class="s2">&quot;sqlite+aiosqlite:///onboarding.db&quot;</span><span class="p">,</span>
+</span><span data-line="603">        <span class="n">echo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span data-line="604">    <span class="p">)</span>
+</span><span data-line="605">    <span class="n">session_factory</span> <span class="o">=</span> <span class="n">async_sessionmaker</span><span class="p">(</span><span class="n">db_engine</span><span class="p">,</span> <span class="n">expire_on_commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span data-line="606">
+</span><span data-line="607">    <span class="n">registry</span> <span class="o">=</span> <span class="n">WorkflowRegistry</span><span class="p">()</span>
+</span><span data-line="608">    <span class="n">registry</span><span class="o">.</span><span class="n">register_definition</span><span class="p">(</span><span class="n">onboarding_workflow</span><span class="p">)</span>
+</span><span data-line="609">
+</span><span data-line="610">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">provide_session</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">AsyncSession</span><span class="p">:</span>
+</span><span data-line="611">        <span class="k">async</span> <span class="k">with</span> <span class="n">session_factory</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+</span><span data-line="612">            <span class="k">yield</span> <span class="n">session</span>
+</span><span data-line="613">
+</span><span data-line="614">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">provide_engine</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PersistentExecutionEngine</span><span class="p">:</span>
+</span><span data-line="615">        <span class="k">return</span> <span class="n">PersistentExecutionEngine</span><span class="p">(</span><span class="n">registry</span><span class="o">=</span><span class="n">registry</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
+</span><span data-line="616">
+</span><span data-line="617">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">provide_registry</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">WorkflowRegistry</span><span class="p">:</span>
+</span><span data-line="618">        <span class="k">return</span> <span class="n">registry</span>
+</span><span data-line="619">
+</span><span data-line="620">    <span class="nd">@get</span><span class="p">(</span><span class="s2">&quot;/health&quot;</span><span class="p">)</span>
+</span><span data-line="621">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">health</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+</span><span data-line="622">        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;healthy&quot;</span><span class="p">}</span>
+</span><span data-line="623">
+</span><span data-line="624">    <span class="k">return</span> <span class="n">Litestar</span><span class="p">(</span>
+</span><span data-line="625">        <span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">health</span><span class="p">],</span>
+</span><span data-line="626">        <span class="n">plugins</span><span class="o">=</span><span class="p">[</span>
+</span><span data-line="627">            <span class="n">WorkflowPlugin</span><span class="p">(</span>
+</span><span data-line="628">                <span class="n">config</span><span class="o">=</span><span class="n">WorkflowPluginConfig</span><span class="p">(</span>
+</span><span data-line="629">                    <span class="n">enable_api</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span data-line="630">                    <span class="n">api_path_prefix</span><span class="o">=</span><span class="s2">&quot;/api/workflows&quot;</span><span class="p">,</span>
+</span><span data-line="631">                <span class="p">)</span>
+</span><span data-line="632">            <span class="p">),</span>
+</span><span data-line="633">        <span class="p">],</span>
+</span><span data-line="634">        <span class="n">dependencies</span><span class="o">=</span><span class="p">{</span>
+</span><span data-line="635">            <span class="s2">&quot;session&quot;</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span><span class="n">provide_session</span><span class="p">),</span>
+</span><span data-line="636">            <span class="s2">&quot;workflow_engine&quot;</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span><span class="n">provide_engine</span><span class="p">),</span>
+</span><span data-line="637">            <span class="s2">&quot;workflow_registry&quot;</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span><span class="n">provide_registry</span><span class="p">),</span>
+</span><span data-line="638">        <span class="p">},</span>
+</span><span data-line="639">    <span class="p">)</span>
+</span><span data-line="640">
+</span><span data-line="641">
+</span><span data-line="642"><span class="n">app</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">()</span>
+</span><span data-line="643">
+</span><span data-line="644">
+</span><span data-line="645"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span data-line="646">    <span class="kn">import</span><span class="w"> </span><span class="nn">uvicorn</span>
+</span><span data-line="647">    <span class="n">uvicorn</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8000</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="key-concepts">
+<h2>Key Concepts<a class="headerlink" href="#key-concepts" title="Link to this heading">¶</a></h2>
+<section id="parallel-task-execution">
+<h3>Parallel Task Execution<a class="headerlink" href="#parallel-task-execution" title="Link to this heading">¶</a></h3>
+<p>Multiple departments work simultaneously:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParallelGroup</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="n">parallel_setup</span> <span class="o">=</span> <span class="n">ParallelGroup</span><span class="p">(</span>
+</span><span data-line="4">    <span class="n">ITSetup</span><span class="p">(),</span>
+</span><span data-line="5">    <span class="n">HRPaperwork</span><span class="p">(),</span>
+</span><span data-line="6">    <span class="n">ManagerPreparation</span><span class="p">(),</span>
+</span><span data-line="7"><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>All three tasks are created at once, and the workflow waits until all
+are completed before proceeding to verification.</p>
+</section>
+<section id="timer-steps-for-deadlines">
+<h3>Timer Steps for Deadlines<a class="headerlink" href="#timer-steps-for-deadlines" title="Link to this heading">¶</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">TimerStep</span></code> to schedule future actions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
+</span><span data-line="2"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimerStep</span>
+</span><span data-line="3">
+</span><span data-line="4"><span class="c1"># Static duration</span>
+</span><span data-line="5"><span class="n">reminder</span> <span class="o">=</span> <span class="n">TimerStep</span><span class="p">(</span>
+</span><span data-line="6">    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reminder&quot;</span><span class="p">,</span>
+</span><span data-line="7">    <span class="n">duration</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+</span><span data-line="8">    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wait 2 days before reminder&quot;</span><span class="p">,</span>
+</span><span data-line="9"><span class="p">)</span>
+</span><span data-line="10">
+</span><span data-line="11"><span class="c1"># Dynamic duration based on context</span>
+</span><span data-line="12"><span class="k">def</span><span class="w"> </span><span class="nf">calculate_delay</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">timedelta</span><span class="p">:</span>
+</span><span data-line="13">    <span class="n">deadline</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;deadline&quot;</span><span class="p">))</span>
+</span><span data-line="14">    <span class="n">reminder_time</span> <span class="o">=</span> <span class="n">deadline</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span data-line="15">    <span class="k">return</span> <span class="n">reminder_time</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+</span><span data-line="16">
+</span><span data-line="17"><span class="n">dynamic_reminder</span> <span class="o">=</span> <span class="n">TimerStep</span><span class="p">(</span>
+</span><span data-line="18">    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;dynamic_reminder&quot;</span><span class="p">,</span>
+</span><span data-line="19">    <span class="n">duration</span><span class="o">=</span><span class="n">calculate_delay</span><span class="p">,</span>
+</span><span data-line="20">    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wait until day before deadline&quot;</span><span class="p">,</span>
+</span><span data-line="21"><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="cross-department-coordination">
+<h3>Cross-Department Coordination<a class="headerlink" href="#cross-department-coordination" title="Link to this heading">¶</a></h3>
+<p>Route tasks to different teams using groups:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">ITSetup</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="2">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_assignee_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="3">        <span class="k">return</span> <span class="s2">&quot;it-support&quot;</span>
+</span><span data-line="4">
+</span><span data-line="5"><span class="k">class</span><span class="w"> </span><span class="nc">HRPaperwork</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="6">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_assignee_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="7">        <span class="k">return</span> <span class="s2">&quot;hr-team&quot;</span>
+</span><span data-line="8">
+</span><span data-line="9"><span class="k">class</span><span class="w"> </span><span class="nc">ManagerPreparation</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="10">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_assignee</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">WorkflowContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="11">        <span class="c1"># Route to specific manager</span>
+</span><span data-line="12">        <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;manager_email&quot;</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+</section>
+<section id="customization-points">
+<h2>Customization Points<a class="headerlink" href="#customization-points" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><strong>Add More Setup Tasks</strong></dt><dd><p>Add steps to the <code class="docutils literal notranslate"><span class="pre">ParallelGroup</span></code> (e.g., security badge, parking)</p>
+</dd>
+<dt><strong>Adjust Deadlines</strong></dt><dd><p>Modify deadline calculations in <code class="docutils literal notranslate"><span class="pre">InitiateOnboarding</span></code></p>
+</dd>
+<dt><strong>Change Reminder Frequency</strong></dt><dd><p>Add multiple timer steps for periodic reminders</p>
+</dd>
+<dt><strong>Add Department-Specific Fields</strong></dt><dd><p>Customize <code class="docutils literal notranslate"><span class="pre">form_schema</span></code> for each department’s needs</p>
+</dd>
+</dl>
+</section>
+<section id="usage-example">
+<h2>Usage Example<a class="headerlink" href="#usage-example" title="Link to this heading">¶</a></h2>
+<p>Start an onboarding workflow:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/api/workflows/instances<span class="w"> </span><span class="se">\</span>
+</span><span data-line="2"><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span data-line="3"><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+</span><span data-line="4"><span class="s1">    &quot;definition_name&quot;: &quot;employee_onboarding&quot;,</span>
+</span><span data-line="5"><span class="s1">    &quot;input_data&quot;: {</span>
+</span><span data-line="6"><span class="s1">      &quot;employee_name&quot;: &quot;Alice Johnson&quot;,</span>
+</span><span data-line="7"><span class="s1">      &quot;employee_email&quot;: &quot;alice.johnson@example.com&quot;,</span>
+</span><span data-line="8"><span class="s1">      &quot;department&quot;: &quot;Engineering&quot;,</span>
+</span><span data-line="9"><span class="s1">      &quot;job_title&quot;: &quot;Senior Developer&quot;,</span>
+</span><span data-line="10"><span class="s1">      &quot;manager_email&quot;: &quot;bob.smith@example.com&quot;,</span>
+</span><span data-line="11"><span class="s1">      &quot;start_date&quot;: &quot;2025-12-15T09:00:00Z&quot;</span>
+</span><span data-line="12"><span class="s1">    }</span>
+</span><span data-line="13"><span class="s1">  }&#39;</span>
+</span></pre></div>
+</div>
+<p>View pending tasks for IT team:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">curl<span class="w"> </span><span class="s2">&quot;http://localhost:8000/api/workflows/tasks?assignee_group=it-support&amp;status=pending&quot;</span>
+</span></pre></div>
+</div>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+</span><span data-line="2"><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+</span><span data-line="3"><span class="kn">from</span><span class="w"> </span><span class="nn">litestar_workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">WorkflowContext</span>
+</span><span data-line="4">
+</span><span data-line="5"><span class="kn">from</span><span class="w"> </span><span class="nn">employee_onboarding</span><span class="w"> </span><span class="kn">import</span> <span class="n">InitiateOnboarding</span><span class="p">,</span> <span class="n">calculate_reminder_delay</span>
+</span><span data-line="6">
+</span><span data-line="7">
+</span><span data-line="8"><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">asyncio</span>
+</span><span data-line="9"><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_deadline_calculation</span><span class="p">():</span>
+</span><span data-line="10"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Verify deadline calculation logic.&quot;&quot;&quot;</span>
+</span><span data-line="11">    <span class="n">context</span> <span class="o">=</span> <span class="n">WorkflowContext</span><span class="p">()</span>
+</span><span data-line="12">    <span class="n">start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</span><span data-line="13">    <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;start_date&quot;</span><span class="p">,</span> <span class="n">start_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="14">
+</span><span data-line="15">    <span class="n">step</span> <span class="o">=</span> <span class="n">InitiateOnboarding</span><span class="p">()</span>
+</span><span data-line="16">    <span class="k">await</span> <span class="n">step</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+</span><span data-line="17">
+</span><span data-line="18">    <span class="n">it_deadline</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;it_deadline&quot;</span><span class="p">))</span>
+</span><span data-line="19">    <span class="n">expected</span> <span class="o">=</span> <span class="n">start_date</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</span><span data-line="20">
+</span><span data-line="21">    <span class="c1"># IT deadline should be 2 days before start</span>
+</span><span data-line="22">    <span class="k">assert</span> <span class="n">it_deadline</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="o">==</span> <span class="n">expected</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+</span><span data-line="23">
+</span><span data-line="24">
+</span><span data-line="25"><span class="k">def</span><span class="w"> </span><span class="nf">test_reminder_delay_calculation</span><span class="p">():</span>
+</span><span data-line="26"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Verify reminder timing.&quot;&quot;&quot;</span>
+</span><span data-line="27">    <span class="n">context</span> <span class="o">=</span> <span class="n">WorkflowContext</span><span class="p">()</span>
+</span><span data-line="28">    <span class="n">start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</span><span data-line="29">    <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;start_date&quot;</span><span class="p">,</span> <span class="n">start_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+</span><span data-line="30">
+</span><span data-line="31">    <span class="n">delay</span> <span class="o">=</span> <span class="n">calculate_reminder_delay</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+</span><span data-line="32">
+</span><span data-line="33">    <span class="c1"># Should remind 3 days before start (so ~4 days from now)</span>
+</span><span data-line="34">    <span class="k">assert</span> <span class="n">delay</span> <span class="o">&gt;</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</span><span data-line="35">    <span class="k">assert</span> <span class="n">delay</span> <span class="o">&lt;</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="common-variations">
+<h2>Common Variations<a class="headerlink" href="#common-variations" title="Link to this heading">¶</a></h2>
+<p><strong>Add Security Badge Processing</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">class</span><span class="w"> </span><span class="nc">SecurityBadge</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="2">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;security_badge&quot;</span>
+</span><span data-line="3">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Security Badge Setup&quot;</span>
+</span><span data-line="4">
+</span><span data-line="5">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="6">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="7">            <span class="s2">&quot;photo_taken&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">},</span>
+</span><span data-line="8">            <span class="s2">&quot;badge_number&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
+</span><span data-line="9">            <span class="s2">&quot;access_level&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">,</span> <span class="s2">&quot;restricted&quot;</span><span class="p">,</span> <span class="s2">&quot;full&quot;</span><span class="p">]},</span>
+</span><span data-line="10">        <span class="p">},</span>
+</span><span data-line="11">    <span class="p">}</span>
+</span><span data-line="12">
+</span><span data-line="13">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_assignee_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+</span><span data-line="14">        <span class="k">return</span> <span class="s2">&quot;security-team&quot;</span>
+</span><span data-line="15">
+</span><span data-line="16"><span class="c1"># Add to parallel group</span>
+</span><span data-line="17"><span class="n">parallel_setup</span> <span class="o">=</span> <span class="n">ParallelGroup</span><span class="p">(</span>
+</span><span data-line="18">    <span class="n">ITSetup</span><span class="p">(),</span>
+</span><span data-line="19">    <span class="n">HRPaperwork</span><span class="p">(),</span>
+</span><span data-line="20">    <span class="n">ManagerPreparation</span><span class="p">(),</span>
+</span><span data-line="21">    <span class="n">SecurityBadge</span><span class="p">(),</span>
+</span><span data-line="22"><span class="p">)</span>
+</span></pre></div>
+</div>
+<p><strong>Recurring Check-in Reminders</strong></p>
+<p>Schedule 30/60/90 day check-ins:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">thirty_day_checkin</span> <span class="o">=</span> <span class="n">TimerStep</span><span class="p">(</span>
+</span><span data-line="2">    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;thirty_day_timer&quot;</span><span class="p">,</span>
+</span><span data-line="3">    <span class="n">duration</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
+</span><span data-line="4">    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Wait for 30-day check-in&quot;</span><span class="p">,</span>
+</span><span data-line="5"><span class="p">)</span>
+</span><span data-line="6">
+</span><span data-line="7"><span class="k">class</span><span class="w"> </span><span class="nc">ThirtyDayCheckin</span><span class="p">(</span><span class="n">BaseHumanStep</span><span class="p">):</span>
+</span><span data-line="8">    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;thirty_day_checkin&quot;</span>
+</span><span data-line="9">    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;30-Day Check-in&quot;</span>
+</span><span data-line="10">    <span class="n">form_schema</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="11">        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span data-line="12">            <span class="s2">&quot;settling_in_well&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">},</span>
+</span><span data-line="13">            <span class="s2">&quot;training_on_track&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">},</span>
+</span><span data-line="14">            <span class="s2">&quot;concerns&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
+</span><span data-line="15">        <span class="p">},</span>
+</span><span data-line="16">    <span class="p">}</span>
+</span></pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../guides/parallel-execution.html"><span class="doc">Parallel Execution</span></a> - Parallel step patterns</p></li>
+<li><p><a class="reference internal" href="../guides/human-tasks.html"><span class="doc">Working with Human Tasks</span></a> - Human task configuration</p></li>
+<li><p><a class="reference internal" href="expense-approval.html"><span class="doc">Expense Approval Workflow</span></a> - Multi-level approval patterns</p></li>
+<li><p><a class="reference internal" href="integration-patterns.html"><span class="doc">Integration Patterns</span></a> - External API integration</p></li>
+</ul>
+</section>
+</section>
+
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-prev">
+    <a href="document-review.html">
+      <i class="i-lucide chevron-left"></i>
+      <div class="page-info">
+        <span>Previous</span><div class="title">Document Review Workflow</div></div>
+    </a>
+  </div><div class="navigation-next">
+    <a href="integration-patterns.html">
+      <div class="page-info">
+        <span>Next</span>
+        <div class="title">Integration Patterns</div>
+      </div>
+      <i class="i-lucide chevron-right"></i>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2026, Jacob Coffee</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+<a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+  <iconify-icon icon="simple-icons:github"></iconify-icon>
+</a></div>
+    </div>
+  </div>
+</footer>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=30646c52"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../_static/shibuya.js?v=c1cf1a6b"></script></body>
+</html>

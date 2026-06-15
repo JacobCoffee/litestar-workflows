@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="violet" data-content_root="../../../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>litestar_workflows.core.context - litestar-workflows</title><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/shibuya.css?v=14737038" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link media="print" rel="stylesheet" type="text/css" href="../../../_static/print.css?v=20ff2c19" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=8975404a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    <meta property="og:type" content="website"/><meta property="og:title" content="litestar_workflows.core.context"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../../../index.html">
+      
+      
+      <strong>litestar-workflows</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"><ul><li class="link">
+          <a href="https://litestar.dev/">
+            <span>Litestar</span></a>
+        </li><li class="link">
+          <a href="https://pypi.org/project/litestar-workflows/">
+            <span>PyPI</span></a>
+        </li></ul></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../../../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Learn</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/quickstart.html">Quickstart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Core Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/workflows.html">Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/steps.html">Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/context.html">Workflow Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concepts/execution.html">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/index.html">How-To Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/simple-workflow.html">Building a Simple Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/human-tasks.html">Working with Human Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/parallel-execution.html">Parallel Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/conditional-logic.html">Conditional Logic and Gateways</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/persistence.html">Database Persistence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../guides/web-plugin.html">Web Plugin (REST API)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cookbook/index.html">Cookbook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../cookbook/expense-approval.html">Expense Approval Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cookbook/document-review.html">Document Review Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cookbook/onboarding.html">Employee Onboarding Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cookbook/integration-patterns.html">Integration Patterns</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/modules.html">Module Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/web.html">Web Plugin API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../architecture/index.html">Architecture Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../architecture/phase3-web.html">Phase 3: Web Plugin Architecture</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/litestar-919193495116337154">Discord</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../../../index.html"><span itemprop="name">litestar-workflows</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../../index.html"><span itemprop="name">Module code</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">litestar_workflows.core.context</strong>
+        <meta itemprop="position" content="3" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+        <article class="yue" role="main">
+          <h1>Source code for litestar_workflows.core.context</h1><div class="highlight"><pre>
+<span></span><span data-line="1"><span class="sd">&quot;&quot;&quot;Workflow execution context.</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="sd">This module provides the WorkflowContext dataclass which carries state and metadata</span>
+</span><span data-line="4"><span class="sd">throughout workflow execution.</span>
+</span><span data-line="5"><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="6">
+</span><span data-line="7"><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+</span><span data-line="8">
+</span><span data-line="9"><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+</span><span data-line="10"><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+</span><span data-line="11"><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+</span><span data-line="12"><span class="kn">from</span><span class="w"> </span><span class="nn">uuid</span><span class="w"> </span><span class="kn">import</span> <span class="n">UUID</span>
+</span><span data-line="13">
+</span><span data-line="14"><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;StepExecution&quot;</span><span class="p">,</span> <span class="s2">&quot;WorkflowContext&quot;</span><span class="p">]</span>
+</span><span data-line="15">
+</span><span data-line="16">
+<div class="viewcode-block" id="StepExecution">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.StepExecution">[docs]</a>
+</span><span data-line="17"><span class="nd">@dataclass</span>
+</span><span data-line="18"><span class="k">class</span><span class="w"> </span><span class="nc">StepExecution</span><span class="p">:</span>
+</span><span data-line="19"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Record of a single step execution within a workflow.</span>
+</span><span data-line="20">
+</span><span data-line="21"><span class="sd">    Attributes:</span>
+</span><span data-line="22"><span class="sd">        step_name: Name of the executed step.</span>
+</span><span data-line="23"><span class="sd">        status: Final status of the step execution.</span>
+</span><span data-line="24"><span class="sd">        started_at: Timestamp when step execution began.</span>
+</span><span data-line="25"><span class="sd">        completed_at: Timestamp when step execution finished (if completed).</span>
+</span><span data-line="26"><span class="sd">        result: Return value from successful execution.</span>
+</span><span data-line="27"><span class="sd">        error: Error message if execution failed.</span>
+</span><span data-line="28"><span class="sd">        input_data: Input data passed to the step.</span>
+</span><span data-line="29"><span class="sd">        output_data: Output data produced by the step.</span>
+</span><span data-line="30"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="31">
+</span><span data-line="32">    <span class="n">step_name</span><span class="p">:</span> <span class="nb">str</span>
+</span><span data-line="33">    <span class="n">status</span><span class="p">:</span> <span class="nb">str</span>
+</span><span data-line="34">    <span class="n">started_at</span><span class="p">:</span> <span class="n">datetime</span>
+</span><span data-line="35">    <span class="n">completed_at</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="36">    <span class="n">result</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="37">    <span class="n">error</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="38">    <span class="n">input_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="39">    <span class="n">output_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+</span><span data-line="40">
+</span><span data-line="41">
+<div class="viewcode-block" id="WorkflowContext">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.WorkflowContext">[docs]</a>
+</span><span data-line="42"><span class="nd">@dataclass</span>
+</span><span data-line="43"><span class="k">class</span><span class="w"> </span><span class="nc">WorkflowContext</span><span class="p">:</span>
+</span><span data-line="44"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Execution context passed between workflow steps.</span>
+</span><span data-line="45">
+</span><span data-line="46"><span class="sd">    The WorkflowContext carries all state, metadata, and execution history throughout</span>
+</span><span data-line="47"><span class="sd">    a workflow&#39;s lifecycle. It provides a mutable data dictionary for step communication</span>
+</span><span data-line="48"><span class="sd">    and immutable metadata for audit and tracking purposes.</span>
+</span><span data-line="49">
+</span><span data-line="50"><span class="sd">    Attributes:</span>
+</span><span data-line="51"><span class="sd">        workflow_id: Unique identifier for the workflow definition.</span>
+</span><span data-line="52"><span class="sd">        instance_id: Unique identifier for this workflow instance.</span>
+</span><span data-line="53"><span class="sd">        data: Mutable state dictionary for inter-step communication.</span>
+</span><span data-line="54"><span class="sd">        metadata: Immutable metadata about the workflow execution.</span>
+</span><span data-line="55"><span class="sd">        current_step: Name of the currently executing step.</span>
+</span><span data-line="56"><span class="sd">        step_history: Chronological record of all step executions.</span>
+</span><span data-line="57"><span class="sd">        started_at: Timestamp when the workflow instance was created.</span>
+</span><span data-line="58"><span class="sd">        user_id: Optional user identifier for human task contexts.</span>
+</span><span data-line="59"><span class="sd">        tenant_id: Optional tenant identifier for multi-tenancy support.</span>
+</span><span data-line="60">
+</span><span data-line="61"><span class="sd">    Example:</span>
+</span><span data-line="62"><span class="sd">        &gt;&gt;&gt; from uuid import uuid4</span>
+</span><span data-line="63"><span class="sd">        &gt;&gt;&gt; from datetime import datetime</span>
+</span><span data-line="64"><span class="sd">        &gt;&gt;&gt; context = WorkflowContext(</span>
+</span><span data-line="65"><span class="sd">        ...     workflow_id=uuid4(),</span>
+</span><span data-line="66"><span class="sd">        ...     instance_id=uuid4(),</span>
+</span><span data-line="67"><span class="sd">        ...     data={&quot;input&quot;: &quot;value&quot;},</span>
+</span><span data-line="68"><span class="sd">        ...     metadata={&quot;creator&quot;: &quot;user123&quot;},</span>
+</span><span data-line="69"><span class="sd">        ...     current_step=&quot;initial_step&quot;,</span>
+</span><span data-line="70"><span class="sd">        ...     step_history=[],</span>
+</span><span data-line="71"><span class="sd">        ...     started_at=datetime.utcnow(),</span>
+</span><span data-line="72"><span class="sd">        ... )</span>
+</span><span data-line="73"><span class="sd">        &gt;&gt;&gt; context.set(&quot;result&quot;, 42)</span>
+</span><span data-line="74"><span class="sd">        &gt;&gt;&gt; context.get(&quot;result&quot;)</span>
+</span><span data-line="75"><span class="sd">        42</span>
+</span><span data-line="76"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="77">
+</span><span data-line="78">    <span class="n">workflow_id</span><span class="p">:</span> <span class="n">UUID</span>
+</span><span data-line="79">    <span class="n">instance_id</span><span class="p">:</span> <span class="n">UUID</span>
+</span><span data-line="80">    <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+</span><span data-line="81">    <span class="n">metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+</span><span data-line="82">    <span class="n">current_step</span><span class="p">:</span> <span class="nb">str</span>
+</span><span data-line="83">    <span class="n">step_history</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">StepExecution</span><span class="p">]</span>
+</span><span data-line="84">    <span class="n">started_at</span><span class="p">:</span> <span class="n">datetime</span>
+</span><span data-line="85">    <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="86">    <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="87">
+<div class="viewcode-block" id="WorkflowContext.get">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.WorkflowContext.get">[docs]</a>
+</span><span data-line="88">    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+</span><span data-line="89"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve a value from the workflow data dictionary.</span>
+</span><span data-line="90">
+</span><span data-line="91"><span class="sd">        Args:</span>
+</span><span data-line="92"><span class="sd">            key: The key to look up in the data dictionary.</span>
+</span><span data-line="93"><span class="sd">            default: Default value to return if key is not found.</span>
+</span><span data-line="94">
+</span><span data-line="95"><span class="sd">        Returns:</span>
+</span><span data-line="96"><span class="sd">            The value associated with the key, or the default if not present.</span>
+</span><span data-line="97">
+</span><span data-line="98"><span class="sd">        Example:</span>
+</span><span data-line="99"><span class="sd">            &gt;&gt;&gt; context.get(&quot;some_key&quot;, &quot;default_value&quot;)</span>
+</span><span data-line="100"><span class="sd">            &#39;default_value&#39;</span>
+</span><span data-line="101"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="102">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span></div>
+
+</span><span data-line="103">
+<div class="viewcode-block" id="WorkflowContext.set">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.WorkflowContext.set">[docs]</a>
+</span><span data-line="104">    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="105"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Set a value in the workflow data dictionary.</span>
+</span><span data-line="106">
+</span><span data-line="107"><span class="sd">        Args:</span>
+</span><span data-line="108"><span class="sd">            key: The key to set in the data dictionary.</span>
+</span><span data-line="109"><span class="sd">            value: The value to associate with the key.</span>
+</span><span data-line="110">
+</span><span data-line="111"><span class="sd">        Example:</span>
+</span><span data-line="112"><span class="sd">            &gt;&gt;&gt; context.set(&quot;status&quot;, &quot;approved&quot;)</span>
+</span><span data-line="113"><span class="sd">            &gt;&gt;&gt; context.get(&quot;status&quot;)</span>
+</span><span data-line="114"><span class="sd">            &#39;approved&#39;</span>
+</span><span data-line="115"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="116">        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+
+</span><span data-line="117">
+<div class="viewcode-block" id="WorkflowContext.with_step">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.WorkflowContext.with_step">[docs]</a>
+</span><span data-line="118">    <span class="k">def</span><span class="w"> </span><span class="nf">with_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkflowContext</span><span class="p">:</span>
+</span><span data-line="119"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new context for the given step execution.</span>
+</span><span data-line="120">
+</span><span data-line="121"><span class="sd">        This method returns a shallow copy of the context with the current_step</span>
+</span><span data-line="122"><span class="sd">        updated to the provided step name. The data and metadata dictionaries</span>
+</span><span data-line="123"><span class="sd">        are shared with the original context.</span>
+</span><span data-line="124">
+</span><span data-line="125"><span class="sd">        Args:</span>
+</span><span data-line="126"><span class="sd">            step_name: Name of the step to execute next.</span>
+</span><span data-line="127">
+</span><span data-line="128"><span class="sd">        Returns:</span>
+</span><span data-line="129"><span class="sd">            A new WorkflowContext instance with updated current_step.</span>
+</span><span data-line="130">
+</span><span data-line="131"><span class="sd">        Example:</span>
+</span><span data-line="132"><span class="sd">            &gt;&gt;&gt; new_context = context.with_step(&quot;next_step&quot;)</span>
+</span><span data-line="133"><span class="sd">            &gt;&gt;&gt; new_context.current_step</span>
+</span><span data-line="134"><span class="sd">            &#39;next_step&#39;</span>
+</span><span data-line="135"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="136">        <span class="k">return</span> <span class="n">WorkflowContext</span><span class="p">(</span>
+</span><span data-line="137">            <span class="n">workflow_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow_id</span><span class="p">,</span>
+</span><span data-line="138">            <span class="n">instance_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span><span class="p">,</span>
+</span><span data-line="139">            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+</span><span data-line="140">            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+</span><span data-line="141">            <span class="n">current_step</span><span class="o">=</span><span class="n">step_name</span><span class="p">,</span>
+</span><span data-line="142">            <span class="n">step_history</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">step_history</span><span class="p">,</span>
+</span><span data-line="143">            <span class="n">started_at</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">started_at</span><span class="p">,</span>
+</span><span data-line="144">            <span class="n">user_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span>
+</span><span data-line="145">            <span class="n">tenant_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tenant_id</span><span class="p">,</span>
+</span><span data-line="146">        <span class="p">)</span></div>
+
+</span><span data-line="147">
+<div class="viewcode-block" id="WorkflowContext.get_last_execution">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.WorkflowContext.get_last_execution">[docs]</a>
+</span><span data-line="148">    <span class="k">def</span><span class="w"> </span><span class="nf">get_last_execution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StepExecution</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="149"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the most recent execution record for a step.</span>
+</span><span data-line="150">
+</span><span data-line="151"><span class="sd">        Args:</span>
+</span><span data-line="152"><span class="sd">            step_name: Optional step name to filter by. If None, returns the</span>
+</span><span data-line="153"><span class="sd">                last execution regardless of step.</span>
+</span><span data-line="154">
+</span><span data-line="155"><span class="sd">        Returns:</span>
+</span><span data-line="156"><span class="sd">            The most recent StepExecution matching the criteria, or None if not found.</span>
+</span><span data-line="157">
+</span><span data-line="158"><span class="sd">        Example:</span>
+</span><span data-line="159"><span class="sd">            &gt;&gt;&gt; last_exec = context.get_last_execution(&quot;approval_step&quot;)</span>
+</span><span data-line="160"><span class="sd">            &gt;&gt;&gt; if last_exec and last_exec.status == &quot;SUCCEEDED&quot;:</span>
+</span><span data-line="161"><span class="sd">            ...     print(&quot;Step succeeded&quot;)</span>
+</span><span data-line="162"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="163">        <span class="k">if</span> <span class="n">step_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="164">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_history</span> <span class="k">else</span> <span class="kc">None</span>
+</span><span data-line="165">
+</span><span data-line="166">        <span class="k">for</span> <span class="n">execution</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_history</span><span class="p">):</span>
+</span><span data-line="167">            <span class="k">if</span> <span class="n">execution</span><span class="o">.</span><span class="n">step_name</span> <span class="o">==</span> <span class="n">step_name</span><span class="p">:</span>
+</span><span data-line="168">                <span class="k">return</span> <span class="n">execution</span>
+</span><span data-line="169">        <span class="k">return</span> <span class="kc">None</span></div>
+
+</span><span data-line="170">
+<div class="viewcode-block" id="WorkflowContext.has_step_executed">
+<a class="viewcode-back" href="../../../api/modules.html#litestar_workflows.WorkflowContext.has_step_executed">[docs]</a>
+</span><span data-line="171">    <span class="k">def</span><span class="w"> </span><span class="nf">has_step_executed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span data-line="172"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if a step has been executed in this workflow instance.</span>
+</span><span data-line="173">
+</span><span data-line="174"><span class="sd">        Args:</span>
+</span><span data-line="175"><span class="sd">            step_name: Name of the step to check.</span>
+</span><span data-line="176">
+</span><span data-line="177"><span class="sd">        Returns:</span>
+</span><span data-line="178"><span class="sd">            True if the step appears in the execution history, False otherwise.</span>
+</span><span data-line="179">
+</span><span data-line="180"><span class="sd">        Example:</span>
+</span><span data-line="181"><span class="sd">            &gt;&gt;&gt; if context.has_step_executed(&quot;validation&quot;):</span>
+</span><span data-line="182"><span class="sd">            ...     print(&quot;Validation already completed&quot;)</span>
+</span><span data-line="183"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="184">        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">step_exec</span><span class="o">.</span><span class="n">step_name</span> <span class="o">==</span> <span class="n">step_name</span> <span class="k">for</span> <span class="n">step_exec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_history</span><span class="p">)</span></div>
+</div>
+
+</span></pre></div>
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2026, Jacob Coffee</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+<a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+  <iconify-icon icon="simple-icons:github"></iconify-icon>
+</a></div>
+    </div>
+  </div>
+</footer>
+      <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=30646c52"></script>
+      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../../../_static/shibuya.js?v=c1cf1a6b"></script></body>
+</html>
