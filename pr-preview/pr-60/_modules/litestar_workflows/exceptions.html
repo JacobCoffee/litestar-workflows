@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="violet" data-content_root="../../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>litestar_workflows.exceptions - litestar-workflows</title><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="../../_static/shibuya.css?v=14737038" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link media="print" rel="stylesheet" type="text/css" href="../../_static/print.css?v=20ff2c19" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=8975404a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    <meta property="og:type" content="website"/><meta property="og:title" content="litestar_workflows.exceptions"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../../index.html">
+      
+      
+      <strong>litestar-workflows</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"><ul><li class="link">
+          <a href="https://litestar.dev/">
+            <span>Litestar</span></a>
+        </li><li class="link">
+          <a href="https://pypi.org/project/litestar-workflows/">
+            <span>PyPI</span></a>
+        </li></ul></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">Learn</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting-started/quickstart.html">Quickstart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Core Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/workflows.html">Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/steps.html">Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/context.html">Workflow Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concepts/execution.html">Execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides/index.html">How-To Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guides/simple-workflow.html">Building a Simple Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guides/human-tasks.html">Working with Human Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guides/parallel-execution.html">Parallel Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guides/conditional-logic.html">Conditional Logic and Gateways</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guides/persistence.html">Database Persistence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guides/web-plugin.html">Web Plugin (REST API)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cookbook/index.html">Cookbook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cookbook/expense-approval.html">Expense Approval Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cookbook/document-review.html">Document Review Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cookbook/onboarding.html">Employee Onboarding Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cookbook/integration-patterns.html">Integration Patterns</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/modules.html">Module Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/web.html">Web Plugin API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture/index.html">Architecture Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture/phase3-web.html">Phase 3: Web Plugin Architecture</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JacobCoffee/litestar-workflows">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/litestar-919193495116337154">Discord</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../../index.html"><span itemprop="name">litestar-workflows</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">Module code</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">litestar_workflows.exceptions</strong>
+        <meta itemprop="position" content="3" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+        <article class="yue" role="main">
+          <h1>Source code for litestar_workflows.exceptions</h1><div class="highlight"><pre>
+<span></span><span data-line="1"><span class="sd">&quot;&quot;&quot;Exception hierarchy for litestar-workflows.&quot;&quot;&quot;</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+</span><span data-line="4">
+</span><span data-line="5"><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+</span><span data-line="6">
+</span><span data-line="7"><span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+</span><span data-line="8">    <span class="kn">from</span><span class="w"> </span><span class="nn">uuid</span><span class="w"> </span><span class="kn">import</span> <span class="n">UUID</span>
+</span><span data-line="9">
+</span><span data-line="10"><span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="11">    <span class="s2">&quot;HumanTaskError&quot;</span><span class="p">,</span>
+</span><span data-line="12">    <span class="s2">&quot;InvalidTransitionError&quot;</span><span class="p">,</span>
+</span><span data-line="13">    <span class="s2">&quot;StepExecutionError&quot;</span><span class="p">,</span>
+</span><span data-line="14">    <span class="s2">&quot;TaskAlreadyCompletedError&quot;</span><span class="p">,</span>
+</span><span data-line="15">    <span class="s2">&quot;TaskNotFoundError&quot;</span><span class="p">,</span>
+</span><span data-line="16">    <span class="s2">&quot;UnauthorizedTaskError&quot;</span><span class="p">,</span>
+</span><span data-line="17">    <span class="s2">&quot;WorkflowAlreadyCompletedError&quot;</span><span class="p">,</span>
+</span><span data-line="18">    <span class="s2">&quot;WorkflowInstanceNotFoundError&quot;</span><span class="p">,</span>
+</span><span data-line="19">    <span class="s2">&quot;WorkflowNotFoundError&quot;</span><span class="p">,</span>
+</span><span data-line="20">    <span class="s2">&quot;WorkflowValidationError&quot;</span><span class="p">,</span>
+</span><span data-line="21">    <span class="s2">&quot;WorkflowsError&quot;</span><span class="p">,</span>
+</span><span data-line="22"><span class="p">)</span>
+</span><span data-line="23">
+</span><span data-line="24">
+<div class="viewcode-block" id="WorkflowsError">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.WorkflowsError">[docs]</a>
+</span><span data-line="25"><span class="k">class</span><span class="w"> </span><span class="nc">WorkflowsError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+</span><span data-line="26"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Base exception for all litestar-workflows errors.</span>
+</span><span data-line="27">
+</span><span data-line="28"><span class="sd">    All exceptions raised by litestar-workflows should inherit from this class.</span>
+</span><span data-line="29"><span class="sd">    This allows users to catch all workflow-related errors with a single except clause.</span>
+</span><span data-line="30"><span class="sd">    &quot;&quot;&quot;</span></div>
+
+</span><span data-line="31">
+</span><span data-line="32">
+<div class="viewcode-block" id="WorkflowNotFoundError">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.WorkflowNotFoundError">[docs]</a>
+</span><span data-line="33"><span class="k">class</span><span class="w"> </span><span class="nc">WorkflowNotFoundError</span><span class="p">(</span><span class="n">WorkflowsError</span><span class="p">):</span>
+</span><span data-line="34"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a workflow definition is not found.</span>
+</span><span data-line="35">
+</span><span data-line="36"><span class="sd">    This typically occurs when trying to retrieve or instantiate a workflow</span>
+</span><span data-line="37"><span class="sd">    that hasn&#39;t been registered with the workflow registry.</span>
+</span><span data-line="38">
+</span><span data-line="39"><span class="sd">    Attributes:</span>
+</span><span data-line="40"><span class="sd">        name: The name of the workflow that was not found.</span>
+</span><span data-line="41"><span class="sd">        version: The specific version requested, if any.</span>
+</span><span data-line="42"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="43">
+<div class="viewcode-block" id="WorkflowNotFoundError.__init__">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.WorkflowNotFoundError.__init__">[docs]</a>
+</span><span data-line="44">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="45"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the exception with workflow details.</span>
+</span><span data-line="46">
+</span><span data-line="47"><span class="sd">        Args:</span>
+</span><span data-line="48"><span class="sd">            name: The name of the workflow that was not found.</span>
+</span><span data-line="49"><span class="sd">            version: The specific version requested, if any.</span>
+</span><span data-line="50"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="51">        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+</span><span data-line="52">        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+</span><span data-line="53">        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Workflow &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+</span><span data-line="54">        <span class="k">if</span> <span class="n">version</span><span class="p">:</span>
+</span><span data-line="55">            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; version &#39;</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+</span><span data-line="56">        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot; not found&quot;</span>
+</span><span data-line="57">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+</div>
+
+</span><span data-line="58">
+</span><span data-line="59">
+<div class="viewcode-block" id="WorkflowInstanceNotFoundError">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.WorkflowInstanceNotFoundError">[docs]</a>
+</span><span data-line="60"><span class="k">class</span><span class="w"> </span><span class="nc">WorkflowInstanceNotFoundError</span><span class="p">(</span><span class="n">WorkflowsError</span><span class="p">):</span>
+</span><span data-line="61"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a workflow instance is not found.</span>
+</span><span data-line="62">
+</span><span data-line="63"><span class="sd">    This occurs when trying to retrieve or operate on a workflow instance</span>
+</span><span data-line="64"><span class="sd">    that doesn&#39;t exist in the workflow engine&#39;s storage.</span>
+</span><span data-line="65">
+</span><span data-line="66"><span class="sd">    Attributes:</span>
+</span><span data-line="67"><span class="sd">        instance_id: The ID of the workflow instance that was not found.</span>
+</span><span data-line="68"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="69">
+<div class="viewcode-block" id="WorkflowInstanceNotFoundError.__init__">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.WorkflowInstanceNotFoundError.__init__">[docs]</a>
+</span><span data-line="70">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="71"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the exception with instance details.</span>
+</span><span data-line="72">
+</span><span data-line="73"><span class="sd">        Args:</span>
+</span><span data-line="74"><span class="sd">            instance_id: The ID of the workflow instance that was not found.</span>
+</span><span data-line="75"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="76">        <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span> <span class="o">=</span> <span class="n">instance_id</span>
+</span><span data-line="77">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Workflow instance &#39;</span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2">&#39; not found&quot;</span><span class="p">)</span></div>
+</div>
+
+</span><span data-line="78">
+</span><span data-line="79">
+<div class="viewcode-block" id="StepExecutionError">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.StepExecutionError">[docs]</a>
+</span><span data-line="80"><span class="k">class</span><span class="w"> </span><span class="nc">StepExecutionError</span><span class="p">(</span><span class="n">WorkflowsError</span><span class="p">):</span>
+</span><span data-line="81"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a step fails to execute.</span>
+</span><span data-line="82">
+</span><span data-line="83"><span class="sd">    This wraps the underlying exception that caused the step to fail,</span>
+</span><span data-line="84"><span class="sd">    providing context about which step failed.</span>
+</span><span data-line="85">
+</span><span data-line="86"><span class="sd">    Attributes:</span>
+</span><span data-line="87"><span class="sd">        step_name: The name of the step that failed.</span>
+</span><span data-line="88"><span class="sd">        cause: The underlying exception that caused the failure, if any.</span>
+</span><span data-line="89"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="90">
+<div class="viewcode-block" id="StepExecutionError.__init__">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.StepExecutionError.__init__">[docs]</a>
+</span><span data-line="91">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cause</span><span class="p">:</span> <span class="ne">Exception</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="92"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the exception with step execution details.</span>
+</span><span data-line="93">
+</span><span data-line="94"><span class="sd">        Args:</span>
+</span><span data-line="95"><span class="sd">            step_name: The name of the step that failed.</span>
+</span><span data-line="96"><span class="sd">            cause: The underlying exception that caused the failure, if any.</span>
+</span><span data-line="97"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="98">        <span class="bp">self</span><span class="o">.</span><span class="n">step_name</span> <span class="o">=</span> <span class="n">step_name</span>
+</span><span data-line="99">        <span class="bp">self</span><span class="o">.</span><span class="n">cause</span> <span class="o">=</span> <span class="n">cause</span>
+</span><span data-line="100">        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Step &#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s2">&#39; failed&quot;</span>
+</span><span data-line="101">        <span class="k">if</span> <span class="n">cause</span><span class="p">:</span>
+</span><span data-line="102">            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;: </span><span class="si">{</span><span class="n">cause</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span data-line="103">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+</div>
+
+</span><span data-line="104">
+</span><span data-line="105">
+<div class="viewcode-block" id="InvalidTransitionError">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.InvalidTransitionError">[docs]</a>
+</span><span data-line="106"><span class="k">class</span><span class="w"> </span><span class="nc">InvalidTransitionError</span><span class="p">(</span><span class="n">WorkflowsError</span><span class="p">):</span>
+</span><span data-line="107"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when an invalid state transition is attempted.</span>
+</span><span data-line="108">
+</span><span data-line="109"><span class="sd">    This occurs when trying to transition between steps in a way that</span>
+</span><span data-line="110"><span class="sd">    violates the workflow&#39;s defined graph structure or transition rules.</span>
+</span><span data-line="111">
+</span><span data-line="112"><span class="sd">    Attributes:</span>
+</span><span data-line="113"><span class="sd">        from_step: The step being transitioned from.</span>
+</span><span data-line="114"><span class="sd">        to_step: The step being transitioned to.</span>
+</span><span data-line="115"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="116">
+<div class="viewcode-block" id="InvalidTransitionError.__init__">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.InvalidTransitionError.__init__">[docs]</a>
+</span><span data-line="117">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_step</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">to_step</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="118"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the exception with transition details.</span>
+</span><span data-line="119">
+</span><span data-line="120"><span class="sd">        Args:</span>
+</span><span data-line="121"><span class="sd">            from_step: The step being transitioned from.</span>
+</span><span data-line="122"><span class="sd">            to_step: The step being transitioned to.</span>
+</span><span data-line="123"><span class="sd">            reason: Additional context about why the transition is invalid.</span>
+</span><span data-line="124"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="125">        <span class="bp">self</span><span class="o">.</span><span class="n">from_step</span> <span class="o">=</span> <span class="n">from_step</span>
+</span><span data-line="126">        <span class="bp">self</span><span class="o">.</span><span class="n">to_step</span> <span class="o">=</span> <span class="n">to_step</span>
+</span><span data-line="127">        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid transition from &#39;</span><span class="si">{</span><span class="n">from_step</span><span class="si">}</span><span class="s2">&#39; to &#39;</span><span class="si">{</span><span class="n">to_step</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+</span><span data-line="128">        <span class="k">if</span> <span class="n">reason</span><span class="p">:</span>
+</span><span data-line="129">            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;: </span><span class="si">{</span><span class="n">reason</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span data-line="130">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+</div>
+
+</span><span data-line="131">
+</span><span data-line="132">
+<div class="viewcode-block" id="WorkflowValidationError">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.WorkflowValidationError">[docs]</a>
+</span><span data-line="133"><span class="k">class</span><span class="w"> </span><span class="nc">WorkflowValidationError</span><span class="p">(</span><span class="n">WorkflowsError</span><span class="p">):</span>
+</span><span data-line="134"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when workflow definition validation fails.</span>
+</span><span data-line="135">
+</span><span data-line="136"><span class="sd">    This occurs during workflow registration or modification when the</span>
+</span><span data-line="137"><span class="sd">    workflow definition doesn&#39;t meet required constraints (e.g., cycles,</span>
+</span><span data-line="138"><span class="sd">    unreachable nodes, invalid step types).</span>
+</span><span data-line="139">
+</span><span data-line="140"><span class="sd">    Attributes:</span>
+</span><span data-line="141"><span class="sd">        errors: List of validation error messages.</span>
+</span><span data-line="142"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="143">
+<div class="viewcode-block" id="WorkflowValidationError.__init__">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.WorkflowValidationError.__init__">[docs]</a>
+</span><span data-line="144">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">errors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="145"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the exception with validation errors.</span>
+</span><span data-line="146">
+</span><span data-line="147"><span class="sd">        Args:</span>
+</span><span data-line="148"><span class="sd">            errors: List of validation error messages.</span>
+</span><span data-line="149"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="150">        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="n">errors</span>
+</span><span data-line="151">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Workflow validation failed: </span><span class="si">{</span><span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+</div>
+
+</span><span data-line="152">
+</span><span data-line="153">
+<div class="viewcode-block" id="WorkflowAlreadyCompletedError">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.WorkflowAlreadyCompletedError">[docs]</a>
+</span><span data-line="154"><span class="k">class</span><span class="w"> </span><span class="nc">WorkflowAlreadyCompletedError</span><span class="p">(</span><span class="n">WorkflowsError</span><span class="p">):</span>
+</span><span data-line="155"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when trying to modify a completed workflow.</span>
+</span><span data-line="156">
+</span><span data-line="157"><span class="sd">    This prevents operations on workflow instances that have reached a</span>
+</span><span data-line="158"><span class="sd">    terminal state (completed, failed, or cancelled).</span>
+</span><span data-line="159">
+</span><span data-line="160"><span class="sd">    Attributes:</span>
+</span><span data-line="161"><span class="sd">        instance_id: The ID of the workflow instance.</span>
+</span><span data-line="162"><span class="sd">        status: The current terminal status of the workflow.</span>
+</span><span data-line="163"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="164">
+<div class="viewcode-block" id="WorkflowAlreadyCompletedError.__init__">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.WorkflowAlreadyCompletedError.__init__">[docs]</a>
+</span><span data-line="165">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UUID</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="166"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the exception with workflow state details.</span>
+</span><span data-line="167">
+</span><span data-line="168"><span class="sd">        Args:</span>
+</span><span data-line="169"><span class="sd">            instance_id: The ID of the workflow instance.</span>
+</span><span data-line="170"><span class="sd">            status: The current terminal status of the workflow.</span>
+</span><span data-line="171"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="172">        <span class="bp">self</span><span class="o">.</span><span class="n">instance_id</span> <span class="o">=</span> <span class="n">instance_id</span>
+</span><span data-line="173">        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
+</span><span data-line="174">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Workflow &#39;</span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2">&#39; is already </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+</div>
+
+</span><span data-line="175">
+</span><span data-line="176">
+<div class="viewcode-block" id="HumanTaskError">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.HumanTaskError">[docs]</a>
+</span><span data-line="177"><span class="k">class</span><span class="w"> </span><span class="nc">HumanTaskError</span><span class="p">(</span><span class="n">WorkflowsError</span><span class="p">):</span>
+</span><span data-line="178"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Base exception for human task related errors.</span>
+</span><span data-line="179">
+</span><span data-line="180"><span class="sd">    All human task specific exceptions should inherit from this class.</span>
+</span><span data-line="181"><span class="sd">    This allows distinguishing between automated workflow errors and</span>
+</span><span data-line="182"><span class="sd">    human interaction errors.</span>
+</span><span data-line="183"><span class="sd">    &quot;&quot;&quot;</span></div>
+
+</span><span data-line="184">
+</span><span data-line="185">
+<div class="viewcode-block" id="TaskNotFoundError">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.TaskNotFoundError">[docs]</a>
+</span><span data-line="186"><span class="k">class</span><span class="w"> </span><span class="nc">TaskNotFoundError</span><span class="p">(</span><span class="n">HumanTaskError</span><span class="p">):</span>
+</span><span data-line="187"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a human task is not found.</span>
+</span><span data-line="188">
+</span><span data-line="189"><span class="sd">    This occurs when trying to retrieve or complete a task that doesn&#39;t</span>
+</span><span data-line="190"><span class="sd">    exist in the human task storage.</span>
+</span><span data-line="191">
+</span><span data-line="192"><span class="sd">    Attributes:</span>
+</span><span data-line="193"><span class="sd">        task_id: The ID of the task that was not found.</span>
+</span><span data-line="194"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="195">
+<div class="viewcode-block" id="TaskNotFoundError.__init__">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.TaskNotFoundError.__init__">[docs]</a>
+</span><span data-line="196">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="197"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the exception with task details.</span>
+</span><span data-line="198">
+</span><span data-line="199"><span class="sd">        Args:</span>
+</span><span data-line="200"><span class="sd">            task_id: The ID of the task that was not found.</span>
+</span><span data-line="201"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="202">        <span class="bp">self</span><span class="o">.</span><span class="n">task_id</span> <span class="o">=</span> <span class="n">task_id</span>
+</span><span data-line="203">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Task &#39;</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">&#39; not found&quot;</span><span class="p">)</span></div>
+</div>
+
+</span><span data-line="204">
+</span><span data-line="205">
+<div class="viewcode-block" id="TaskAlreadyCompletedError">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.TaskAlreadyCompletedError">[docs]</a>
+</span><span data-line="206"><span class="k">class</span><span class="w"> </span><span class="nc">TaskAlreadyCompletedError</span><span class="p">(</span><span class="n">HumanTaskError</span><span class="p">):</span>
+</span><span data-line="207"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when trying to complete an already completed task.</span>
+</span><span data-line="208">
+</span><span data-line="209"><span class="sd">    This prevents double-completion of human tasks which could lead to</span>
+</span><span data-line="210"><span class="sd">    inconsistent workflow state.</span>
+</span><span data-line="211">
+</span><span data-line="212"><span class="sd">    Attributes:</span>
+</span><span data-line="213"><span class="sd">        task_id: The ID of the task that was already completed.</span>
+</span><span data-line="214"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="215">
+<div class="viewcode-block" id="TaskAlreadyCompletedError.__init__">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.TaskAlreadyCompletedError.__init__">[docs]</a>
+</span><span data-line="216">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="217"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the exception with task details.</span>
+</span><span data-line="218">
+</span><span data-line="219"><span class="sd">        Args:</span>
+</span><span data-line="220"><span class="sd">            task_id: The ID of the task that was already completed.</span>
+</span><span data-line="221"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="222">        <span class="bp">self</span><span class="o">.</span><span class="n">task_id</span> <span class="o">=</span> <span class="n">task_id</span>
+</span><span data-line="223">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Task &#39;</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">&#39; is already completed&quot;</span><span class="p">)</span></div>
+</div>
+
+</span><span data-line="224">
+</span><span data-line="225">
+<div class="viewcode-block" id="UnauthorizedTaskError">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.UnauthorizedTaskError">[docs]</a>
+</span><span data-line="226"><span class="k">class</span><span class="w"> </span><span class="nc">UnauthorizedTaskError</span><span class="p">(</span><span class="n">HumanTaskError</span><span class="p">):</span>
+</span><span data-line="227"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when user is not authorized to complete a task.</span>
+</span><span data-line="228">
+</span><span data-line="229"><span class="sd">    This enforces authorization rules for human tasks, ensuring only</span>
+</span><span data-line="230"><span class="sd">    assigned users or users with appropriate roles can complete tasks.</span>
+</span><span data-line="231">
+</span><span data-line="232"><span class="sd">    Attributes:</span>
+</span><span data-line="233"><span class="sd">        task_id: The ID of the task.</span>
+</span><span data-line="234"><span class="sd">        user_id: The ID of the user attempting to complete the task.</span>
+</span><span data-line="235"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="236">
+<div class="viewcode-block" id="UnauthorizedTaskError.__init__">
+<a class="viewcode-back" href="../../api/modules.html#litestar_workflows.UnauthorizedTaskError.__init__">[docs]</a>
+</span><span data-line="237">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">UUID</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="238"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the exception with authorization details.</span>
+</span><span data-line="239">
+</span><span data-line="240"><span class="sd">        Args:</span>
+</span><span data-line="241"><span class="sd">            task_id: The ID of the task.</span>
+</span><span data-line="242"><span class="sd">            user_id: The ID of the user attempting to complete the task.</span>
+</span><span data-line="243"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="244">        <span class="bp">self</span><span class="o">.</span><span class="n">task_id</span> <span class="o">=</span> <span class="n">task_id</span>
+</span><span data-line="245">        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+</span><span data-line="246">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;User &#39;</span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">&#39; is not authorized to complete task &#39;</span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
+</div>
+
+</span></pre></div>
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2026, Jacob Coffee</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+<a href="https://github.com/JacobCoffee/litestar-workflows" aria-label="GitHub">
+  <iconify-icon icon="simple-icons:github"></iconify-icon>
+</a></div>
+    </div>
+  </div>
+</footer>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=30646c52"></script>
+      <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+      <script src="../../_static/shibuya.js?v=c1cf1a6b"></script></body>
+</html>
