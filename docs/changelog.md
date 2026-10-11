@@ -2,7 +2,47 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.3.1](https://github.com/JacobCoffee/litestar-workflows/compare/v0.3.0..v0.3.1) - 2025-11-26
+## [0.3.2](https://github.com/JacobCoffee/litestar-workflows/compare/v0.3.1..v0.3.2) - 2026-10-11
+
+
+### Bug Fixes
+
+
+- **(ci)** run ty via uv lockfile instead of unpinned latest release (#57) - ([661f9d0](https://github.com/JacobCoffee/litestar-workflows/commit/661f9d04847051ee0f112e21a928d16ddfd9b311)) - Jacob Coffee
+
+### Documentation
+
+
+- regenerate changelog for v0.3.1 - ([91ba447](https://github.com/JacobCoffee/litestar-workflows/commit/91ba447558d8ea6407f191ed2899319fea8bf530)) - github-actions[bot]
+
+
+### Features
+
+
+- support Python 3.14 and 3.15 (#59) - ([4ea1ed2](https://github.com/JacobCoffee/litestar-workflows/commit/4ea1ed25c77cbb8c2abb0e78c08a1a7d3aad3f1e)) - Jacob Coffee
+
+
+### Miscellaneous Chores
+
+
+- **(release)** bump version to 0.3.2 - ([0da9743](https://github.com/JacobCoffee/litestar-workflows/commit/0da97435cd61cf14e15bccb2bba20ebecce0fd5a)) - Jacob Coffee
+
+### Build
+
+
+- **(deps)** bump the actions group with 7 updates (#29) - ([723ee92](https://github.com/JacobCoffee/litestar-workflows/commit/723ee920bd5ec7e0df2d75246f36da1d967db6cd)) - dependabot[bot]
+- **(deps)** bump the actions group with 7 updates (#30) - ([5e2fd92](https://github.com/JacobCoffee/litestar-workflows/commit/5e2fd920d8581432e77030466e3203e9b4b587e6)) - dependabot[bot]
+- **(deps)** bump rossjrw/pr-preview-action from 1.6.3 to 1.7.2 in the actions group (#31) - ([b48f06d](https://github.com/JacobCoffee/litestar-workflows/commit/b48f06d566a32ef2776c5cb1af744cca6269c508)) - dependabot[bot]
+- **(deps)** bump rossjrw/pr-preview-action from 1.7.2 to 1.8.0 in the actions group (#32) - ([f4e1366](https://github.com/JacobCoffee/litestar-workflows/commit/f4e1366f31b1c5666753ddc264807f9fa22b6f86)) - dependabot[bot]
+- **(deps)** bump astral-sh/setup-uv from 7.1.6 to 7.2.0 in the actions group (#33) - ([b0dfa5b](https://github.com/JacobCoffee/litestar-workflows/commit/b0dfa5bff2d9ff55f81b0cb9d6633fcbd7a47bcc)) - dependabot[bot]
+- **(deps)** bump zizmorcore/zizmor-action from 0.3.0 to 0.4.1 in the actions group (#34) - ([9f8a081](https://github.com/JacobCoffee/litestar-workflows/commit/9f8a08123788d4310dd2551c95b5115584ad496a)) - dependabot[bot]
+- **(deps)** bump the actions group with 3 updates (#35) - ([8549906](https://github.com/JacobCoffee/litestar-workflows/commit/8549906d7b29b8d5f326404f201c007cbd4a85cf)) - dependabot[bot]
+- **(deps)** bump the actions group across 1 directory with 2 updates (#37) - ([5ac6efc](https://github.com/JacobCoffee/litestar-workflows/commit/5ac6efcd71599c49b7a0c75644bed073a22f480b)) - dependabot[bot]
+- **(deps)** bump the actions group across 1 directory with 7 updates (#43) - ([055b6f4](https://github.com/JacobCoffee/litestar-workflows/commit/055b6f4ce26cc3b23aaae352b4ff8786868f41e7)) - dependabot[bot]
+- **(deps)** bump the actions group across 1 directory with 11 updates (#50) - ([c6fff18](https://github.com/JacobCoffee/litestar-workflows/commit/c6fff182bea9271e949a42d76fc445467cfad1ff)) - dependabot[bot]
+- **(deps)** bump the python-dependencies group across 1 directory with 2 updates (#49) - ([9879c57](https://github.com/JacobCoffee/litestar-workflows/commit/9879c5763b08de6fc53765793e590ca83ade9de2)) - dependabot[bot]
+- **(deps)** bump the actions group across 1 directory with 12 updates (#58) - ([0b304eb](https://github.com/JacobCoffee/litestar-workflows/commit/0b304eb20fc9fcfa165ce63e9eec713bac2f0d4c)) - dependabot[bot]
+- **(deps-dev)** update uv-build requirement from <0.10.0,>=0.9.11 to >=0.9.11,<0.11.0 in the python-dependencies group (#38) - ([645a785](https://github.com/JacobCoffee/litestar-workflows/commit/645a7854f08b301da531bc4d90e3bbab98b87ebf)) - dependabot[bot]## [0.3.1](https://github.com/JacobCoffee/litestar-workflows/compare/v0.3.0..v0.3.1) - 2025-11-26
 
 
 ### Documentation
