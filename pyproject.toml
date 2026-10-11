@@ -73,7 +73,7 @@ license = {text = "MIT"}
 name = "litestar-workflows"
 readme = "README.md"
 requires-python = ">=3.10"
-version = "0.3.1"
+version = "0.3.2"
 
 [project.optional-dependencies]
 db = [
