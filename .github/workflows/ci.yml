@@ -72,9 +72,7 @@ jobs:
         run: uv run ruff format --check
 
       - name: Run ty type checker
-        uses: JacobCoffee/ty-action@53e9dd1d07f0793d33756a9230c6fc39c23089a3 # v0.0.1
-        with:
-          args: check src
+        run: uv run --no-sync ty check src
 
   # ==================================================================================== #
   # SMOKE TESTS (key combinations, runs after validate passes)
