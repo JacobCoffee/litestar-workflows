@@ -21,6 +21,11 @@ else:
         def __str__(self) -> str:
             return str(self.value)
 
+        @staticmethod
+        def _generate_next_value_(name: str, start: int, count: int, last_values: list[Any]) -> str:  # noqa: ARG004
+            """Generate lowercase member name for auto(), matching stdlib enum.StrEnum."""
+            return name.lower()
+
 
 # TypeAlias backport for Python < 3.10
 from typing import TypeAlias
