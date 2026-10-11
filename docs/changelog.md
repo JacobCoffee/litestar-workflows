@@ -2,7 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.3.2](https://github.com/JacobCoffee/litestar-workflows/compare/v0.3.1..v0.3.2) - 2026-10-11
+## [0.3.3](https://github.com/JacobCoffee/litestar-workflows/compare/v0.3.2..v0.3.3) - 2026-10-11
+
+
+### Bug Fixes
+
+
+- **(core)** generate correct string values for StrEnum backport on Python 3.10 (#60) - ([eee4667](https://github.com/JacobCoffee/litestar-workflows/commit/eee46671d6517029ef1f3a6b1cb739a2c7f9ae31)) - Jacob Coffee
+
+### Documentation
+
+
+- regenerate changelog for v0.3.2 - ([399bb03](https://github.com/JacobCoffee/litestar-workflows/commit/399bb03037ad6eabca7221779e0e5d8fcbbfdebd)) - github-actions[bot]
+
+
+### Miscellaneous Chores
+
+
+- **(release)** bump version to 0.3.3 - ([24a5ea2](https://github.com/JacobCoffee/litestar-workflows/commit/24a5ea23444e72f3fa26b0f16dcb502197dd501a)) - Jacob Coffee## [0.3.2](https://github.com/JacobCoffee/litestar-workflows/compare/v0.3.1..v0.3.2) - 2026-10-11
 
 
 ### Bug Fixes
