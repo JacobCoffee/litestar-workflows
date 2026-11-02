@@ -1,0 +1,72 @@
+/* Custom CSS for litestar-workflows documentation */
+
+/* Improve code block readability */
+.highlight pre {
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+/* Better admonition styling */
+.admonition {
+    border-radius: 0.5rem;
+    margin: 1.5rem 0;
+}
+
+/* Improve table styling */
+table.docutils {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1rem 0;
+}
+
+table.docutils th,
+table.docutils td {
+    padding: 0.75rem;
+    border: 1px solid var(--color-table-border);
+}
+
+/* Better inline code styling */
+code.literal {
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+}
+
+/* API reference improvements */
+dl.py.class > dt,
+dl.py.function > dt,
+dl.py.method > dt {
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Improve sidebar navigation */
+.sidebar-tree .reference {
+    display: block;
+    padding: 0.25rem 0;
+}
+
+/* Version badge styling */
+.version-badge {
+    display: inline-block;
+    padding: 0.25em 0.5em;
+    font-size: 0.75em;
+    font-weight: 600;
+    border-radius: 0.25rem;
+    margin-left: 0.5rem;
+}
+
+.version-badge.new {
+    background-color: #28a745;
+    color: white;
+}
+
+.version-badge.changed {
+    background-color: #ffc107;
+    color: black;
+}
+
+.version-badge.deprecated {
+    background-color: #dc3545;
+    color: white;
+}
